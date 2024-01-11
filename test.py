@@ -13,9 +13,11 @@ openai_ef = embedding_functions.OpenAIEmbeddingFunction(
                 api_key="148aa1a7a3dc4dd88004bfe29e87d2c6", # Key 1
                 api_base="https://chromadb-test.openai.azure.com/",
                 api_type="azure",
-                api_version="OpenAI",
-                model_name="text-embedding-ada-002"
+                api_version="v4.0-preview.1",
             )
+
+#TODO: embedding function = openai_ef
+embedding_functions = openai_ef
 
         
 collection = client.create_collection("pile-of-law")
@@ -28,8 +30,10 @@ collection.add(
 results = collection.query(
     query_texts=["Rule 155"],
     n_results= 5,
-    include=["documents"])
+    include=["uris"])
 
 print(results)
 
-#TODO: upload a.pdf and get text inside into the document instead of "a.pdf"
+#TODO: upload a.pdf and get text inside into the document instead of "a.pdf" (Document Intelligence)
+#Try doc ai:
+
