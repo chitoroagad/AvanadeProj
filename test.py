@@ -13,7 +13,7 @@ openai_ef = embedding_functions.OpenAIEmbeddingFunction(
                 api_key="148aa1a7a3dc4dd88004bfe29e87d2c6", # Key 1
                 api_base="https://chromadb-test.openai.azure.com/",
                 api_type="azure",
-                api_version="v4.0-preview.1",
+                api_version="2023-05-01.17.0",
             )
 
 #TODO: embedding function = openai_ef
