@@ -5,5 +5,19 @@
         "base_url": "https://gpt-testucl.openai.azure.com/",
         "api_type": "azure",
         "api_version": "2023-08-01-preview"
+    },
+    {
+        "model": "dispatcher",
+        "api_key": "9b292e65317543e8a997c21d420c6157",
+        "base_url": "https://gpt-testucl.openai.azure.com/",
+        "api_type": "azure",
+        "api_version": "2023-08-01-preview"
+    },
+    {
+        "model": "worker",
+        "api_key": "9b292e65317543e8a997c21d420c6157",
+        "base_url": "https://gpt-testucl.openai.azure.com/",
+        "api_type": "azure",
+        "api_version": "2023-08-01-preview"
     }
 ]

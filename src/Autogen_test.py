@@ -3,21 +3,34 @@ from typing import Annotated
 import ChromaDB_Test as db
 
 # configure endpoints and LLMS.
-config_list = autogen.config_list_from_json(env_or_file="src/OAI_CONFIG_LIST")
-llm_config = {"config_list": config_list, "cache_seed": 21}
+config_list_main = autogen.config_list_from_json(
+    env_or_file="src/OAI_CONFIG_LIST", filter_dict={"model": {"autogen"}}
+)
+config_list_dispatcher = autogen.config_list_from_json(
+    env_or_file="src/OAI_CONFIG_LIST", filter_dict={"model": {"dispatcher"}}
+)
+config_list_worker = autogen.config_list_from_json(
+    env_or_file="src/OAI_CONFIG_LIST", filter_dict={"model": {"worker"}}
+)
 
 
 # Create agents
-delegator = autogen.AssistantAgent(
-    name="delegator",
+dispatcher = autogen.AssistantAgent(
+    name="dispatcher",
     system_message="A manager that splits a task into a list of smaller subtasks",
-    llm_config=llm_config,
+    llm_config={
+        "config_list": config_list_dispatcher,
+        "cache_seed": 21,
+    },
 )
 
 worker = autogen.AssistantAgent(
     name="worker",
     system_message="A worker that does a list of subtasks, any information that you need must be fetched from a database.",
-    llm_config=llm_config,
+    llm_config={
+        "config_list": config_list_worker,
+        "cache_seed": 21,
+    },
 )
 
 # create a UserProxyAgent instance named "user_proxy"
@@ -30,10 +43,12 @@ user_proxy = autogen.UserProxyAgent(
 )
 
 groupchat = autogen.GroupChat(
-    agents=[delegator, worker, user_proxy],
+    agents=[dispatcher, worker, user_proxy],
     messages=[],
 )
-manager = autogen.GroupChatManager(groupchat=groupchat, llm_config=llm_config)
+manager = autogen.GroupChatManager(
+    groupchat=groupchat, llm_config={"config_list": config_list_main, "cache_seed": 21}
+)
 
 
 # Create function to fetch data from database
