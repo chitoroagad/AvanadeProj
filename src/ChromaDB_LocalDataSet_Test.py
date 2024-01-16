@@ -2,7 +2,7 @@ import csv
 import chromadb
 import chromadb.utils.embedding_functions as embedding_functions
 
-with open("USSupremeCourt.csv", encoding="iso-8859-1") as file:
+with open("/src/USSupremeCourt.csv", encoding="iso-8859-1") as file:
     lines = csv.reader(file)
 
     documents = []

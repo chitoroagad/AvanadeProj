@@ -1,6 +1,6 @@
 import autogen
 from typing import Annotated
-import ChromaDB_Test as db
+import ChromaDB_LocalDataSet_Test as db
 
 # configure endpoints and LLMS.
 config_list_main = autogen.config_list_from_json(
@@ -20,7 +20,6 @@ dispatcher = autogen.AssistantAgent(
     system_message="A manager that splits a task into a list of smaller subtasks",
     llm_config={
         "config_list": config_list_dispatcher,
-        "cache_seed": 21,
     },
 )
 
@@ -29,15 +28,12 @@ worker = autogen.AssistantAgent(
     system_message="A worker that does a list of subtasks, any information that you need must be fetched from a database.",
     llm_config={
         "config_list": config_list_worker,
-        "cache_seed": 21,
     },
 )
 
-# create a UserProxyAgent instance named "user_proxy"
 user_proxy = autogen.UserProxyAgent(
     name="user_proxy",
-    system_message="A user asking for help",
-    code_execution_config={"last_n_messages": 2, "work_dir": "groupchat"},
+    system_message="A human user asking for help",
     human_input_mode="ALWAYS",
     is_termination_msg=lambda x: x.get("content", "").rstrip().endswith("TERMINATE"),
 )
