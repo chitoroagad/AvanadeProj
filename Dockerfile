@@ -14,8 +14,8 @@ RUN python3 -m venv /venv
 ENV PATH=/venv/bin:$PATH
 EXPOSE 8081
 
-RUN cd /venv; pip install pyautogen
+RUN cd /venv; pip install pyautogen openai chromadb
 # Pre-load popular packages as per https://learnpython.com/blog/most-popular-python-packages/
-RUN pip install numpy pandas matplotlib seaborn scikit-learn requests urllib3 nltk pillow pytest beautifulsoup4 docker chromadb datasets
+RUN pip install numpy pandas matplotlib seaborn scikit-learn requests urllib3 nltk pillow pytest beautifulsoup4 docker datasets
 
-ENTRYPOINT []
+ENTRYPOINT python "/src/Autogen_test.py"

@@ -6,7 +6,14 @@
    ```bash
    docker build -f Dockerfile -t autogen_img .
    ```
-2. Run docker container
+2. Run App
+
    ```bash
-   docker run -it -v \`pwd\`/src:/src autogen_img:latest python /src/Autogen_test.py
+   docker compose up -d
    ```
+
+3. Delete close + delete app
+
+```bash
+    docker compose down
+```
