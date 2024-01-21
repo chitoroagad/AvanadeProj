@@ -1,0 +1,20 @@
+# docker-compose.yml
+version: "3.9"
+
+services:
+  db:
+    image: chromadb/chroma
+    ports:
+      - 127.0.0.1:8000:8000
+    volumes:
+      - autogen:/root/.cache/chroma
+
+  app:
+    image: autogen_img
+    command: python /src/Autogen_test.py
+    working_dir: /src
+    volumes:
+      - ./src/:/src
+
+volumes:
+  autogen:
