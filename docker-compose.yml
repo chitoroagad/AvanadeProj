@@ -5,16 +5,16 @@ services:
   db:
     image: chromadb/chroma
     ports:
-      - 127.0.0.1:8000:8000
+      - 8000:8000
     volumes:
-      - autogen:/root/.cache/chroma
+      - data:/chroma/chroma
 
   app:
     image: autogen_img
-    command: python /src/Autogen_test.py
-    working_dir: /src
     volumes:
       - ./src/:/src
+    depends_on:
+      - db
 
 volumes:
-  autogen:
+  data:
