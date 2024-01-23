@@ -17,3 +17,9 @@
 ```bash
     docker compose down
 ```
+
+_chroma has persistent storage, so to clear storage:_
+
+```bash
+    docker volume rm autogen_data
+```

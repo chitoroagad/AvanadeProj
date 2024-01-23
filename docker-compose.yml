@@ -4,6 +4,7 @@ services:
   chroma:
     image: chromadb/chroma
     ports:
+<<<<<<< HEAD
       - "8080:8080"
     volumes:
       - data:/chroma/chroma
