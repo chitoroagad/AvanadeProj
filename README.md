@@ -9,14 +9,8 @@
 2. Run App
 
    ```bash
-   docker compose up -d
+   sh start.sh
    ```
-
-3. Delete close + delete app
-
-```bash
-    docker compose down
-```
 
 _chroma has persistent storage, so to clear storage:_
 

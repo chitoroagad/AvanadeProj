@@ -4,14 +4,12 @@ services:
   chroma:
     image: chromadb/chroma
     ports:
-<<<<<<< HEAD
       - "8080:8080"
     volumes:
       - data:/chroma/chroma
     environment:
       - IS_PERSISTENT=TRUE
       - ALLOW_RESET=TRUE
-
   llm:
     build: ./llm
     volumes:
@@ -34,6 +32,5 @@ services:
   #   ports:
   #     - "3000:3000"
   #   command: npm run dev
-
 volumes:
   data:
