@@ -18,7 +18,7 @@ embedding_function = ef.OpenAIEmbeddingFunction(
 
 i = 0
 client = None
-for j in range(10):
+for j in range(50):
     try:
         client = chromadb.HttpClient(
             host="db", port="8000", settings=Settings(allow_reset=True)
@@ -31,14 +31,10 @@ for j in range(10):
         sleep(2)
 
 try:
-    collection = client.get_collection(
-        name="USSupremeCourt", embedding_function=embedding_function
-    )
+    collection = client.get_collection(name="USSupremeCourt")
     print("FOUND COLLECTION")
 except Exception:
-    collection = client.create_collection(
-        name="USSupremeCourt", embedding_function=embedding_function
-    )
+    collection = client.create_collection(name="USSupremeCourt")
     print("CREATED COLLECTION")
 
     with open("src/USSupremeCourt.csv", encoding="iso-8859-1") as file:
@@ -57,6 +53,11 @@ except Exception:
             ids.append(str(id))
             id += 1
 
+            collection.add(documents=documents, metadatas=metadata, ids=ids)
+
+result = collection.query(query_texts=["American"], n_results=5, include=["documents"])
+for key, val in result.items():
+    print(key, "    ", val)
 
 oai_config_path = "src/OAI_CONFIG_LIST"
 # configure endpoints and LLMS.
@@ -130,4 +131,5 @@ def hello(query: Query) -> Response:
     return Response(response="hello")
 
 
-user_proxy.initiate_chat(manager, message=input("Enter a message: "))
+with open("src/init_input.txt", "r") as f:
+    user_proxy.initiate_chat(manager, message=f.read())

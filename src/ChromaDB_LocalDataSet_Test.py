@@ -1,8 +1,9 @@
+from typing import Annotated
 import csv
 import chromadb
 import chromadb.utils.embedding_functions as embedding_functions
 
-with open("/src/USSupremeCourt.csv", encoding="iso-8859-1") as file:
+with open("src/USSupremeCourt.csv", encoding="iso-8859-1") as file:
     lines = csv.reader(file)
 
     documents = []
@@ -37,7 +38,9 @@ openai_ef = embedding_functions.OpenAIEmbeddingFunction(
 embedding_functions = openai_ef
 
 
-def query(query: str) -> list:
+def query(
+    query: Annotated[str, "query string for chromadb"]
+) -> Annotated[dict[str, str | None], "The list of data fetched from database"]:
     query_embedding = embedding_functions(query)
     results = collection.query(
         query_embeddings=[query_embedding], n_results=5, include=["documents"]
@@ -49,5 +52,6 @@ if __name__ == "__main__":
     results = collection.query(
         query_texts=["American"], n_results=5, include=["documents"]
     )
+    print(type(results))
     for key, val in results.items():
         print(key, val)

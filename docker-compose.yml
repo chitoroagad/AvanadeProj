@@ -8,6 +8,7 @@ services:
       - 8000:8000
     volumes:
       - data:/chroma/chroma
+      - embeddings:/root/.cache/chroma
 
   app:
     image: autogen_img
@@ -15,6 +16,10 @@ services:
       - ./src/:/src
     depends_on:
       - db
+    command: python /src/Autogen_test.py
+    stdin_open: true # docker run -i
+    tty: true # docker run -t
 
 volumes:
   data:
+  embeddings:
