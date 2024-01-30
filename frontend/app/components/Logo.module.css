@@ -1,0 +1,13 @@
+/* font */
+@import url('https://fonts.cdnfonts.com/css/abeezee');
+
+.logoText{
+    font-family: 'ABeeZee', sans-serif;
+    font-style: italic;         
+}
+
+.logo{
+    display: flex; /* Enable flexbox */
+    align-items: center; /* Align items vertically in the center */
+    gap: 0px;
+}

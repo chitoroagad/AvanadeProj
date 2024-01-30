@@ -1,0 +1,140 @@
+@import url('https://fonts.cdnfonts.com/css/cabin-3');
+@import url('https://fonts.cdnfonts.com/css/poppins');
+
+.SignUP {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 80%; /* Adjust based on your layout's width */
+    max-width: 1200px; /* Adjust based on maximum layout width */
+    border-radius: 20px; /* Adjust for desired border-radius */
+    padding: 50px; /* Adjust for desired padding inside the block */
+    overflow: hidden; /* Ensures nothing spills out */
+  }
+
+.Box{
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    border-radius: 20px;
+    padding: 2rem; /* Increased padding for larger inner space */
+    width: 45%; /* Increase the width as per your requirement */
+    margin: auto; /* Centers the box in the flex container */
+    position: absolute;
+    top:10%;
+    right:5%;
+    display: flex; /* Establish flex container */
+    flex-direction: column; /* Stack children vertically */
+    align-items: center; /* Center children horizontally */
+    justify-content: center; /* Center children vertically */
+    padding: 50px; /* Adjust the padding as needed */
+    height: auto; /* Or set a specific height if you want to */
+    font-family: 'Poppins', sans-serif;
+                                                
+
+    }
+
+.SignUp3rd{
+    display: flex;
+    justify-content: space-between; /* This spreads out the child elements */
+    align-items: center; 
+    gap: 10px;
+    position: relative;
+    left:40px;
+    margin:40px;
+}
+
+.GoogleIcon , .FacebookIcon{
+    width: 10%;
+    height: 10%;
+}
+
+.GoogleSignUp, .FacebookSignUp{
+    display: flex;
+    align-items: center; 
+    gap: 10px;
+}
+
+.Or{
+    margin-bottom: 40px;
+    color: #B1A0A0;
+}
+
+
+
+.Input{
+    border-bottom: 2px solid #00000021; /* Solid black border */
+    outline: none; /* Optional: Removes the default focus outline */
+    /* Additional optional styles to make the input prettier */
+    padding: 6px 8px;
+    border-radius: 4px; /* Rounded corners */
+    box-shadow: none; /* Ensures no shadow unless you want it */
+    width: 80%;;
+    margin-bottom: 10px;
+  }
+
+.SignUpInfo{
+    position: relative;
+    left:12.5%;
+    width: 100%;
+}
+
+.SignUpTitle {
+    font-size: 3rem; /* Large text for the welcome message */
+    color: black; /* Adjust the color to match your design */
+    margin-bottom: 1rem;
+    font-weight: bold;
+    position: absolute;
+    top:20%;
+    left:15%;
+    font-family: 'Cabin', sans-serif;                                      
+    }
+
+.SignUpSubtitle {
+    font-size: 2rem; /* Subtitle size */
+    color: black; /* Adjust the color to match your design */
+    margin: 2rem 0;
+    position: relative;
+    font-weight: bold;
+    }
+
+.SignUpBackground {
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -3;
+    position: absolute;
+    }
+
+.SignUpPic {
+    left: 15%; /* Adjust as needed */
+    width: 350px; /* Adjust as needed */
+    position: absolute;
+    bottom: 15%;
+    z-index: -2;
+
+    }
+
+.Logo {
+    left: 5%; /* Adjust as needed */
+    width: 30px; /* Adjust as needed */
+    position: absolute;
+    top: 5%;
+    }
+
+.Login{
+    display: flex;
+    justify-content: space-between; /* This spreads out the child elements */
+    align-items: center; 
+    margin-bottom: 20px;
+    margin-top:25px;
+    gap:20px;
+    font-size: 12px;
+    left:0px;
+    position: relative;
+    color:#BDADAD
+    }
+
+.LoginText{
+    text-decoration: underline;
+}
