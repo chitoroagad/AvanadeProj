@@ -1,0 +1,17 @@
+.Input{
+    border-bottom: 2px solid #00000021; /* Solid black border */
+    outline: none; /* Optional: Removes the default focus outline */
+    /* Additional optional styles to make the input prettier */
+    padding: 6px 8px;
+    border-radius: 4px; /* Rounded corners */
+    box-shadow: none; /* Ensures no shadow unless you want it */
+    width: 80%;;
+    margin-bottom: 10px;
+  }
+
+.EyeIcon{
+    position: relative;
+    left: 75%;
+    bottom: 47px;
+    width: 5%;
+}
