@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import styles from './CreateAccountModal.module.css'; // Assume you have corresponding CSS
+import styles from './CreateAccountModal.module.css'; 
 
 interface ModalProps {
   show: boolean;

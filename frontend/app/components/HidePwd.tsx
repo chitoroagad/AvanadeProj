@@ -14,7 +14,6 @@ const HidePwd = () => {
             <input 
                 type={passwordShown ? "text" : "password"}
                 id="passwordField"
-                // add other necessary props like onChange, value, etc.
                 placeholder='Password'
                 className={styles.Input}
             />

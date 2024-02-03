@@ -16,16 +16,15 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     background-color: #ffffff;
     border-radius: 20px;
-    padding: 2rem; /* Increased padding for larger inner space */
-    width: 55%; /* Increase the width as per your requirement */
-    margin: auto; /* Centers the box in the flex container */
-
-    display: flex; /* Establish flex container */
-    flex-direction: column; /* Stack children vertically */
-    align-items: center; /* Center children horizontally */
-    justify-content: center; /* Center children vertically */
-    padding: 50px; /* Adjust the padding as needed */
-    height: auto; /* Or set a specific height if you want to */
+    padding: 2rem;
+    width: 55%; 
+    margin: auto; 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center; 
+    padding: 50px;
+    height: auto; 
     position:absolute;
     top:50%;
     left: 23%;
@@ -76,8 +75,8 @@
     }
 
 .logo {
-    left: 5%; /* Adjust as needed */
-    width: 30px; /* Adjust as needed */
+    left: 5%; 
+    width: 30px; 
     position: absolute;
     top: 5%;
     }

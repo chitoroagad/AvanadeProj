@@ -1,0 +1,20 @@
+.logo {
+    left: 5%; 
+    width: 30px; 
+    position: absolute;
+    top: 5%;
+    }
+
+.maintab{
+    position:absolute;
+    left:0;
+    z-index: 10;
+}
+.processBackground {
+    width: 100vw;   
+    height: 100vh;  
+    object-fit: contain; 
+    position: fixed; 
+    top: 0;
+    left: 0;
+  }

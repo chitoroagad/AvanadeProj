@@ -1,0 +1,30 @@
+.dropdown {
+    position: relative;
+
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+  }
+  
+  .dropdownContent {
+    position: absolute;
+    top: 100%;
+    right:0;
+    z-index: 1000;
+    width: 300px;
+    margin-top: 10px;
+    color:#70737D;
+  }
+
+.linkImage {
+  width: 20px;  
+  height: 20px; 
+  margin-right: 10px; 
+}
+
+.dropdownLink {
+  display: flex; 
+  align-items: center; 
+  margin-top:10px;
+}
+

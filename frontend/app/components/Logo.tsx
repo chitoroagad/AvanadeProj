@@ -1,9 +1,5 @@
 import React from 'react'
 import styles from './Logo.module.css'
-// interface LogoProps {
-//     children: React.ReactNode;
-//   }
-//{children}: LogoProps
 
 const Logo = () => {
   return ( 

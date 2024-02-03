@@ -5,37 +5,35 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
-    width: 80%; /* Adjust based on your layout's width */
-    max-width: 1200px; /* Adjust based on maximum layout width */
-    border-radius: 20px; /* Adjust for desired border-radius */
-    padding: 50px; /* Adjust for desired padding inside the block */
-    overflow: hidden; /* Ensures nothing spills out */
+    width: 80%; 
+    max-width: 1200px; 
+    border-radius: 20px;
+    padding: 50px; 
+    overflow: hidden; 
   }
 
 .Box{
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     background-color: #ffffff;
     border-radius: 20px;
-    padding: 2rem; /* Increased padding for larger inner space */
-    width: 45%; /* Increase the width as per your requirement */
-    margin: auto; /* Centers the box in the flex container */
+    padding: 2rem; 
+    width: 45%; 
+    margin: auto;
     position: absolute;
     top:10%;
     right:5%;
-    display: flex; /* Establish flex container */
-    flex-direction: column; /* Stack children vertically */
-    align-items: center; /* Center children horizontally */
-    justify-content: center; /* Center children vertically */
-    padding: 50px; /* Adjust the padding as needed */
-    height: auto; /* Or set a specific height if you want to */
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center; 
+    padding: 50px; 
+    height: auto; 
     font-family: 'Poppins', sans-serif;
-                                                
-
     }
 
 .SignUp3rd{
     display: flex;
-    justify-content: space-between; /* This spreads out the child elements */
+    justify-content: space-between; 
     align-items: center; 
     gap: 10px;
     position: relative;
@@ -59,15 +57,12 @@
     color: #B1A0A0;
 }
 
-
-
 .Input{
-    border-bottom: 2px solid #00000021; /* Solid black border */
-    outline: none; /* Optional: Removes the default focus outline */
-    /* Additional optional styles to make the input prettier */
+    border-bottom: 2px solid #00000021;
+    outline: none; 
     padding: 6px 8px;
-    border-radius: 4px; /* Rounded corners */
-    box-shadow: none; /* Ensures no shadow unless you want it */
+    border-radius: 4px; 
+    box-shadow: none;
     width: 80%;;
     margin-bottom: 10px;
   }
@@ -79,8 +74,8 @@
 }
 
 .SignUpTitle {
-    font-size: 3rem; /* Large text for the welcome message */
-    color: black; /* Adjust the color to match your design */
+    font-size: 3rem; 
+    color: black; 
     margin-bottom: 1rem;
     font-weight: bold;
     position: absolute;
@@ -90,8 +85,8 @@
     }
 
 .SignUpSubtitle {
-    font-size: 2rem; /* Subtitle size */
-    color: black; /* Adjust the color to match your design */
+    font-size: 2rem; 
+    color: black; 
     margin: 2rem 0;
     position: relative;
     font-weight: bold;
@@ -107,8 +102,8 @@
     }
 
 .SignUpPic {
-    left: 15%; /* Adjust as needed */
-    width: 350px; /* Adjust as needed */
+    left: 15%; 
+    width: 350px;
     position: absolute;
     bottom: 15%;
     z-index: -2;
@@ -116,15 +111,15 @@
     }
 
 .Logo {
-    left: 5%; /* Adjust as needed */
-    width: 30px; /* Adjust as needed */
+    left: 5%; 
+    width: 30px; 
     position: absolute;
     top: 5%;
     }
 
 .Login{
     display: flex;
-    justify-content: space-between; /* This spreads out the child elements */
+    justify-content: space-between; 
     align-items: center; 
     margin-bottom: 20px;
     margin-top:25px;

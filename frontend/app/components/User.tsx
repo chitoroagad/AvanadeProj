@@ -2,15 +2,11 @@
 import styles from './User.module.css'
 import React, { useState, useEffect } from 'react';
 import UserName from './UserName'
-// interface LogoProps {
-//     children: React.ReactNode;
-//   }
-//{children}: LogoProps
 
 const User = () => {
     const [username, setUsername] = useState("SampleUser");
     useEffect(() => {
-        // Here you would have logic to fetch the username,
+        // Logic to fetch the username,
         // for example, from an API or user context
         // For now, using a static value
         // setUsername(fetchedUsername);

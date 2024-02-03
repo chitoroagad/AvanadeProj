@@ -5,20 +5,18 @@
     z-index: 100;
     width: 50%;
     height: 50%;
-    background-color: rgba(233, 233, 233, 0.95); /* Semi-transparent background */
+    background-color: rgba(233, 233, 233, 0.95); 
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 12px;
-    box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.5); /* Semi-transparent border */
+    box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.5); 
 }
 
 .modal-content {
-    background-color: white; /* White background for the content */
-    padding: 20px; /* Padding around the content */
-    border-radius: 10px; /* Optional: for rounded corners */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional: adds a subtle shadow */
-    width: 50%; /* Adjust the width as needed */
-    max-width: 500px; /* Maximum width */
-    /* Optional: set a height or max-height */
+    background-color: white; 
+    padding: 20px; 
+    border-radius: 10px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+    width: 50%; 
 }
