@@ -26,10 +26,6 @@ const Home = () => {
         </Link>
       </div>
       <User></User>
-
-     
-      {/* Button Tab component, User Component */}
-
     </main>
   )
 }
