@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import TabButton from '../components/BtnTabProp';
 
-const HomePage = () => {
+const BtnTab = () => {
   const [activePath, setActivePath] = useState('');
 
   useEffect(() => {
@@ -35,4 +35,4 @@ const HomePage = () => {
   );
 };
 
-export default HomePage;
+export default BtnTab;

@@ -26,6 +26,7 @@ const Home = () => {
         </Link>
       </div>
       <User></User>
+      
     </main>
   )
 }
