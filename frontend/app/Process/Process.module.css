@@ -97,7 +97,23 @@
     color: #35383e91;
 }
 
-.finishedTask{
+.tasksList{
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    border-radius: 20px;
+    padding: 2rem;
+    width: 55%; 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center; 
+    padding: 50px;
+    height: auto; 
+    position:absolute;
+    top:25vw;
+    left: 60vh;
+}
+/* .finishedTask{
     position:absolute;
     left:70vw;
     top: 52vh;
@@ -121,17 +137,17 @@
     top:67vh;
 }
 
+*/
+
 .error{
     width:25px;
-    position:absolute;
+    /* position:absolute;
     left:70vw;
-    top:75vh;
-}
+    top:75vh; */
+} 
 
 .addTask{
-    position:absolute;
-    left:40vw;
-    top:70vh;
+
     size:15px;
     font-weight:800;
     color:#35383EB3;
