@@ -26,7 +26,6 @@ const Process = () => {
         <div className={styles.tasks}>
             <h1 className={styles.taskTag}>Requested Tasks</h1>
             <p className={styles.taskDes}>Tasks are split to descriptions, with Agents supervision and handling</p>
-            <div className={styles.taskBG}>
               <div className={styles.tasksList}>
                   <div className={styles.finishedTask}>
                       <FinishedTask initialText="Done"></FinishedTask>
@@ -44,11 +43,10 @@ const Process = () => {
                       <img src='./process/error.png' className={styles.errorPic}></img> {/* Think about where to put it */}
                   </div>
                   <button className={styles.addTask}><p>- Add your task here...</p></button>
-                  <Link href='/NewChat'>
-                    <button className={styles.submit}><img src='./process/submit.png'></img></button>
-                  </Link>
               </div>
-            </div>
+                <Link href='/NewChat'>
+                    <button className={styles.submit}><img src='./process/submit.png'></img></button>
+                </Link>
         </div>
         
         <div className={styles.processBackground}>

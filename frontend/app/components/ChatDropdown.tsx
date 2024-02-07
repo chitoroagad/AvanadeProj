@@ -11,7 +11,8 @@ const ChatDropDown = () => {
         const history = [
             { href: '/chat/1', label: 'Chat 1' },
             { href: '/chat/2', label: 'Chat 2' },
-            { href: '/NewChat', label: '--New Chat--'},
+            { href: '/Chats',  label: '--All Chats--'},
+            { href: '/Home', label: '--New Chat--'},
         ];
 
         setChatHistory(history);

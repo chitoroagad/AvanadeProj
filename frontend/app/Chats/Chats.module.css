@@ -1,0 +1,71 @@
+.chatsBackground {
+    width: 100vw;   
+    height: 100vh;  
+    object-fit: contain; 
+    position: fixed; 
+    top: 0;
+    left: 0;
+    z-index: -2;
+}
+
+.maintab{
+    position:absolute;
+    left:0;
+    z-index: 10;
+}
+
+.chatMenu{
+    position:absolute;
+    left:40vw;
+    top: 5vh;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    border-radius: 20px;
+    padding: 2rem;
+    width: 55%; 
+    margin: auto; 
+    display: flex; 
+    padding: 50px;
+    height: 90vh; 
+}
+
+.chatTitle{
+    font-size: 60px;
+    font-weight: 800;
+}
+
+.chatList{
+    position:absolute;
+    left:0;
+    top: 20vh;
+    overflow-y: auto;
+}
+
+.searchPic{
+    position:absolute;
+    top:14.5vh;
+    left:1.2vw;
+    z-index: 100;
+    width: 30px;
+}
+
+.searchInput{
+    margin-top: 10px;
+    border-radius: 10px;
+    border:2px solid black;
+    background-color: #EEEEEE,0.9;
+    display: flex;
+    width: 500px;
+    height: 50px;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+    display: flex;
+    line-height: 35px;
+    padding-left: 50px;
+    position:absolute;
+    left:5%;
+
+}
+
+
