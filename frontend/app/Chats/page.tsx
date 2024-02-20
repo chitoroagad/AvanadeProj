@@ -23,6 +23,9 @@ return(
                 
             </ul>
         </div>
+        <div className={styles.edit}>
+            <img src='chat/edit.png' className={styles.editPic}></img>
+        </div>
     </div>
     <div className={styles.chatsBackground}>
         <img src="./process/background2.png" alt="process" />
