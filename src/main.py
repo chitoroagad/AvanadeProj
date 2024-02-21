@@ -1,5 +1,7 @@
 import json
 import chromadb
+from uuid import uuid1
+from time import sleep
 from chromadb.config import Settings
 from langchain.agents.format_scratchpad import format_to_openai_function_messages
 from collections import deque
@@ -83,13 +85,21 @@ def parse_task_list(output):
     )
 
 
-for _ in range(10):
+chroma_client = None
+
+for _ in range(15):
     try:
         chroma_client = chromadb.HttpClient(
             host="chroma", port="8000", settings=Settings(allow_reset=True)
         )
-    except: Exception as e:
+    except Exception as e:
         print(e)
+        sleep(1)
+
+if not chroma_client:
+    raise Exception("Chroma client not found")
+print("Chroma client found")
+chroma_client.reset()
 
 solver_prompt = ChatPromptTemplate.from_messages(
     [
@@ -129,8 +139,16 @@ docs = loader.load()
 documents = RecursiveCharacterTextSplitter(
     chunk_size=1000, chunk_overlap=200
 ).split_documents(docs)
-vector = Chroma.from_documents(documents, AzureOpenAIEmbeddings(azure_deployment="ada"))
+
+vector = Chroma.from_documents(
+    documents, AzureOpenAIEmbeddings(azure_deployment="ada"), client=chroma_client
+)
+
 retriever = vector.as_retriever()
+test = retriever.invoke("STNIKER")
+print("TEST:", test)
+
+print(chroma_client.list_collections())
 
 main_database_retriever_tool = create_retriever_tool(
     retriever,
@@ -147,7 +165,9 @@ if __name__ == "__main__":
 
     llm = AzureChatOpenAI(azure_deployment="dep", temperature=0)
 
-    llm_with_tools = llm.bind_functions(tools)
+    organiser_llm = llm.bind_functions(tools)
+
+    solver_llm = llm.bind_functions(tools)
 
     organiser_agent = (
         {
@@ -157,7 +177,19 @@ if __name__ == "__main__":
             ),
         }
         | prompt
-        | llm_with_tools
+        | organiser_llm
+        | parse_task_list
+    )
+
+    action_agent = (
+        {
+            "input": lambda x: x["input"],
+            "agent_scratchpad": lambda x: format_to_openai_function_messages(
+                x["intermediate_steps"]
+            ),
+        }
+        | solver_prompt
+        | solver_llm
         | parse_task_list
     )
 
