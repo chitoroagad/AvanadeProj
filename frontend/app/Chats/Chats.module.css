@@ -15,8 +15,8 @@
 }
 
 .chatMenu{
-    position:absolute;
-    left:27vw;
+    position:relative;
+    right:10vw;
     top: 5vh;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     background-color: #ffffff;
@@ -69,10 +69,6 @@
 
 }
 
-.editPic{
-    width:33%;
-    position: relative;
-    left:5vw;
-}
+
 
 

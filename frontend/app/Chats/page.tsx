@@ -2,6 +2,7 @@ import NoHelloUser from "../components/NoHelloUser";
 import MainTab from "../components/MainTab";
 import styles from './Chats.module.css';
 import Link from 'next/link';
+import ChatList from "../components/ChatList";
 
 const Chats = () => {
 return(
@@ -14,19 +15,15 @@ return(
             <img src='home/search.png' className={styles.searchPic}></img>
         </div>
         <div className={styles.chatList}>
-            <ul className="menu bg-base-200 w-80 rounded-box">
-                <Link href='SingleChat'>
-                    <li><a>Chat 1</a></li>
-                </Link>
-                <li><a>Chat 2</a></li>
-                <li><a>Chat 3</a></li>
+            
+                <ChatList></ChatList>
                 
-            </ul>
+            
         </div>
-        <div className={styles.edit}>
-            <img src='chat/edit.png' className={styles.editPic}></img>
-        </div>
+        
+
     </div>
+    <div id="modal-root"></div>
     <div className={styles.chatsBackground}>
         <img src="./process/background2.png" alt="process" />
      </div>
