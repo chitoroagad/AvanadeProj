@@ -1,0 +1,25 @@
+version: "3.9"
+
+services:
+  chroma:
+    image: chromadb/chroma
+    ports:
+      - "8080:8080"
+    volumes:
+      - data:/chroma/chroma
+    environment:
+      - IS_PERSISTENT=TRUE
+      - ALLOW_RESET=TRUE
+
+  app:
+    build: .
+    volumes:
+      - ./src/:/src
+    depends_on:
+      - chroma
+    command: python /src/main.py
+    stdin_open: true
+    tty: true
+
+volumes:
+  data:
