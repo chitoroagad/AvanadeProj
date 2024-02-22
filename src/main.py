@@ -122,22 +122,28 @@ prompt = ChatPromptTemplate.from_messages(
     ]
 )
 
+
+embeddings_function = AzureOpenAIEmbeddings(azure_deployment="ada")
+
 loader = CSVLoader("/src/USSupremeCourt.csv", encoding="iso-8859-1")
 docs = loader.load()
 documents = RecursiveCharacterTextSplitter(
     chunk_size=1000, chunk_overlap=200
 ).split_documents(docs)
-
-vector = Chroma.from_documents(
-    documents, AzureOpenAIEmbeddings(azure_deployment="ada"), client=chroma_client
-)
-
+vector = Chroma.from_documents(documents, embeddings_function, client=chroma_client)
 retriever = vector.as_retriever()
-
 main_database_retriever_tool = create_retriever_tool(
     retriever,
     "US_Supreme_Court_Cases-search",
     "Search for US Supreme Court Cases between 2020 and 2022. For any questions about US Supreme Court Cases, use this tool!.",
+)
+
+results_vector = Chroma(embedding_function=embeddings_function, client=chroma_client)
+results_retriever = results_vector.as_retriever()
+results_database_retriever_tool = create_retriever_tool(
+    retriever,
+    "Results-Storage-Search",
+    "Search for results of previous tasks (id==task_number), from a vector store.",
 )
 
 task_list_storage = TaskListStorage()
@@ -145,8 +151,10 @@ task_list_storage = TaskListStorage()
 tools = [main_database_retriever_tool, OutputTasks]
 
 llm = AzureChatOpenAI(azure_deployment="dep", temperature=0)
-organiser_llm = llm.bind_functions(tools)
-solver_llm = llm.bind_functions(tools)
+organiser_llm = llm.bind_functions([main_database_retriever_tool, OutputTasks])
+solver_llm = llm.bind_functions(
+    [main_database_retriever_tool, results_database_retriever_tool]
+)
 
 organiser_agent = (
     {
@@ -176,6 +184,12 @@ organiser_executor = AgentExecutor(
     agent=organiser_agent, tools=[main_database_retriever_tool], verbose=True
 )
 
+action_executor = AgentExecutor(
+    agent=action_agent,
+    tools=[main_database_retriever_tool, results_database_retriever_tool],
+    verbose=True,
+)
+
 
 if __name__ == "__main__":
     out = organiser_executor.invoke(
@@ -188,6 +202,9 @@ if __name__ == "__main__":
         task_list_storage.append({"num": task[0], "name": task[3:]})
 
     while not task_list_storage.is_empty():
-        task_list = task_list_storage.get_task_names()
+        task_list = enumerate(task_list_storage.get_task_names())
         task = task_list_storage.popleft()
         print("Task:", task)
+        out = action_executor.invoke({"input": task})
+        results_vector.add_texts(ids=[task["num"]], texts=[out["output"]])
+        print("Output:", out)
