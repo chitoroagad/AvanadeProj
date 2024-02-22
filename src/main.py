@@ -21,18 +21,6 @@ from langchain_core.pydantic_v1 import BaseModel, Field
 load_dotenv()
 
 
-class TaskResultStorage:
-    def __init__(self):
-        self.results: Dict[int, str] = {}
-
-    def append(self, task_id: int, result: str):
-        self.results[task_id] = result
-
-
-def get(self, task_id: int):
-    return self.results[task_id]
-
-
 class TaskListStorage:
     def __init__(self):
         self.tasks = deque([])
@@ -77,6 +65,7 @@ def parse_task_list(output):
 
     # if OutputTasks function, return to user with function inputs
     if name == "OutputTasks":
+        print("INPUT:", str(input))
         return AgentFinish(return_values=input, log=str(function_call))
 
     # else return agent action
@@ -92,8 +81,7 @@ for _ in range(15):
         chroma_client = chromadb.HttpClient(
             host="chroma", port="8000", settings=Settings(allow_reset=True)
         )
-    except Exception as e:
-        print(e)
+    except Exception:
         sleep(1)
 
 if not chroma_client:
@@ -125,7 +113,7 @@ prompt = ChatPromptTemplate.from_messages(
             """
             You are to use the user input to create a list of tasks for AI to complete. The AI will have the ability
             to search a database of Supreme Court legal cases and a database of the client's legal case documents. Explicitly mention if
-            a previous task is a prerequisite for the current task.
+            a previous task is a prerequisite for the current task, you must end the tasks with a final task to output an answer to the user.
             Your answer must be using the output format OutputTasks.
             """,
         ),
@@ -145,10 +133,6 @@ vector = Chroma.from_documents(
 )
 
 retriever = vector.as_retriever()
-test = retriever.invoke("STNIKER")
-print("TEST:", test)
-
-print(chroma_client.list_collections())
 
 main_database_retriever_tool = create_retriever_tool(
     retriever,
@@ -156,47 +140,44 @@ main_database_retriever_tool = create_retriever_tool(
     "Search for US Supreme Court Cases between 2020 and 2022. For any questions about US Supreme Court Cases, use this tool!.",
 )
 
+task_list_storage = TaskListStorage()
+
+tools = [main_database_retriever_tool, OutputTasks]
+
+llm = AzureChatOpenAI(azure_deployment="dep", temperature=0)
+organiser_llm = llm.bind_functions(tools)
+solver_llm = llm.bind_functions(tools)
+
+organiser_agent = (
+    {
+        "input": lambda x: x["input"],
+        "agent_scratchpad": lambda x: format_to_openai_function_messages(
+            x["intermediate_steps"]
+        ),
+    }
+    | prompt
+    | organiser_llm
+    | parse_task_list
+)
+
+action_agent = (
+    {
+        "input": lambda x: x["input"],
+        "agent_scratchpad": lambda x: format_to_openai_function_messages(
+            x["intermediate_steps"]
+        ),
+    }
+    | solver_prompt
+    | solver_llm
+    | parse_task_list
+)
+
+organiser_executor = AgentExecutor(
+    agent=organiser_agent, tools=[main_database_retriever_tool], verbose=True
+)
+
 
 if __name__ == "__main__":
-
-    task_list_storage = TaskListStorage()
-
-    tools = [main_database_retriever_tool, OutputTasks]
-
-    llm = AzureChatOpenAI(azure_deployment="dep", temperature=0)
-
-    organiser_llm = llm.bind_functions(tools)
-
-    solver_llm = llm.bind_functions(tools)
-
-    organiser_agent = (
-        {
-            "input": lambda x: x["input"],
-            "agent_scratchpad": lambda x: format_to_openai_function_messages(
-                x["intermediate_steps"]
-            ),
-        }
-        | prompt
-        | organiser_llm
-        | parse_task_list
-    )
-
-    action_agent = (
-        {
-            "input": lambda x: x["input"],
-            "agent_scratchpad": lambda x: format_to_openai_function_messages(
-                x["intermediate_steps"]
-            ),
-        }
-        | solver_prompt
-        | solver_llm
-        | parse_task_list
-    )
-
-    organiser_executor = AgentExecutor(
-        agent=organiser_agent, tools=[main_database_retriever_tool], verbose=True
-    )
-
     out = organiser_executor.invoke(
         {
             "input": "reserach important cases regarding divorce where the husband is rewarded alimony"
@@ -207,6 +188,6 @@ if __name__ == "__main__":
         task_list_storage.append({"num": task[0], "name": task[3:]})
 
     while not task_list_storage.is_empty():
+        task_list = task_list_storage.get_task_names()
         task = task_list_storage.popleft()
         print("Task:", task)
-        print("Task List:", task_list_storage.get_task_names())
