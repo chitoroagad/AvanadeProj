@@ -1,0 +1,18 @@
+.deletePic{
+    width: 60%;
+    position:relative;
+    left:1vw;
+}
+
+.box{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Customize as needed */
+    margin-bottom: 5px;
+    width:90%;
+}
+
+.button{
+    margin-right: 10px;
+}
