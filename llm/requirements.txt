@@ -2,6 +2,7 @@ langchain==0.1.5
 langchainhub==0.1.14
 langchain_openai==0.0.5
 langchain-core==0.1.18
+langserve==0.043
 argparse==1.4.0
 python-dotenv==1.0.0
 chromadb==0.4.22

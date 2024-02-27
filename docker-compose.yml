@@ -11,15 +11,23 @@ services:
       - IS_PERSISTENT=TRUE
       - ALLOW_RESET=TRUE
 
-  app:
-    build: .
+  llm:
+    build: ./llm
     volumes:
-      - ./src/:/src
+      - ./llm/:/llm
     depends_on:
       - chroma
-    command: python /src/main.py
+    command: python /llm/main.py
     stdin_open: true
     tty: true
+
+  frontend:
+    build: ./frontend
+    depends_on:
+      - chroma
+    ports:
+      - "3000:3000"
+    command: npm run dev
 
 volumes:
   data:
