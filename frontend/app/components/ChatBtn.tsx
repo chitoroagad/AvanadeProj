@@ -4,8 +4,8 @@ import styles from './ChatBtn.module.css';
 
 const ChatBtn = ({ text, onDelete, onClick }: { text: string, onDelete: () => void, onClick: () => void }) => {
   return (
-    <div className={styles.box} onClick={onClick}>
-      <button className="btn btn-wide">{text}</button>
+    <div className={styles.box}>
+      <button className="btn btn-wide" onClick={onClick}>{text}</button>
       <button className={styles.button} onClick={onDelete}>
         <img src='chat/delete.png' className={styles.deletePic}></img>
       </button>
