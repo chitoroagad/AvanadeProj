@@ -23,9 +23,7 @@ services:
 
   # frontend:
   #   container_name: next-app
-  #   build:
-  #     context: ./frontend
-  #     dockerfile: Dockerfile
+  #   build: ./frontend
   #   volumes:
   #     - ./frontend/src/:/app/src
   #     - ./frontend/src/public/:/app/public
@@ -35,6 +33,6 @@ services:
   #   ports:
   #     - "3000:3000"
   #   command: npm run dev
-  #
+
 volumes:
   data:

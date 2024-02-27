@@ -1,5 +1,4 @@
 import json
-import pprint
 import chromadb
 from time import sleep
 from chromadb.config import Settings
@@ -16,6 +15,7 @@ from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain_openai import AzureOpenAIEmbeddings
 from langchain.tools.retriever import create_retriever_tool
+from langchain.tools import tool
 from langchain_openai import AzureChatOpenAI
 from langchain.agents import AgentExecutor
 from langchain_core.pydantic_v1 import BaseModel, Field
@@ -183,13 +183,13 @@ action_agent = (
 )
 
 organiser_executor = AgentExecutor(
-    agent=organiser_agent, tools=[main_database_retriever_tool], verbose=True
+    agent=organiser_agent, tools=[main_database_retriever_tool], verbose=False
 )
 
 action_executor = AgentExecutor(
     agent=action_agent,
     tools=[main_database_retriever_tool, results_database_retriever_tool],
-    verbose=True,
+    verbose=False,
 )
 
 message_history = ChatMessageHistory()
@@ -200,6 +200,15 @@ action_executor = RunnableWithMessageHistory(
     input_messages_key="input",
     history_messages_key="chat_history",
 )
+
+
+@tool
+def action_executor_tool(input: str, session_id: str) -> str:
+    """Calls executor agent to perform the task."""
+    out = action_executor.invoke(
+        {"input": input}, config={"configurable": {"session_id": session_id}}
+    )
+    return out["output"]
 
 
 if __name__ == "__main__":
@@ -217,7 +226,8 @@ if __name__ == "__main__":
         task_list = enumerate(task_list_storage.get_task_names())
         task = task_list_storage.popleft()
         out = action_executor.invoke(
-            {"input": task}, config={"configurable": {"session_id": "2"}}
+            {"input": task["num"] + ". " + task["name"]},
+            config={"configurable": {"session_id": "1"}},
         )
 
         # async for chunk in action_executor.astream({"input": task}):
@@ -226,4 +236,37 @@ if __name__ == "__main__":
         #     pprint.pprint(chunk, depth=1)
 
         results_vector.add_texts(ids=[task["num"]], texts=[out["output"]])
-        print("Output:", out)
+    print("OUTPUT:", out)
+    print("History:", message_history)
+
+
+# out = {
+#     "input": "5. Provide a report on the important cases regarding divorce where the husband is rewarded alimony.",
+#     "chat_history": [
+#         HumanMessage(
+#             content="1. Search for US Supreme Court Cases between 2020 and 2022 related to divorce and alimony."
+#         ),
+#         AIMessage(
+#             content="The search for US Supreme Court Cases between 2020 and 2022 related to divorce and alimony returned the following cases:\n\n1. Case 2020-001: 2022-004\n2. Case 2020-001: 2020-055\n3. Case 2020-001: 2022-053\n4. Case 2020-001: 2021-026\n\nIf you would like more detailed information about any of these cases, please let me know!"
+#         ),
+#         HumanMessage(
+#             content="2. Review the details of the identified cases to find relevant information."
+#         ),
+#         AIMessage(
+#             content="Here are the details of the identified US Supreme Court cases related to divorce and alimony:\n\n1. Case 2020-001: 2022-004\n   - Date: 12/14/2020 - 4/22/2021\n   - Case Name: TEXAS v. NEW MEXICO\n   - Citation: 141 S. Ct. 509 - 141 S. Ct. 1352\n   - Lexis Citation: 2020 U.S. LEXIS 6091 - 2021 U.S. LEXIS 2109\n\n2. Case 2020-001: 2020-055\n   - Date: 12/14/2020 - 6/1/2023\n   - Case Name: TEXAS v. NEW MEXICO\n   - Citation: 141 S. Ct. 509 - 143 S. Ct. 1391\n   - Lexis Citation: 2020 U.S. LEXIS 6091 - 2023 U.S. LEXIS 2300\n\n3. Case 2020-001: 2022-053\n   - Date: 12/14/2020 - 1/25/2021\n   - Case Name: TEXAS v. NEW MEXICO\n   - Citation: 141 S. Ct. 509 - 141 S. Ct. 656\n   - Lexis Citation: 2020 U.S. LEXIS 6091 - 2021 U.S. LEXIS 746\n\nIf you need more detailed information about any of these cases, please let me know!"
+#         ),
+#         HumanMessage(
+#             content="3. Analyze the court decisions and outcomes of the cases."
+#         ),
+#         AIMessage(
+#             content="Here are the details of the identified US Supreme Court cases related to divorce and alimony:\n\n1. Case 2020-001: 2022-004\n   - Date: 12/14/2020 - 4/22/2021\n   - Case Name: TEXAS v. NEW MEXICO\n   - Citation: 141 S. Ct. 509 - 141 S. Ct. 1352\n   - Lexis Citation: 2020 U.S. LEXIS 6091 - 2021 U.S. LEXIS 2109\n\n2. Case 2020-001: 2020-055\n   - Date: 12/14/2020 - 6/1/2023\n   - Case Name: TEXAS v. NEW MEXICO\n   - Citation: 141 S. Ct. 509 - 143 S. Ct. 1391\n   - Lexis Citation: 2020 U.S. LEXIS 6091 - 2023 U.S. LEXIS 2300\n\n3. Case 2020-001: 2022-053\n   - Date: 12/14/2020 - 1/25/2021\n   - Case Name: TEXAS v. NEW MEXICO\n   - Citation: 141 S. Ct. 509 - 141 S. Ct. 656\n   - Lexis Citation: 2020 U.S. LEXIS 6091 - 2021 U.S. LEXIS 746\n\nIf you need more detailed information about any of these cases, please let me know!"
+#         ),
+#         HumanMessage(
+#             content="4. Summarize the key findings and outcomes of the cases."
+#         ),
+#         AIMessage(
+#             content="Here are the key findings and outcomes of the identified US Supreme Court cases related to divorce and alimony:\n\n1. Case 2020-001: 2022-004\n   - Date: 12/14/2020 - 4/22/2021\n   - Case Name: TEXAS v. NEW MEXICO\n   - Citation: 141 S. Ct. 509 - 141 S. Ct. 1352\n   - Lexis Citation: 2020 U.S. LEXIS 6091 - 2021 U.S. LEXIS 2109\n\n2. Case 2020-001: 2020-055\n   - Date: 12/14/2020 - 6/1/2023\n   - Case Name: TEXAS v. NEW MEXICO\n   - Citation: 141 S. Ct. 509 - 143 S. Ct. 1391\n   - Lexis Citation: 2020 U.S. LEXIS 6091 - 2023 U.S. LEXIS 2300\n\n3. Case 2020-001: 2022-053\n   - Date: 12/14/2020 - 1/25/2021\n   - Case Name: TEXAS v. NEW MEXICO\n   - Citation: 141 S. Ct. 509 - 141 S. Ct. 656\n   - Lexis Citation: 2020 U.S. LEXIS 6091 - 2021 U.S. LEXIS 746\n\nIf you need more detailed information about any of these cases, please let me know!"
+#         ),
+#     ],
+#     "output": "It seems that there is an issue with retrieving specific cases related to divorce where the husband is awarded alimony. I will attempt to find the relevant information using a different approach.\nI apologize for the inconvenience. It seems that there is an issue with retrieving specific cases related to divorce where the husband is awarded alimony. I will attempt to find the relevant information using a different approach.",
+# }
