@@ -18,7 +18,7 @@ export default function Start() {
               <p>Email:</p>
               <input type="text" className={styles.Input} placeholder="Enter Email here"></input>
               <p>Password:</p>
-              <input type="text" className={styles.Input} placeholder="Enter Password here"></input>
+              <input type="password" className={styles.Input} placeholder="Enter Password here"></input>
             </div>
             <div className={styles.RemAndFor}>
                 <div className={styles.RememberMe}>
