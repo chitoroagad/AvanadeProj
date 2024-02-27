@@ -35,8 +35,14 @@ return(
     </div>
     <div className={styles.SecRec}>
     <div className={styles.chatwithTag}>
-        <p>Chat Name</p>
-        <EditableTag initialText="Tag2"></EditableTag>
+        <button className={styles.chatCard}>
+            <p>Chat Name</p>
+            <div className={styles.cardtag}><EditableTag initialText="Tag2"></EditableTag></div>
+        </button>
+        <button className={styles.chatCard}>
+            <p>Chat Name</p>
+            <div className={styles.cardtag}><EditableTag initialText="Tag3"></EditableTag></div>
+        </button>
     </div>
     </div>
     <div className={styles.spaceBackground}>
