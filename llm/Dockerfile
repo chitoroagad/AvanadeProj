@@ -15,7 +15,7 @@ ENV PATH=/venv/bin:$PATH
 
 WORKDIR /llm
 
-COPY requirements.txt .
+COPY src/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 ENTRYPOINT python "/llm/main.py"

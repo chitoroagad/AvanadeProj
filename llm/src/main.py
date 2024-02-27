@@ -1,6 +1,6 @@
 import json
+import pprint
 import chromadb
-from uuid import uuid1
 from time import sleep
 from chromadb.config import Settings
 from langchain.agents.format_scratchpad import format_to_openai_function_messages
@@ -10,8 +10,10 @@ from dotenv import load_dotenv
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import CSVLoader
 from langchain_community.vectorstores import Chroma
+from langchain_community.chat_message_histories import ChatMessageHistory
 from langchain_core.agents import AgentActionMessageLog, AgentFinish
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
+from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain_openai import AzureOpenAIEmbeddings
 from langchain.tools.retriever import create_retriever_tool
 from langchain_openai import AzureChatOpenAI
@@ -125,7 +127,7 @@ prompt = ChatPromptTemplate.from_messages(
 
 embeddings_function = AzureOpenAIEmbeddings(azure_deployment="ada")
 
-loader = CSVLoader("/src/USSupremeCourt.csv", encoding="iso-8859-1")
+loader = CSVLoader("/llm/USSupremeCourt.csv", encoding="iso-8859-1")
 docs = loader.load()
 documents = RecursiveCharacterTextSplitter(
     chunk_size=1000, chunk_overlap=200
@@ -190,8 +192,18 @@ action_executor = AgentExecutor(
     verbose=True,
 )
 
+message_history = ChatMessageHistory()
+
+action_executor = RunnableWithMessageHistory(
+    action_executor,
+    lambda session_id: message_history,
+    input_messages_key="input",
+    history_messages_key="chat_history",
+)
+
 
 if __name__ == "__main__":
+    chunks = []
     out = organiser_executor.invoke(
         {
             "input": "reserach important cases regarding divorce where the husband is rewarded alimony"
@@ -204,7 +216,14 @@ if __name__ == "__main__":
     while not task_list_storage.is_empty():
         task_list = enumerate(task_list_storage.get_task_names())
         task = task_list_storage.popleft()
-        print("Task:", task)
-        out = action_executor.invoke({"input": task})
+        out = action_executor.invoke(
+            {"input": task}, config={"configurable": {"session_id": "2"}}
+        )
+
+        # async for chunk in action_executor.astream({"input": task}):
+        #     chunks.append(chunk)
+        #     print("---------")
+        #     pprint.pprint(chunk, depth=1)
+
         results_vector.add_texts(ids=[task["num"]], texts=[out["output"]])
         print("Output:", out)

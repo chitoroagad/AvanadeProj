@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Start docker containers
-docker compose up --abort-on-container-exit --attach app
+docker compose up --abort-on-container-exit --attach llm
 
 # Clean docker containers
 docker compose down
