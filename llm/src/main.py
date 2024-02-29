@@ -17,7 +17,7 @@ from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain_openai import AzureOpenAIEmbeddings
 from langchain.tools.retriever import create_retriever_tool
-from langchain.tools import BaseTool, tool
+from langchain.tools import BaseTool, StructuredTool, tool
 from langchain_openai import AzureChatOpenAI
 from langchain.agents import AgentExecutor
 from langchain_core.pydantic_v1 import BaseModel, Field
@@ -25,6 +25,7 @@ from langchain_core.pydantic_v1 import BaseModel, Field
 load_dotenv()
 
 
+# data structure for storing tasks
 class TaskListStorage:
     def __init__(self):
         self.tasks = deque([])
@@ -50,6 +51,7 @@ class TaskListStorage:
         return [task["name"] for task in self.tasks]
 
 
+# Template for the output of the task list
 class OutputTasks(BaseModel):
     objective: str = Field(description="The objective of the task list.")
     tasks_list: List[str] = Field(
@@ -57,6 +59,7 @@ class OutputTasks(BaseModel):
     )
 
 
+# Function parses OutputTasks function and returns the next action if any
 def parse_task_list(output):
     # if not function invoked, return to user
     if "function_call" not in output.additional_kwargs:
@@ -77,69 +80,33 @@ def parse_task_list(output):
     )
 
 
-# @tool
-# def task_list_generator(input: str) -> str:
-#     """Generates a list of tasks from the input."""
-#     out = organiser_agent.invoke({"input": input})
-#     print("\n\n\n\n\n\nOUTPUT:", out)
-#     return ""
-
-
-class TaskListGeneratorArgs(BaseModel):
-    input: str = Field(description="The input to generate a list of tasks from.")
-
-
-class TaskListGeneratorTool(BaseTool):
-    name = "TaskListGenerator"
-    description = "Generates a list of tasks from the input."
-    args_schema: Type[BaseModel] = TaskListGeneratorArgs
-
-    def _run(
-        self, input: str, run_manager: Optional[CallbackManagerForToolRun] = None
-    ) -> str:
-        """Use this tool"""
-        out = organiser_agent.invoke({"input": input})
-        return ""
-
-
-@tool
-def task_list_executor(input: str) -> str:
-    """Executes a single task"""
-    out = solver_executor.invoke({"input": input})
+# llm tool to execute a task
+def task_list_executor_fun(task: str) -> str:
+    out = solver_executor.invoke({"input": task})
     return out["output"]
 
 
-class TaskListExecutorArgs(BaseModel):
-    task_id: int = Field(description="The task id to execute.")
-    task: str = Field(description="The task to execute.")
+task_list_executor = StructuredTool.from_function(
+    func=task_list_executor_fun,
+    name="TaskExecutor",
+    description="Executes a single task using an agent.",
+)
 
 
-class TaskListExecutorTool(BaseTool):
-    name = "TaskListExecutor"
-    description = "Executes a single task."
-    args_schema: Type[BaseModel] = TaskListExecutorArgs
-
-    def _run(
-        self,
-        task_id: int,
-        task: str,
-        run_manager: Optional[CallbackManagerForToolRun] = None,
-    ) -> str:
-        """Use this tool"""
-        inp = str(task_id) + ". " + task
-        out = solver_executor.invoke({"input": inp})
-        return out["output"]
-
-    async def _arun(
-        self,
-        task_id: int,
-        task: str,
-        run_manager: Optional[CallbackManagerForToolRun] = None,
-    ) -> str:
-        """Use this tool asynchronously."""
-        raise NotImplementedError("This tool does not support async execution.")
+# llm tool to generate a list of tasks
+def task_list_generator_fun(objective: str):
+    out = organiser_executor.invoke({"input": objective})
+    return ",\n".join(out["tasks_list"])
 
 
+task_list_generator = StructuredTool.from_function(
+    func=task_list_generator_fun,
+    name="TaskListGenerator",
+    description="Generates a list of tasks from an objective.",
+)
+
+
+# Try to connect to chroma server
 chroma_client = None
 
 for _ in range(15):
@@ -234,11 +201,7 @@ organiser_llm = llm.bind_functions([main_database_retriever_tool, OutputTasks])
 solver_llm = llm.bind_functions(
     [main_database_retriever_tool, results_database_retriever_tool]
 )
-list_gen = TaskListGeneratorTool(
-    description="Generates a list of tasks from the input."
-)
-list_exe = TaskListExecutorTool(description="Executes a single task.")
-manager_llm = llm.bind_functions([list_gen, list_exe])
+manager_llm = llm.bind_functions([task_list_executor, task_list_generator])
 
 manager_agent = (
     {
@@ -249,6 +212,7 @@ manager_agent = (
     }
     | manager_prompt
     | manager_llm
+    | parse_task_list
 )
 
 organiser_agent = (
@@ -287,8 +251,9 @@ solver_executor = AgentExecutor(
 
 manager_executor = AgentExecutor(
     agent=manager_agent,
-    tools=[list_gen, list_exe],
+    tools=[task_list_executor, task_list_generator],
     verbose=True,
+    return_intermediate_steps=True,
 )
 
 message_history = ChatMessageHistory()
@@ -311,6 +276,10 @@ manager_executor = RunnableWithMessageHistory(
 
 
 if __name__ == "__main__":
+
+    print(task_list_executor.name)
+    print(task_list_executor.description)
+    print(task_list_executor.args)
 
     print("Starting main")
     out = manager_executor.invoke(
@@ -347,3 +316,75 @@ if __name__ == "__main__":
     #     results_vector.add_texts(ids=[task["num"]], texts=[out["output"]])
     # print("OUTPUT:", out)
     # print("History:", message_history)
+
+
+output = {
+    "input": "reserach important cases regarding divorce where the husband is rewarded alimony",
+    "chat_history": [],
+    "output": "I have reviewed the details of the cases, but I did not find specific divorce cases where the husband was awarded alimony. It seems that the information may not be available in the current dataset. If there are specific cases or details you have in mind, please provide them, and I can assist further.",
+    "intermediate_steps": [
+        (
+            AgentActionMessageLog(
+                tool="TaskListGenerator",
+                tool_input={
+                    "objective": "Research important divorce cases where the husband was awarded alimony."
+                },
+                log="",
+                message_log=[
+                    AIMessageChunk(
+                        content="",
+                        additional_kwargs={
+                            "function_call": {
+                                "arguments": '{"objective":"Research important divorce cases where the husband was awarded alimony."}',
+                                "name": "TaskListGenerator",
+                            }
+                        },
+                    )
+                ],
+            ),
+            "1. Look up US Supreme Court Cases between 2020 and 2022.,\n2. Review the details of the cases to identify divorce cases where the husband was awarded alimony.,\n3. Compile a list of important divorce cases where the husband was awarded alimony.",
+        ),
+        (
+            AgentActionMessageLog(
+                tool="TaskExecutor",
+                tool_input={
+                    "task": "Look up US Supreme Court Cases between 2020 and 2022."
+                },
+                log="",
+                message_log=[
+                    AIMessageChunk(
+                        content="",
+                        additional_kwargs={
+                            "function_call": {
+                                "arguments": '{"task":"Look up US Supreme Court Cases between 2020 and 2022."}',
+                                "name": "TaskExecutor",
+                            }
+                        },
+                    )
+                ],
+            ),
+            "Here are some US Supreme Court cases between 2020 and 2022:\n\n1. Case: Texas v. New Mexico\n   - Date: 10/5/2020 - 1/11/2023\n   - Citation: 141 S. Ct. 509 - 143 S. Ct. 1176\n   - Docket Number: 22O65\n   - Description: Financial Oversight and Management Board for Puerto Rico v. Centro de Periodismo Investigativo\n\n2. Case: Texas v. New Mexico\n   - Date: 10/5/2020 - 10/12/2022\n   - Citation: 141 S. Ct. 509 - 143 S. Ct. 1258\n   - Docket Number: 22O65\n   - Description: Andy Warhol Foundation for the Visual Arts v. Goldsmith\n\n3. Case: Texas v. New Mexico\n   - Date: 10/5/2020 - 10/3/2022\n   - Citation: 141 S. Ct. 509 - 143 S. Ct. 1322\n   - Docket Number: 22O65\n   - Description: Sackett v. Environmental Protection Agency\n\n4. Case: Texas v. New Mexico\n   - Date: 10/5/2020 - 11/28/2022\n   - Citation: 141 S. Ct. 509 - 143 S. Ct. 1130\n   - Docket Number: 22O65\n   - Description: Percoco v. United States\n\nLet me know if you need more information about any specific case!",
+        ),
+        (
+            AgentActionMessageLog(
+                tool="TaskExecutor",
+                tool_input={
+                    "task": "Review the details of the cases to identify divorce cases where the husband was awarded alimony."
+                },
+                log="",
+                message_log=[
+                    AIMessageChunk(
+                        content="I have found some US Supreme Court cases, but they do not appear to be divorce cases where the husband was awarded alimony. I will need to review the details of the cases to identify the relevant divorce cases.",
+                        additional_kwargs={
+                            "function_call": {
+                                "arguments": '{"task":"Review the details of the cases to identify divorce cases where the husband was awarded alimony."}',
+                                "name": "TaskExecutor",
+                            }
+                        },
+                    )
+                ],
+            ),
+            "I have searched for cases related to divorce and alimony where the husband was awarded alimony. However, the search did not yield specific cases matching this criteria. It's possible that the information may not be available in the current dataset. If there are specific cases or details you have in mind, please provide them, and I can assist further.",
+        ),
+    ],
+}
