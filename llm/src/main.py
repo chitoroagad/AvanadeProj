@@ -1,6 +1,7 @@
 import json
+import asyncio
+import pprint
 import chromadb
-from typing import Type, Optional
 from time import sleep
 from chromadb.config import Settings
 from langchain.agents.format_scratchpad import format_to_openai_function_messages
@@ -17,7 +18,7 @@ from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain_openai import AzureOpenAIEmbeddings
 from langchain.tools.retriever import create_retriever_tool
-from langchain.tools import BaseTool, StructuredTool, tool
+from langchain.tools import StructuredTool
 from langchain_openai import AzureChatOpenAI
 from langchain.agents import AgentExecutor
 from langchain_core.pydantic_v1 import BaseModel, Field
@@ -81,7 +82,7 @@ def parse_task_list(output):
 
 
 # llm tool to execute a task
-def task_list_executor_fun(task: str) -> str:
+async def task_list_executor_fun(task: str) -> str:
     out = solver_executor.invoke({"input": task})
     return out["output"]
 
@@ -94,7 +95,7 @@ task_list_executor = StructuredTool.from_function(
 
 
 # llm tool to generate a list of tasks
-def task_list_generator_fun(objective: str):
+async def task_list_generator_fun(objective: str):
     out = organiser_executor.invoke({"input": objective})
     return ",\n".join(out["tasks_list"])
 
@@ -127,7 +128,10 @@ solver_prompt = ChatPromptTemplate.from_messages(
         (
             "system",
             """
-            You are given tasks to complete. You are to use the available tools to complete the tasks. To the best of your ability, complete the tasks in the order given. If a task is a prerequisite for another task, complete the prerequisite task first. If you are unable to complete a task, you may ask the user for more information.
+            You are given a task to complete by a manager. You are to use the available tools to complete the tasks.
+            If you are unable to complete a task, you may ask the user for more
+            information. If a task references something you do not know, check the results of previous tasks. If you
+            have an answer, return only the answer. Do not aplogize under any circumstances.
             """,
         ),
         (
@@ -163,7 +167,7 @@ manager_prompt = ChatPromptTemplate.from_messages(
             You are a helpful legal assistant. You are to use the user input to solve problems, answer questions,
             and complete tasks. You do this by using the tools available to you to create a list of tasks, then solve,
             also using the tools available to you. you must not answer questions directly, only relay the information
-            from your tools.
+            from your tools. If the executor returns a question, you must ask the user for the answer and then continue.
             """,
         ),
         ("user", "{input}"),
@@ -196,7 +200,7 @@ results_database_retriever_tool = create_retriever_tool(
 
 task_list_storage = TaskListStorage()
 
-llm = AzureChatOpenAI(azure_deployment="dep", temperature=0)
+llm = AzureChatOpenAI(azure_deployment="dep", temperature=0, streaming=True)
 organiser_llm = llm.bind_functions([main_database_retriever_tool, OutputTasks])
 solver_llm = llm.bind_functions(
     [main_database_retriever_tool, results_database_retriever_tool]
@@ -213,7 +217,7 @@ manager_agent = (
     | manager_prompt
     | manager_llm
     | parse_task_list
-)
+).with_config({"tags": ["manager"]})
 
 organiser_agent = (
     {
@@ -246,7 +250,8 @@ organiser_executor = AgentExecutor(
 solver_executor = AgentExecutor(
     agent=solver_agent,
     tools=[main_database_retriever_tool, results_database_retriever_tool],
-    verbose=False,
+    verbose=True,
+    return_intermediate_steps=True,
 )
 
 manager_executor = AgentExecutor(
@@ -254,7 +259,7 @@ manager_executor = AgentExecutor(
     tools=[task_list_executor, task_list_generator],
     verbose=True,
     return_intermediate_steps=True,
-)
+).with_config({"run_name": "Agent"})
 
 message_history = ChatMessageHistory()
 
@@ -275,17 +280,65 @@ manager_executor = RunnableWithMessageHistory(
 #     return out["output"]
 
 
-if __name__ == "__main__":
-
-    print(task_list_executor.name)
-    print(task_list_executor.description)
-    print(task_list_executor.args)
-
-    print("Starting main")
-    out = manager_executor.invoke(
+async def main():
+    chunks = []
+    async for chunk in manager_executor.astream(
         {
             "input": "reserach important cases regarding divorce where the husband is rewarded alimony"
         },
         config={"configurable": {"session_id": "1"}},
-    )
-    print("Output:", out)
+    ):
+        chunks.append(chunk)
+        print("---------")
+        pprint.pprint(chunk, depth=1)
+
+
+if __name__ == "__main__":
+    print("Starting main")
+    asyncio.run(main())
+
+    # out = manager_executor.invoke(
+    #     {
+    #         "input": "reserach important cases regarding divorce where the husband is rewarded alimony"
+    #     },
+    #     config={"configurable": {"session_id": "1"}},
+    # )
+    # print("output=", out)
+
+
+# input_variables = ["agent_scratchpad", "input"]
+# input_types = {
+#     "chat_history": typing.List[
+#         typing.Union[
+#             langchain_core.messages.ai.AIMessage,
+#             langchain_core.messages.human.HumanMessage,
+#             langchain_core.messages.chat.ChatMessage,
+#             langchain_core.messages.system.SystemMessage,
+#             langchain_core.messages.function.FunctionMessage,
+#             langchain_core.messages.tool.ToolMessage,
+#         ]
+#     ],
+#     "agent_scratchpad": typing.List[
+#         typing.Union[
+#             langchain_core.messages.ai.AIMessage,
+#             langchain_core.messages.human.HumanMessage,
+#             langchain_core.messages.chat.ChatMessage,
+#             langchain_core.messages.system.SystemMessage,
+#             langchain_core.messages.function.FunctionMessage,
+#             langchain_core.messages.tool.ToolMessage,
+#         ]
+#     ],
+# }
+#
+# messages = [
+#     SystemMessagePromptTemplate(
+#         prompt=PromptTemplate(
+#             input_variables=[], template="You are a helpful assistant"
+#         )
+#     ),
+#     MessagesPlaceholder(variable_name="chat_history", optional=True),
+#     HumanMessagePromptTemplate(
+#         prompt=PromptTemplate(input_variables=["input"], template="{input}")
+#     ),
+#     MessagesPlaceholder(variable_name="agent_scratchpad"),
+# ]
