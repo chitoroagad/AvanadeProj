@@ -11,6 +11,7 @@ from dotenv import load_dotenv
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import CSVLoader
 from langchain_community.vectorstores import Chroma
+from langchain_core.callbacks import Callbacks
 from langchain_community.chat_message_histories import ChatMessageHistory
 from langchain_core.agents import AgentActionMessageLog, AgentFinish
 from langchain_core.callbacks.manager import CallbackManagerForToolRun
@@ -82,28 +83,71 @@ def parse_task_list(output):
 
 
 # llm tool to execute a task
-async def task_list_executor_fun(task: str) -> str:
-    out = solver_executor.invoke({"input": task})
+async def task_list_executor_fun(task: str, callbacks: Callbacks) -> str:
+
+    solver_llm = llm.bind_functions(
+        [main_database_retriever_tool, results_database_retriever_tool]
+    )
+
+    solver_prompt = ChatPromptTemplate.from_messages(
+        [
+            (
+                "system",
+                """
+                You are given a task to complete by a manager. You are to use the available tools to complete the tasks.
+                If you are unable to complete a task, you may ask the user for more
+                information. If a task references something you do not know, check the results of previous tasks. If you
+                have an answer, return only the answer. Do not aplogize under any circumstances.
+                """,
+            ),
+            (
+                "user",
+                "{input}",
+            ),
+            MessagesPlaceholder(variable_name="agent_scratchpad"),
+        ]
+    )
+
+    solver_agent = (
+        {
+            "input": lambda x: x["input"],
+            "agent_scratchpad": lambda x: format_to_openai_function_messages(
+                x["intermediate_steps"]
+            ),
+        }
+        | solver_prompt
+        | solver_llm
+        | parse_task_list
+    )
+
+    solver_executor = AgentExecutor(
+        agent=solver_agent,
+        tools=[main_database_retriever_tool, results_database_retriever_tool],
+        verbose=True,
+        return_intermediate_steps=True,
+    )
+
+    out = await solver_executor.ainvoke({"input": task})
     return out["output"]
 
 
 task_list_executor = StructuredTool.from_function(
-    func=task_list_executor_fun,
+    coroutine=task_list_executor_fun,
     name="TaskExecutor",
-    description="Executes a single task using an agent.",
+    description="ASYNC. Executes a single task using an agent.",
 )
 
 
 # llm tool to generate a list of tasks
 async def task_list_generator_fun(objective: str):
-    out = organiser_executor.invoke({"input": objective})
+    out = await organiser_executor.ainvoke({"input": objective})
     return ",\n".join(out["tasks_list"])
 
 
 task_list_generator = StructuredTool.from_function(
-    func=task_list_generator_fun,
+    coroutine=task_list_generator_fun,
     name="TaskListGenerator",
-    description="Generates a list of tasks from an objective.",
+    description="AYSNC. Generates a list of tasks from an objective.",
 )
 
 
@@ -168,6 +212,7 @@ manager_prompt = ChatPromptTemplate.from_messages(
             and complete tasks. You do this by using the tools available to you to create a list of tasks, then solve,
             also using the tools available to you. you must not answer questions directly, only relay the information
             from your tools. If the executor returns a question, you must ask the user for the answer and then continue.
+            Always complete the tasks before telling the user anything.
             """,
         ),
         ("user", "{input}"),
@@ -281,16 +326,67 @@ manager_executor = RunnableWithMessageHistory(
 
 
 async def main():
-    chunks = []
-    async for chunk in manager_executor.astream(
+    # async for chunk in manager_executor.astream(
+    #     {
+    #         "input": "reserach important cases regarding divorce where the husband is rewarded alimony"
+    #     },
+    #     config={"configurable": {"session_id": "1"}},
+    # ):
+    #     # Agent Action
+    #     if "actions" in chunk:
+    #         for action in chunk["actions"]:
+    #             print(f"Calling Tool: `{action.tool}` with input `{action.tool_input}`")
+    #     # Observation
+    #     elif "steps" in chunk:
+    #         for step in chunk["steps"]:
+    #             print(f"Tool Result: `{step.observation}`")
+    #     # Final result
+    #     elif "output" in chunk:
+    #         print(f'Final Output: {chunk["output"]}')
+    #     else:
+    #         raise ValueError()
+    #     print("---")
+
+    async for event in manager_executor.astream_events(
         {
             "input": "reserach important cases regarding divorce where the husband is rewarded alimony"
         },
         config={"configurable": {"session_id": "1"}},
+        version="v1",
     ):
-        chunks.append(chunk)
-        print("---------")
-        pprint.pprint(chunk, depth=1)
+        kind = event["event"]
+        if kind == "on_chain_start":
+            if (
+                event["name"] == "Agent"
+            ):  # Was assigned when creating the agent with `.with_config({"run_name": "Agent"})`
+                print(
+                    f"Starting agent: {event['name']} with input: {event['data'].get('input')}"
+                )
+        elif kind == "on_chain_end":
+            if (
+                event["name"] == "Agent"
+            ):  # Was assigned when creating the agent with `.with_config({"run_name": "Agent"})`
+                print()
+                print("--")
+                print(
+                    f"Done agent: {event['name']} with output: {event['data'].get('output')['output']}"
+                )
+        if kind == "on_chat_model_stream":
+            content = event["data"]["chunk"].content
+            if content:
+                # Empty content in the context of OpenAI means
+                # that the model is asking for a tool to be invoked.
+                # So we only print non-empty content
+                print(content, end="|")
+        elif kind == "on_tool_start":
+            print("--")
+            print(
+                f"Starting tool: {event['name']} with inputs: {event['data'].get('input')}"
+            )
+        elif kind == "on_tool_end":
+            print(f"Done tool: {event['name']}")
+            print(f"Tool output was: {event['data'].get('output')}")
+            print("--")
 
 
 if __name__ == "__main__":
@@ -304,41 +400,3 @@ if __name__ == "__main__":
     #     config={"configurable": {"session_id": "1"}},
     # )
     # print("output=", out)
-
-
-# input_variables = ["agent_scratchpad", "input"]
-# input_types = {
-#     "chat_history": typing.List[
-#         typing.Union[
-#             langchain_core.messages.ai.AIMessage,
-#             langchain_core.messages.human.HumanMessage,
-#             langchain_core.messages.chat.ChatMessage,
-#             langchain_core.messages.system.SystemMessage,
-#             langchain_core.messages.function.FunctionMessage,
-#             langchain_core.messages.tool.ToolMessage,
-#         ]
-#     ],
-#     "agent_scratchpad": typing.List[
-#         typing.Union[
-#             langchain_core.messages.ai.AIMessage,
-#             langchain_core.messages.human.HumanMessage,
-#             langchain_core.messages.chat.ChatMessage,
-#             langchain_core.messages.system.SystemMessage,
-#             langchain_core.messages.function.FunctionMessage,
-#             langchain_core.messages.tool.ToolMessage,
-#         ]
-#     ],
-# }
-#
-# messages = [
-#     SystemMessagePromptTemplate(
-#         prompt=PromptTemplate(
-#             input_variables=[], template="You are a helpful assistant"
-#         )
-#     ),
-#     MessagesPlaceholder(variable_name="chat_history", optional=True),
-#     HumanMessagePromptTemplate(
-#         prompt=PromptTemplate(input_variables=["input"], template="{input}")
-#     ),
-#     MessagesPlaceholder(variable_name="agent_scratchpad"),
-# ]
