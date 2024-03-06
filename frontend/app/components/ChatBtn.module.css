@@ -1,7 +1,7 @@
 .deletePic{
-    width: 60%;
+    width: 60px;
     position:relative;
-    left:1vw;
+    left:0.2vw;
 }
 
 .box{
