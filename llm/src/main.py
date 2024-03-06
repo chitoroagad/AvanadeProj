@@ -1,12 +1,10 @@
 import json
 import asyncio
-import pprint
 import chromadb
 from time import sleep
 from chromadb.config import Settings
 from langchain.agents.format_scratchpad import format_to_openai_function_messages
-from collections import deque
-from typing import Dict, List
+from typing import List
 from dotenv import load_dotenv
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import CSVLoader
@@ -14,7 +12,6 @@ from langchain_community.vectorstores import Chroma
 from langchain_core.callbacks import Callbacks
 from langchain_community.chat_message_histories import ChatMessageHistory
 from langchain_core.agents import AgentActionMessageLog, AgentFinish
-from langchain_core.callbacks.manager import CallbackManagerForToolRun
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain_openai import AzureOpenAIEmbeddings
@@ -25,32 +22,6 @@ from langchain.agents import AgentExecutor
 from langchain_core.pydantic_v1 import BaseModel, Field
 
 load_dotenv()
-
-
-# data structure for storing tasks
-class TaskListStorage:
-    def __init__(self):
-        self.tasks = deque([])
-        self.task_id_counter = 0
-
-    def append(self, task: Dict):
-        self.tasks.append(task)
-
-    def replace(self, tasks: List[Dict]):
-        self.tasks = deque(tasks)
-
-    def popleft(self):
-        return self.tasks.popleft()
-
-    def is_empty(self):
-        return False if self.tasks else True
-
-    def next_task_id(self):
-        self.task_id_counter += 1
-        return self.task_id_counter
-
-    def get_task_names(self):
-        return [task["name"] for task in self.tasks]
 
 
 # Template for the output of the task list
@@ -243,7 +214,6 @@ results_database_retriever_tool = create_retriever_tool(
     "Search for results of previous tasks (id==task_number), from a vector store.",
 )
 
-task_list_storage = TaskListStorage()
 
 llm = AzureChatOpenAI(azure_deployment="dep", temperature=0, streaming=True)
 organiser_llm = llm.bind_functions([main_database_retriever_tool, OutputTasks])
@@ -392,11 +362,3 @@ async def main():
 if __name__ == "__main__":
     print("Starting main")
     asyncio.run(main())
-
-    # out = manager_executor.invoke(
-    #     {
-    #         "input": "reserach important cases regarding divorce where the husband is rewarded alimony"
-    #     },
-    #     config={"configurable": {"session_id": "1"}},
-    # )
-    # print("output=", out)
