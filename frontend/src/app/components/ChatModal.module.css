@@ -20,9 +20,9 @@
 @import url('https://fonts.cdnfonts.com/css/raleway');
 
 .chatName {
-    position: absolute;
+    position: relative;
     top:3vh;
-    left:9vw;
+    text-align: center;
     font-size: 40px;
     font-weight: 800;
     font-family: 'Lato', sans-serif;
@@ -45,7 +45,7 @@
     display: flex;
     line-height: 35px;
     padding-left: 50px;
-    position:absolute;
+    position:relative;
 }
 
 .promptPic{
@@ -64,14 +64,14 @@
 
 .regenBtn{
     position:relative;
-    top:8vh;
+    top:12vh;
     right:2vw;
 
 }
 
 .restrBtn{
     position:relative;
-    top:8vh;
+    top:12vh;
     left:2vw;
 }
 
@@ -91,8 +91,8 @@
     flex-direction: column; 
     padding: 30px;
     height: auto; 
-    position: absolute;
-    top:32vh;
+    position: relative;
+    top:20vh;
     left:2vw;
     font-family: 'Lato', sans-serif;
 }

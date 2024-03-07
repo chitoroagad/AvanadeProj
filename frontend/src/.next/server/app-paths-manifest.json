@@ -1,0 +1,11 @@
+{
+  "/_not-found": "app/_not-found.js",
+  "/Chats/page": "app/Chats/page.js",
+  "/Home/page": "app/Home/page.js",
+  "/NewChat/page": "app/NewChat/page.js",
+  "/Process/page": "app/Process/page.js",
+  "/SignUp/page": "app/SignUp/page.js",
+  "/Space/page": "app/Space/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/page": "app/page.js"
+}

@@ -58,6 +58,7 @@
 .tag{
     margin-left: 30px;
     width: 100%;
+    max-width: 500%;
 }
 
 .createdAt{
@@ -77,10 +78,11 @@
     top: -14vh;
 }
 
-.chatwithTag{
+.chatCard{
     border: 1px solid #000000;
     padding: 1rem;
-    margin:10px;  
+    margin:10px; 
+    width: 200px; 
 
 }
 
@@ -90,4 +92,8 @@
     left:30vw;
     font-size: 3rem;
     font-weight: bold;
+}
+
+.cardtag{
+    width: 1000%;
 }
