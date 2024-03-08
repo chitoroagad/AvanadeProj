@@ -6,6 +6,8 @@ RUN : \
     software-properties-common \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     python3-venv \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+    python3-magic \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
     && :
@@ -13,9 +15,9 @@ RUN : \
 RUN python3 -m venv /venv
 ENV PATH=/venv/bin:$PATH
 
-WORKDIR /llm
+WORKDIR /src
 
-COPY src/requirements.txt .
+COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-ENTRYPOINT python "/llm/main.py"
+ENTRYPOINT python manage.py runserver
