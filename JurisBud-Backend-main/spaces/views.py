@@ -1,8 +1,10 @@
-from rest_framework import viewsets, permissions, status
+from rest_framework import permissions, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from .models import Space, Folder, Group, Tag, Project
-from .serializers import SpaceSerializer, FolderSerializer, GroupSerializer, TagSerializer, ProjectSerializer
+
+from .models import Folder, Group, Project, Space, Tag
+from .serializers import (FolderSerializer, GroupSerializer, ProjectSerializer,
+                          SpaceSerializer, TagSerializer)
 
 
 class SpaceViewSet(viewsets.ModelViewSet):
@@ -25,14 +27,16 @@ class GroupViewSet(viewsets.ModelViewSet):
     serializer_class = GroupSerializer
     permission_classes = [permissions.IsAuthenticated]
 
-    @action(detail=True, methods=['post'], permission_classes=[permissions.IsAuthenticated])
+    @action(
+        detail=True, methods=["post"], permission_classes=[permissions.IsAuthenticated]
+    )
     def add_member(self, request, pk=None):
         group = self.get_object()
-        user_id = request.data.get('user_id')
+        user_id = request.data.get("user_id")
         try:
             user = User.objects.get(id=user_id)
             group.members.add(user)
-            return Response({'status': 'member added'})
+            return Response({"status": "member added"})
         except User.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -51,9 +55,11 @@ class ProjectViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
 
-    @action(detail=True, methods=['patch'], permission_classes=[permissions.IsAuthenticated])
+    @action(
+        detail=True, methods=["patch"], permission_classes=[permissions.IsAuthenticated]
+    )
     def mark_complete(self, request, pk=None):
         project = self.get_object()
-        project.status = 'completed'
+        project.status = "completed"
         project.save()
-        return Response({'status': 'project marked as completed'})
+        return Response({"status": "project marked as completed"})
