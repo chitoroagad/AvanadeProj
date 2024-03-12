@@ -20,12 +20,15 @@ services:
     stdin_open: true
     tty: true
 
-  # backend:
-  #   build: ./backend
-  #   volumes:
-  #     - ./backend/:/backend
-  #   ports:
-  #     - ""
+  backend:
+    build: ./backend
+    volumes:
+      - ./backend/:/backend
+    ports:
+      - "8000:8000"
+    depends_on:
+      - chroma
+    command: python /backend/manage.py runserver
 
   frontend:
     container_name: next-app
@@ -39,5 +42,6 @@ services:
     ports:
       - "3000:3000"
     command: npm run dev
+
 volumes:
   data:
