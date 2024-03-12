@@ -17,7 +17,7 @@ llama/
 # for node
 chroma/
 node_modules/
-.DS_Store
+*.DS_Store
 
 # Notebooks
 *.ipynb_checkpoints
