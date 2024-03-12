@@ -20,17 +20,24 @@ services:
     stdin_open: true
     tty: true
 
-  # frontend:
-  #   container_name: next-app
-  #   build: ./frontend
+  # backend:
+  #   build: ./backend
   #   volumes:
-  #     - ./frontend/src/:/app/src
-  #     - ./frontend/src/public/:/app/public
-  #   restart: always
-  #   depends_on:
-  #     - chroma
+  #     - ./backend/:/backend
   #   ports:
-  #     - "3000:3000"
-  #   command: npm run dev
+  #     - ""
+
+  frontend:
+    container_name: next-app
+    build: ./frontend
+    volumes:
+      - ./frontend/src/:/app/src
+      - ./frontend/src/public/:/app/public
+    restart: always
+    depends_on:
+      - chroma
+    ports:
+      - "3000:3000"
+    command: npm run dev
 volumes:
   data:

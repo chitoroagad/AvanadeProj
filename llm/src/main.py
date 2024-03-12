@@ -1,25 +1,26 @@
-import json
 import asyncio
-import chromadb
+import json
 from time import sleep
-from chromadb.config import Settings
-from langchain.agents.format_scratchpad import format_to_openai_function_messages
 from typing import List
+
+import chromadb
+from chromadb.config import Settings
 from dotenv import load_dotenv
-from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain_community.document_loaders import CSVLoader
-from langchain_community.vectorstores import Chroma
-from langchain_core.callbacks import Callbacks
-from langchain_community.chat_message_histories import ChatMessageHistory
-from langchain_core.agents import AgentActionMessageLog, AgentFinish
-from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-from langchain_core.runnables.history import RunnableWithMessageHistory
-from langchain_openai import AzureOpenAIEmbeddings
-from langchain.tools.retriever import create_retriever_tool
-from langchain.tools import StructuredTool
-from langchain_openai import AzureChatOpenAI
 from langchain.agents import AgentExecutor
+from langchain.agents.format_scratchpad import \
+    format_to_openai_function_messages
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain.tools import StructuredTool
+from langchain.tools.retriever import create_retriever_tool
+from langchain_community.chat_message_histories import ChatMessageHistory
+from langchain_community.document_loaders import CSVLoader, TextLoader
+from langchain_community.vectorstores import Chroma
+from langchain_core.agents import AgentActionMessageLog, AgentFinish
+from langchain_core.callbacks import Callbacks
+from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_core.pydantic_v1 import BaseModel, Field
+from langchain_core.runnables.history import RunnableWithMessageHistory
+from langchain_openai import AzureChatOpenAI, AzureOpenAIEmbeddings
 
 load_dotenv()
 
@@ -194,6 +195,7 @@ manager_prompt = ChatPromptTemplate.from_messages(
 embeddings_function = AzureOpenAIEmbeddings(azure_deployment="ada")
 
 loader = CSVLoader("/llm/USSupremeCourt.csv", encoding="iso-8859-1")
+loader = TextLoader("/llm/CourtCase.txt")
 docs = loader.load()
 documents = RecursiveCharacterTextSplitter(
     chunk_size=1000, chunk_overlap=200
@@ -318,9 +320,7 @@ async def main():
     #     print("---")
 
     async for event in manager_executor.astream_events(
-        {
-            "input": "reserach important cases regarding divorce where the husband is rewarded alimony"
-        },
+        {"input": "Research a summary of Kennedy v. Bremerton School District 2022"},
         config={"configurable": {"session_id": "1"}},
         version="v1",
     ):
