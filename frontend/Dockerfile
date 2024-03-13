@@ -51,4 +51,4 @@ ENV HOSTNAME localhost
 WORKDIR /src
 
 # https://nextjs.org/docs/pages/api-reference/next-config-js/output
-CMD ["npm", "run", "start"]
+CMD npm run start

@@ -4,6 +4,7 @@
 
 - Have Docker Desktop installed.
 - Make sure Docker service is running
+- Enter frontend/src directory and run `npm ci`
 
 ## Commands
 

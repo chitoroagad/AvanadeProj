@@ -31,7 +31,6 @@ services:
     command: python /backend/manage.py runserver
 
   frontend:
-    container_name: next-app
     build: ./frontend
     volumes:
       - ./frontend/src/:/app/src
