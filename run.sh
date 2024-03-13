@@ -2,7 +2,7 @@
 
 # Start docker containers
 # docker compose up --abort-on-container-exit --attach llm
-docker compose run llm python llm/main.py
+docker compose up --build
 
 # Clean docker containers
 docker compose down
