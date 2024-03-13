@@ -23,12 +23,11 @@ environ.Env.read_env(os.path.join(BASE_DIR, "jurisbud/env.dev"))
 env = environ.Env()
 environ.Env.read_env()
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env("SECRET_KEY")
+# SECRET_KEY = env("SECRET_KEY")
 
 OPENAI_API_KEY = env("OPENAI_API_KEY")
 

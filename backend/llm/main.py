@@ -13,7 +13,7 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.tools import StructuredTool
 from langchain.tools.retriever import create_retriever_tool
 from langchain_community.chat_message_histories import ChatMessageHistory
-from langchain_community.document_loaders import CSVLoader, TextLoader
+from langchain_community.document_loaders import CSVLoader
 from langchain_community.vectorstores import Chroma
 from langchain_core.agents import AgentActionMessageLog, AgentFinish
 from langchain_core.callbacks import Callbacks
@@ -195,7 +195,6 @@ manager_prompt = ChatPromptTemplate.from_messages(
 embeddings_function = AzureOpenAIEmbeddings(azure_deployment="ada")
 
 loader = CSVLoader("/llm/USSupremeCourt.csv", encoding="iso-8859-1")
-loader = TextLoader("/llm/CourtCase.txt")
 docs = loader.load()
 documents = RecursiveCharacterTextSplitter(
     chunk_size=1000, chunk_overlap=200
@@ -320,7 +319,7 @@ async def main():
     #     print("---")
 
     async for event in manager_executor.astream_events(
-        {"input": "Research a summary of Kennedy v. Bremerton School District 2022"},
+        {"input": "Write a template employment contract for a restaurant server"},
         config={"configurable": {"session_id": "1"}},
         version="v1",
     ):
@@ -362,11 +361,3 @@ async def main():
 if __name__ == "__main__":
     print("Starting main")
     asyncio.run(main())
-
-    # out = manager_executor.invoke(
-    #     {
-    #         "input": "reserach important cases regarding divorce where the husband is rewarded alimony"
-    #     },
-    #     config={"configurable": {"session_id": "1"}},
-    # )
-    # print("output=", out)
