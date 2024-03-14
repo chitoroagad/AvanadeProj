@@ -1,12 +1,17 @@
-# Run ALL
+# COMP0016 2023-2024 Team 5: JurisBud AI
+Add project abstract here
 
-## Prerequisites
+## Quickstart(Locally)
+
+### Run JurisBud AI Altogether
+
+#### Prerequisites
 
 - Have Docker Desktop installed.
 - Make sure Docker service is running
 - Enter frontend/src directory and run `npm ci`
 
-## Commands
+#### Commands
 
 ```bash
 ./run.sh
@@ -14,11 +19,11 @@
 
 <br>
 
-# Run seperately
+### Run JurisBud AI Seperately (Frontend, Backend, Large-Language Model(LLM))
 
-## Run Frontend
+#### Run Frontend
 
-### Commands
+##### Commands
 
 ```bash
 cd frontend
@@ -26,29 +31,29 @@ npm ci
 npm run dev
 ```
 
-## Run Backend
+#### Run Backend
 
-### Prerequisites
+##### Prerequisites
 
 - Have Python 3.11 environment.
 - Install requirements.
   - `pip install -r requirements.txt`
 
-### Commands
+##### Commands
 
 ```bash
 cd backend
 python manage.py runserver
 ```
 
-## Run LLM
+#### Run LLM
 
-### Prerequisites
+##### Prerequisites
 
 - Have Docker Desktop installed.
 - Make sure Docker service is running
 
-### Commands
+##### Commands
 
 ```bash
 ./run.sh
