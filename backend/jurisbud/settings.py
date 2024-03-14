@@ -45,7 +45,7 @@ MAX_UPLOAD_SIZE = "5242880"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-# ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'localhost:3000', 'localhost:8000']
+ALLOWED_HOSTS = ["127.0.0.1", "localhost", "localhost:3000", "localhost:8080"]
 
 # Application definition
 

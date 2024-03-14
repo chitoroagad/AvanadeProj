@@ -4,7 +4,7 @@ services:
   chroma:
     image: chromadb/chroma
     ports:
-      - "8080:8080"
+      - "8000:8000"
     volumes:
       - data:/chroma/chroma
     environment:
@@ -25,7 +25,7 @@ services:
     volumes:
       - ./backend/:/backend
     ports:
-      - "8000:8000"
+      - "8080:8080"
     depends_on:
       - chroma
     command: python /backend/manage.py runserver

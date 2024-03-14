@@ -3,10 +3,16 @@
 import os
 import sys
 
+import django
+
 
 def main():
     """Run administrative tasks."""
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "jurisbud.settings")
+    django.setup()
+    from django.core.management.commands.runserver import Command as runserver
+
+    runserver.default_port = "8080"
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
