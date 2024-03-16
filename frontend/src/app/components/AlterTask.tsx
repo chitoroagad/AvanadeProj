@@ -1,6 +1,7 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import styles from './AlterTask.module.css';
+import Image from "next/image";
 
 const AlterTask = ({ initialText }: { initialText: any }) => {
   const [alterText, setAlterText] = useState(initialText);
@@ -23,7 +24,7 @@ const AlterTask = ({ initialText }: { initialText: any }) => {
 
   return (
     <div className={styles.alterTask}>
-      <img src='./process/alter.png' className={styles.alterPic}/>
+      <Image src='/process/alter.png' width={0} height={0} sizes="100vw" className={styles.alterPic} alt='alter' />
       <p className={styles.alterText}>{alterText}</p>
     </div>
   );

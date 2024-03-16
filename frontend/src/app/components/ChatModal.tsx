@@ -3,17 +3,18 @@ import styles from './ChatModal.module.css';
 import NotConfirmedTask from './NotConfirmedTask';
 import AlterTask from './AlterTask';
 import DownloadPdf from './DownloadPdf';
+import Image from "next/image";
 
-const ChatModal = () => {
+const ChatModal = ({item}) => {
     return ReactDOM.createPortal(
         <div className={styles.modal}>
         <div className={styles.background}>
             <div className={styles.chatName}>
-                <h1>Chat name</h1>
+                <h1>{item.title}</h1>
             </div>
             <div className={styles.prompt}>
-                <img src='home/search.png' className={styles.promptPic}></img>
-                <input type="text" placeholder="Prompt: typed" className={styles.promptText} disabled={true}></input>
+                <Image src='/home/search.png' width={0} height={0} sizes="100vw" className={styles.promptPic} alt='prompt' />
+                <input type="text" placeholder="Prompt: typed" value={item.prompt} className={styles.promptText} disabled={true}></input>
                 <button className={styles.regenBtn}><AlterTask initialText="Regenerate Response" ></AlterTask></button>
                 <button className={styles.restrBtn}><NotConfirmedTask initialText="Task Restructure"></NotConfirmedTask></button>
             </div>
@@ -21,7 +22,7 @@ const ChatModal = () => {
                 <h1>Response</h1>
             </div>
             <div className={styles.response}>
-                <p id="text-to-download">Example Response</p>
+                <p id="text-to-download">{item.response}</p>
             </div>
             <div className={styles.download}>
                 <DownloadPdf></DownloadPdf>

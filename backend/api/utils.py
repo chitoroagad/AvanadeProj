@@ -5,6 +5,7 @@ import magic
 import openai
 from django.conf import settings
 from django.core import exceptions
+from llm.llm import run
 from pdfminer.high_level import extract_text
 from pdfminer.layout import LAParams
 
@@ -30,7 +31,7 @@ def preprocess_text(text):
     return text
 
 
-def ask_gpt(prompt):
+async def ask_gpt(prompt):
 
     try:
         response = openai.chat.completions.create(

@@ -1,6 +1,7 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import styles from './NotFinishedTask.module.css';
+import Image from "next/image";
 
 const NotFinishedTask = ({ initialText }: { initialText: any }) => {
   const [notFinishedText, setNotFinishedText] = useState(initialText);
@@ -23,7 +24,7 @@ const NotFinishedTask = ({ initialText }: { initialText: any }) => {
 
   return (
     <div className={styles.notFinishedTask}>
-      <img src='./process/notdone.png' className={styles.notFinishedPic}/>
+      <Image width={0} height={0} sizes="100vw" src='/process/notdone.png' className={styles.notFinishedPic} alt='not finished' />
       <p className={styles.notFinishedText}>{notFinishedText}</p>
     </div>
   );

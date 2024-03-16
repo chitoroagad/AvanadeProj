@@ -1,33 +1,65 @@
 "use client";
 
-import React, { useRef } from 'react';
-import styles from './Attachment.module.css';
+import React, { useRef } from "react";
+import styles from "./Attachment.module.css";
+import Image from "next/image";
+import { apiClient } from "../utils/api";
 
-const Attachment = () => {
-  const fileInputRef = useRef<HTMLInputElement>(null);
+//@ts-ignore
+const Attachment = ({ setPrompt }) => {
+	const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files && event.target.files[0];
-    if (file) {
-      // Handle the file
-      console.log(file); // Example: Log to console
-    }
-  };
+	const handleFileChange = async (
+		event: React.ChangeEvent<HTMLInputElement>,
+	) => {
+		const file = event.target.files && event.target.files[0];
+		if (file) {
+			// Handle the file
+			console.log(file);
+			var formData = new FormData();
+			formData.append("file", file);
+			try {
+				const response = await apiClient.post("/chat/upload_prompt", {
+					headers: {
+						Authorization: "Token " + localStorage.getItem("token"),
+					},
+					body: formData,
+				});
+				const data = await response.json();
+				setPrompt(data.file.content);
+			} catch (err) {
+				console.log("file upload error:", err);
+			}
+		}
+	};
 
-  const handleAttachmentClick = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click(); 
-    }
-  };
+	const handleAttachmentClick = () => {
+		if (fileInputRef.current) {
+			fileInputRef.current.click();
+		}
+	};
 
-  return (
-    <main>
-      <div className={styles.AttachContainer}>
-        <img src='home/attach.png' className={styles.Attach} onClick={handleAttachmentClick} />
-        <input type="file" ref={fileInputRef} style={{ display: 'none' }} onChange={handleFileChange} />
-      </div>
-    </main>
-  );
+	return (
+		<main>
+			<div className={styles.AttachContainer}>
+				<Image
+					src="/home/attach.png"
+					width={0}
+					height={0}
+					sizes="100vw"
+					className={styles.Attach}
+					onClick={handleAttachmentClick}
+					alt="attachment"
+				/>
+				<input
+					type="file"
+					ref={fileInputRef}
+					style={{ display: "none" }}
+					onChange={handleFileChange}
+				/>
+			</div>
+		</main>
+	);
 };
 
 export default Attachment;

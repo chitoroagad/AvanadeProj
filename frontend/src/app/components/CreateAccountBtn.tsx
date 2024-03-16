@@ -5,21 +5,17 @@ import styles from './CreateAccountBtn.module.css';
 import CreateAccountModal from '../components/CreateAccountModal';
 import Link from 'next/link';
 
-export default function CreateAccountBtn() {
+export default function CreateAccountBtn(props) {
 
-    const [showModal, setShowModal] = useState(false);
-
-    const openModal = () => setShowModal(true);
- 
-
+    const {showModal, ...btnProps} = props;
     return(
     <div className={styles.SignUpBtn}>
-        <button className='btn btn-wide btn-primary' onClick={openModal}>Create Account</button>
+        <button className='btn btn-wide btn-primary'>Create Account</button>
         <CreateAccountModal show={showModal}>
             <p className={styles.Success}>Success!</p>
             <br></br>
             <Link href="/">
-                <button className='btn btn-wide  btn-outline btn-secondary'>Login</button>
+                <button className='btn btn-wide  btn-outline btn-secondary' {...btnProps}>Login</button>
             </Link>
         </CreateAccountModal>
     </div>

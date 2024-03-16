@@ -1,6 +1,7 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import styles from './FinishedTask.module.css';
+import Image from "next/image";
 
 const FinishedTask = ({ initialText }: { initialText: any }) => {
   const [finishedText, setFinishedText] = useState(initialText);
@@ -23,7 +24,7 @@ const FinishedTask = ({ initialText }: { initialText: any }) => {
 
   return (
     <div className={styles.finishedTask}>
-      <img src='./process/ticked.png' className={styles.finishedPic}/>
+      <Image width={0} height={0} sizes="100vw" src='/process/ticked.png' className={styles.finishedPic} alt='finish' />
       <p className={styles.finishedText}>{finishedText}</p>
     </div>
   );

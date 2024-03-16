@@ -47,7 +47,7 @@
   padding: 6px 8px;
   border-radius: 4px; 
   box-shadow: none; 
-  width: 80%;;
+  width: 80%;
 }
 
 .StartTitle {
@@ -96,7 +96,6 @@
 }
 
 .MsgIcon{
-  width:7%;
   margin-bottom: 10px;
   left:20px;
   position: relative;

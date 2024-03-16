@@ -1,6 +1,7 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import styles from './NotConfirmedTask.module.css';
+import Image from "next/image";
 
 const NotConfirmedTask = ({ initialText }: { initialText: any }) => {
   const [notConfirmedText, setNotConfirmedText] = useState(initialText);
@@ -23,7 +24,7 @@ const NotConfirmedTask = ({ initialText }: { initialText: any }) => {
 
   return (
     <div className={styles.notConfirmedTask}>
-      <img src='./process/notconfirmed.png' className={styles.notConfirmedPic}/>
+      <Image width={0} height={0} sizes="100vw" src='/process/notconfirmed.png' className={styles.notConfirmedPic} alt='not confirmed' />
       <p className={styles.notConfirmedText}>{notConfirmedText}</p>
     </div>
   );
