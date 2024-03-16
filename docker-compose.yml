@@ -10,15 +10,6 @@ services:
     environment:
       - IS_PERSISTENT=TRUE
       - ALLOW_RESET=TRUE
-  # llm:
-  #   build: ./llm
-  #   volumes:
-  #     - ./llm/src:/llm
-  #   depends_on:
-  #     - chroma
-  #   command: python /llm/main.py
-  #   stdin_open: true
-  #   tty: true
 
   backend:
     build: ./backend
