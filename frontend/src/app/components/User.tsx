@@ -6,14 +6,6 @@ import { AuthContext } from "../utils/contexts";
 import { redirect } from 'next/navigation';
 
 const User = () => {
-<<<<<<< HEAD
-    const [username, setUsername] = useState("SampleUser");
-    useEffect(() => {
-        // Logic to fetch the username,
-        // For now, using a static value
-        // setUsername(fetchedUsername);
-      }, []);
-=======
     const {isAuth, setIsAuth, username, setUsername} = useContext(AuthContext);
     
     const handleSignOut = () => {
@@ -22,7 +14,6 @@ const User = () => {
       setIsAuth(false);
       setUsername('');
     }
->>>>>>> 3c2024e (added new frontend + llm development)
 
   return ( 
     <div>
