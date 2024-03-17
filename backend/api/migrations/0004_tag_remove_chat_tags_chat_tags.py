@@ -6,34 +6,24 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("api", "0003_alter_userprofile_is_superuser_chat"),
+        ('api', '0003_alter_userprofile_is_superuser_chat'),
     ]
 
     operations = [
         migrations.CreateModel(
-            name="Tag",
+            name='Tag',
             fields=[
-                (
-                    "id",
-                    models.BigAutoField(
-                        auto_created=True,
-                        primary_key=True,
-                        serialize=False,
-                        verbose_name="ID",
-                    ),
-                ),
-                ("name", models.CharField(max_length=100, unique=True)),
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('name', models.CharField(max_length=100, unique=True)),
             ],
         ),
         migrations.RemoveField(
-            model_name="chat",
-            name="tags",
+            model_name='chat',
+            name='tags',
         ),
         migrations.AddField(
-            model_name="chat",
-            name="tags",
-            field=models.ManyToManyField(
-                blank=True, related_name="chats", to="api.tag"
-            ),
+            model_name='chat',
+            name='tags',
+            field=models.ManyToManyField(blank=True, related_name='chats', to='api.tag'),
         ),
     ]

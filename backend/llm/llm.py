@@ -1,7 +1,7 @@
 import asyncio
 import json
 from time import sleep
-from typing import Dict, List
+from typing import List
 
 import chromadb
 from chromadb.config import Settings
@@ -129,7 +129,7 @@ chroma_client = None
 for _ in range(15):
     try:
         chroma_client = chromadb.HttpClient(
-            host="localhost", port="8000", settings=Settings(allow_reset=True)
+            host="chroma", port="8000", settings=Settings(allow_reset=True)
         )
     except Exception:
         sleep(1)
@@ -296,10 +296,30 @@ manager_executor = RunnableWithMessageHistory(
 #     return out["output"]
 
 
-async def run(input: Dict[str, str]):
+async def main():
+    # async for chunk in manager_executor.astream(
+    #     {
+    #         "input": "reserach important cases regarding divorce where the husband is rewarded alimony"
+    #     },
+    #     config={"configurable": {"session_id": "1"}},
+    # ):
+    #     # Agent Action
+    #     if "actions" in chunk:
+    #         for action in chunk["actions"]:
+    #             print(f"Calling Tool: `{action.tool}` with input `{action.tool_input}`")
+    #     # Observation
+    #     elif "steps" in chunk:
+    #         for step in chunk["steps"]:
+    #             print(f"Tool Result: `{step.observation}`")
+    #     # Final result
+    #     elif "output" in chunk:
+    #         print(f'Final Output: {chunk["output"]}')
+    #     else:
+    #         raise ValueError()
+    #     print("---")
 
     async for event in manager_executor.astream_events(
-        input,
+        {"input": "Write a template employment contract for a restaurant server"},
         config={"configurable": {"session_id": "1"}},
         version="v1",
     ):
@@ -340,4 +360,4 @@ async def run(input: Dict[str, str]):
 
 if __name__ == "__main__":
     print("Starting main")
-    asyncio.run(run({"input", "What is the case of Roe v. Wade?"}))
+    asyncio.run(main())

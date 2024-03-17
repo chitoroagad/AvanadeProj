@@ -1,92 +1,26 @@
 from django.urls import path
-
-from .views import (FolderViewSet, GroupViewSet, ProjectViewSet, SpaceViewSet,
-                    TagViewSet)
-
-# Assuming each viewset has the standard actions: list, create, retrieve, update, partial_update, and destroy
+from . import views
 
 urlpatterns = [
-    path(
-        "spaces/",
-        SpaceViewSet.as_view({"get": "list", "post": "create"}),
-        name="space-list",
-    ),
-    path(
-        "spaces/<int:pk>/",
-        SpaceViewSet.as_view(
-            {
-                "get": "retrieve",
-                "put": "update",
-                "patch": "partial_update",
-                "delete": "destroy",
-            }
-        ),
-        name="space-detail",
-    ),
-    path(
-        "folders/",
-        FolderViewSet.as_view({"get": "list", "post": "create"}),
-        name="folder-list",
-    ),
-    path(
-        "folders/<int:pk>/",
-        FolderViewSet.as_view(
-            {
-                "get": "retrieve",
-                "put": "update",
-                "patch": "partial_update",
-                "delete": "destroy",
-            }
-        ),
-        name="folder-detail",
-    ),
-    path(
-        "groups/",
-        GroupViewSet.as_view({"get": "list", "post": "create"}),
-        name="group-list",
-    ),
-    path(
-        "groups/<int:pk>/",
-        GroupViewSet.as_view(
-            {
-                "get": "retrieve",
-                "put": "update",
-                "patch": "partial_update",
-                "delete": "destroy",
-            }
-        ),
-        name="group-detail",
-    ),
-    path(
-        "tags/", TagViewSet.as_view({"get": "list", "post": "create"}), name="tag-list"
-    ),
-    path(
-        "tags/<int:pk>/",
-        TagViewSet.as_view(
-            {
-                "get": "retrieve",
-                "put": "update",
-                "patch": "partial_update",
-                "delete": "destroy",
-            }
-        ),
-        name="tag-detail",
-    ),
-    path(
-        "projects/",
-        ProjectViewSet.as_view({"get": "list", "post": "create"}),
-        name="project-list",
-    ),
-    path(
-        "projects/<int:pk>/",
-        ProjectViewSet.as_view(
-            {
-                "get": "retrieve",
-                "put": "update",
-                "patch": "partial_update",
-                "delete": "destroy",
-            }
-        ),
-        name="project-detail",
-    ),
+    # Space URLs
+    path('/', views.space_list, name='space-list'),
+    path('spaces/<int:pk>/', views.space_detail, name='space-detail'),
+
+    # Folder URLs
+    path('folders/', views.folder_list, name='folder-list'),
+    path('folders/<int:pk>/', views.folder_detail, name='folder-detail'),
+
+    # Group URLs
+    path('groups/', views.group_list, name='group-list'),
+    path('groups/<int:pk>/', views.group_detail, name='group-detail'),
+    path('groups/<int:pk>/add_member/', views.add_member, name='add-member'),
+
+    # Tag URLs
+    path('tags/', views.tag_list, name='tag-list'),
+    path('tags/<int:pk>/', views.tag_detail, name='tag-detail'),
+
+    # Project URLs
+    path('projects/', views.project_list, name='project-list'),
+    path('projects/<int:pk>/', views.project_detail, name='project-detail'),
+    # Add any other project-specific paths here, if necessary
 ]

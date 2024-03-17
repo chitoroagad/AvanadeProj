@@ -1,19 +1,18 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
-
-from .models import Folder, Group, Project, Space, Tag
+from .models import Space, Folder, Group, Tag, Project
 
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ("id", "username")
+        fields = ('id', 'username')
 
 
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
-        fields = "__all__"
+        fields = '__all__'
 
 
 class GroupSerializer(serializers.ModelSerializer):
@@ -21,17 +20,13 @@ class GroupSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Group
-        fields = "__all__"
+        fields = '__all__'
 
 
 class SpaceSerializer(serializers.ModelSerializer):
-    tags = TagSerializer(many=True, read_only=True)
-    group = GroupSerializer(read_only=True)
-    owner = UserSerializer(read_only=True)
-
     class Meta:
         model = Space
-        fields = "__all__"
+        fields = '__all__'  # Or list all the fields you want to include
 
 
 class FolderSerializer(serializers.ModelSerializer):
@@ -39,7 +34,7 @@ class FolderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Folder
-        fields = "__all__"
+        fields = '__all__'
 
 
 class ProjectSerializer(serializers.ModelSerializer):
@@ -50,7 +45,7 @@ class ProjectSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Project
-        fields = "__all__"
+        fields = '__all__'
 
     def get_is_overdue(self, obj):
         return obj.is_overdue()
