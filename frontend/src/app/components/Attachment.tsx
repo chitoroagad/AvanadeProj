@@ -9,7 +9,7 @@ const Attachment = () => {
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files && event.target.files[0];
     if (file) {
-      // Handle the file (e.g., store in state, upload to server, etc.)
+      // Handle the file
       console.log(file); // Example: Log to console
     }
   };

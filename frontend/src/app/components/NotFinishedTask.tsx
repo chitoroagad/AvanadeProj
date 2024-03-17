@@ -9,7 +9,7 @@ const NotFinishedTask = ({ initialText }: { initialText: any }) => {
     // Example function to fetch data from the backend
     const fetchNotFinishedText = async () => {
       try {
-        // Replace withbackend call
+        // Replace with backend call
         const response = await fetch('your-backend-endpoint');
         const data = await response.json();
         setNotFinishedText(data.newText);

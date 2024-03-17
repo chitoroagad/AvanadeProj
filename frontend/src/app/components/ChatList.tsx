@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from 'react';
 import ChatBtn from './ChatBtn';
-import ChatModal from './ChatModal'; // Make sure to create or import a Modal component
+import ChatModal from './ChatModal'; 
 
 const ChatList = () => {
   const [items, setItems] = useState([

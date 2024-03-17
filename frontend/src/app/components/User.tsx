@@ -7,7 +7,6 @@ const User = () => {
     const [username, setUsername] = useState("SampleUser");
     useEffect(() => {
         // Logic to fetch the username,
-        // for example, from an API or user context
         // For now, using a static value
         // setUsername(fetchedUsername);
       }, []);
