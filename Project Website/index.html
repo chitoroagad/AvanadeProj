@@ -85,14 +85,14 @@
                     <li><a href="requirements.html#moscow">MoSCoW List</a></li>
                   </ul>
                 </li>
-                  <li class="dropdown"><a href="javascript:void(0)">Research</a>
+                  <li class="dropdown"><a href="javascript:void(0)"onclick="window.open('research.html','_self')">Research</a>
                     <ul>
                       <li><a href="research.html#aiagents">AI Agents</a></li>
                       <li><a href="research.html#database">Vector Database</a></li>
                       <li><a href="research.html#othertech">Other Technologies</a></li>
                     </ul>
                   </li>
-                  <li class="dropdown"><a href="javascript:void(0)">HCI</a>
+                  <li class="dropdown"><a href="javascript:void(0)"onclick="window.open('hci.html','_self')">HCI</a>
                     <ul>
                       <li><a href="hci.html#principle">Design Principles</a></li>
                       <li><a href="hci.html#sketch">Sketch</a></li>
@@ -114,7 +114,7 @@
                   <li class="dropdown"><a href="javascript:void(0)">Evaluation</a>
 
                   </li>
-                  <li class="dropdown"><a href="javascript:void(0)">Appendix</a>
+                  <li class="dropdown"><a href="javascript:void(0)"onclick="window.open('appendix.html','_self')">Appendix</a>
 
                   </li>
                 </ul>
@@ -151,41 +151,43 @@
   </header>
   <!-- End Main Header --> 
   <!-- Main Slider -->
-  <section class="main-slider">
-    <div class="banner-carousel"> 
-      <!-- Swiper -->
-      <div class="swiper-wrapper">
-        <div class="swiper-slide slide" style="background-color: rgb(243, 165, 137);">
-          <div class="curve"></div>
-          <div class="auto-container">
-            <div class="content">
-              <div class="title"><h1 style="color:black">Welcome to JurisBud AI<br></h1></div>
-              <h3 style="color: black;">Not just another AI tool, <br> but a revolutionary legal assistant <br>designed specifically for the legal industry.</h3>
-              <div class="btn-box"> <a href="#" class="theme-btn btn-style-one"><span class="txt">Try Now!</span></a> </div>
-            </div>
-          </div>
-        </div>
-
-    </div>
-    <div class="bottom-img"> <img src="images/header-shape.png" alt=""> </div>
-  </section>
-  <!-- End Main Slider -->
-<!-- Start Abstract Section -->
-<section class="abstract-sec">
-  <div class="placeholder" id="abstract"></div>
-    <div class="container">
-      <div class="row justify-content-center">
-        <div class="col-lg-10 col-md-10">
-          <div class="sec-title">
-            <h2><span>Abstract</span></h2>
-            <p>
-              Abstract to rewrite
-            </p>
+<!-- Main Slider -->
+<section class="main-slider">
+  <div class="banner-carousel"> 
+    <!-- Swiper -->
+    <div class="swiper-wrapper">
+      <div class="swiper-slide slide" style="background-color: rgb(243, 165, 137);">
+        <div class="curve"></div>
+        <div class="auto-container">
+          <div class="content">
+            <div class="title"><h1 style="color:black">Welcome to <strong>JurisBud AI</strong><br></h1></div>
+            <h3 style="color: black;">Not just another AI tool, <br> but a revolutionary legal assistant <br>designed specifically for the legal industry.</h3>
+            <div class="btn-box"> <a href="#" class="theme-btn btn-style-one"><span class="txt">Try Now!</span></a> </div>
           </div>
         </div>
       </div>
+
+  </div>
+  <div class="bottom-img"> <img src="images/header-shape.png" style='position: relative;top:15px;height: 2%;' alt=""> </div>
+</section>
+<!-- End Main Slider -->
+<!-- Start Abstract Section -->
+<section class="abstract-sec">
+<div class="placeholder" id="abstract"></div>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8 col-md-10">
+        <div class="sec-title">
+          <h2><span>Abstract</span></h2>
+          <p>
+            To be written.
+          </p>
+        </div>
+      </div>
     </div>
-  </section>
+  </div>
+</section>
+
 <!-- End Abstract Section-->
 <!-- Start About Section -->
 <section class="about-sec">
@@ -198,25 +200,25 @@
     <div class="row">
       <div class="col-lg-4 col-md-4 col-sm-12">
         <div class="single-fun-fact">
-          <p>QA Paris</p>
+          <p>Tasks Generated</p>
           <h3>
-            <span class="odometer" data-count="750">00</span>
+            <span class="odometer" data-count="100">00</span>
             <span class="sign-icon">+</span>
           </h3>
         </div>
       </div>
       <div class="col-lg-4 col-md-4 col-sm-12">
         <div class="single-fun-fact">
-          <p>Experiment Documents</p>
+          <p>Experiment Cases</p>
           <h3>
-            <span class="odometer" data-count="515">00</span>
+            <span class="odometer" data-count="500">00</span>
             <span class="sign-icon">+</span>
           </h3>
         </div>
       </div>
       <div class="col-lg-4 col-md-4 col-sm-12">
         <div class="single-fun-fact">
-          <p>Conversation turns</p>
+          <p>Conversation Generated</p>
           <h3>
             <span class="odometer" data-count="20">00</span>
             <span class="sign-icon">+</span>
@@ -258,7 +260,7 @@
             <p>Have any questions in legal area? Just Ask! JurisBud AI can solve any human language question by using our great large language model.
               There will always be a whole team of AI agents at your service. </p>
             </p>
-            <a class="thm-btn" href="#">Read More</a> </div> <!--Do we actually need it?-->
+          </div>
         </div>        
     </div>
     <div class="col-lg-4 co-md-6">
@@ -272,22 +274,25 @@
             <p>JurisBud AI can help legal professionals, especially lawyers, to draft a legal contract to start your writing.
               It can also provide you some ideas and references to help you finish your work.</p>
             </p>
-            <a class="thm-btn" href="#">Read More</a> </div>
+          </div>
         </div>        
     </div>
     <div class="col-lg-4 co-md-6">
       <!-- Single Services Sec -->
         <div class="single-service-item">
           <div class="icon-holder mb-3">
-            <div class="service-item-icon-bg"> 03 </div>
+            <div class="service-item-icon-bg"> 02 </div>
           </div>
           <div class="service-item-text-holder">
             <h4>Tasks Generating</h4>
             <p>JurisBud AI uses the amazing concept of AI agents, which allow you to split your query into multiple tasks.
-              If you are unhappy with current strategy, you can always ask for a new one in just one click.
+              If you are unhappy with current strategy, you can always ask for a new one in just one click.</p>
             </p>
-            <a class="thm-btn" href="#">Read More</a> </div>
+          </div>
         </div>        
+    </div>
+    
+                
     </div>
   </div>
   </div>
@@ -349,21 +354,22 @@
     </div>
     <div class="col-lg-4 col-md-6">
       <!-- Single Our Team Area -->
-      <div class="our-team"> <img src="images/team-img2.jpg" alt="">
+      <div class="our-team"> <img src="images/Zhaoqi Chen.jpg" alt="">
         <h4><a href="#">Zhaoqi Chen</a></h4>
         <!-- <span class="designation bg-theme">Courier Person</span> -->
         <p>JurisBud AI Frontend Developer, Project website Developer, Development blog Writer, Database Researcher, Video Editor.</p>
         <ul class="our-team-profile">
-          <li><a href="#"><i class="fa fa-github"></i></a></li>
-          <li><a href="#"><i class="fa fa-envelope"></i></a></li>
-          <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-          <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+          <li><a href="https://github.com/JackChen2004" target="_blank"><i class="fa fa-github"></i></a></li>
+          <li><a href="mailto:zhaoqi.chen.22@ucl.ac.uk"><i class="fa fa-envelope"></i></a></li>
+          <li><a href="https://www.linkedin.com/in/zhaoqi-chen-004177294/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+          <li><a href="https://www.instagram.com/jack_c.z.q" target="_blank"><i class="fa fa-instagram"></i></a></li>
+          
         </ul>
       </div>      
     </div>
     <div class="col-lg-4 col-md-6">
       <!-- Single Our Team Area -->
-      <div class="our-team"> <img src="images/team-img3.jpg" alt="">
+      <div class="our-team"> <img src="images/Faisal.jpeg" alt="">
         <h4><a href="#">Faisal Hassan</a></h4>
         <!-- <span class="designation bg-theme">Courier Person</span> -->
         <p>JurisBud AI Backend Developer, Text extraction Researcher, Client Liaison.</p>
@@ -372,6 +378,7 @@
           <li><a href="#"><i class="fa fa-envelope"></i></a></li>
           <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
           <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+          
         </ul>
       </div>      
     </div>
@@ -464,7 +471,7 @@
                 <li><a href="impl.html">implementation</a></li>
                 <li><a href="test.html">Testing</a></li>
                 <li><a href="eval.html">evaluation</a></li>
-                <li><a href="append.html">Appendix</a></li>
+                <li><a href="appendix.html">Appendix</a></li>
               </ul>
             </div>
           </div>

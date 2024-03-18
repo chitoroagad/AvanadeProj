@@ -6356,9 +6356,6 @@ footer .widget_title {
   text-align: justify;
 }
 
-.python p img {
-  margin: 5px 15px 5px 0;
-}
 
 .bot p img {
   margin-right: 10px;
@@ -6370,13 +6367,7 @@ footer .widget_title {
   margin-top: 10px;
 }
 
-.python p {
-  text-align: justify;
-}
 
-.python h5 {
-  text-align: right;
-}
 
 .tab-content h5 {
   width: auto;
