@@ -298,7 +298,7 @@ manager_executor = RunnableWithMessageHistory(
 
 class LLMCaller:
     @staticmethod
-    async def call_llm(input: Dict[str, str]):
+    def call_llm(input: Dict[str, str]):
         """
         Calls manager to perform task.
         Returns AsyncIterator of events.

@@ -19,7 +19,7 @@ services:
       - "8080:8080"
     depends_on:
       - chroma
-    command: python /src/manage.py runserver
+    command: python /src/manage.py runserver 127.0.0.1:8080
 
   frontend:
     build:

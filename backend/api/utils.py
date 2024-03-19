@@ -34,7 +34,7 @@ def preprocess_text(text):
 async def ask_gpt(prompt):
     try:
         iterator = LLMCaller.call_llm(prompt)
-        for event in iterator:
+        async for event in iterator:
             if event["event"] == "on_chain_end":
                 return (event["data"].get("output")["output"],)
     except:
