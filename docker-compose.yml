@@ -14,24 +14,29 @@ services:
   backend:
     build: ./backend
     volumes:
-      - ./backend/:/backend
+      - ./backend/:/src
     ports:
       - "8080:8080"
     depends_on:
       - chroma
-    command: python /backend/manage.py runserver
+    command: python /src/manage.py runserver
 
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend
+      target: dev # dev for development build, production for production build
+      dockerfile: Dockerfile
     volumes:
-      - ./frontend/src/:/app/src
-      - ./frontend/src/public/:/app/public
+      - ./frontend:/app
+      - /app/node_modules
+      - /app/.next
     restart: always
     depends_on:
       - chroma
+      - backend
     ports:
       - "3000:3000"
-    command: npm run start
+    command: npm run dev
 
 volumes:
   data:

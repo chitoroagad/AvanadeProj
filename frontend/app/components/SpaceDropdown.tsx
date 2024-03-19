@@ -7,10 +7,11 @@ const SpaceDropDown = () => {
     const [chatHistory, setChatHistory] = useState<Array<{ href: string; label: string; img: string; }>>([]);
 
     useEffect(() => {
-        // Fetch chat history
+        // Fetch chat history or compute it
         const history = [
             { href: '/space/1', label: 'Space 1', img:'./logo.png' },
             { href: '/space/2', label: 'Space 2', img:'./logo.png' },
+            // More chats...
         ];
 
         setChatHistory(history);

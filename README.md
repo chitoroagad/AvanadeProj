@@ -1,4 +1,5 @@
 # COMP0016 2023-2024 Team 5: JurisBud AI
+
 Add project abstract here
 
 ## Quickstart(Locally)
@@ -10,6 +11,10 @@ Add project abstract here
 - Have Docker Desktop installed.
 - Make sure Docker service is running
 - Enter frontend/src directory and run `npm ci`
+- Have a .env file in backend directory containing:
+  - `AZURE_OPENAI_API_KEY` or `OPENAI_API_KEY`
+  - `AZURE_OPENAI_ENDPOINT` or none if using openai
+  - `OPENAI_API_VERSION=2023-03-15-preview`
 
 #### Commands
 
@@ -19,7 +24,7 @@ Add project abstract here
 
 <br>
 
-### Run JurisBud AI Seperately (Frontend, Backend, Large-Language Model(LLM))
+### Run JurisBud AI Separately (Frontend, Backend, Large-Language Model(LLM))
 
 #### Run Frontend
 
@@ -45,6 +50,8 @@ npm run dev
 cd backend
 python manage.py runserver
 ```
+
+# DOESN'T WORK ANYMORE, NEEDS TO BE UPDATED below
 
 #### Run LLM
 

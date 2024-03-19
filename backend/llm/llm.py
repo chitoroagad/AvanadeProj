@@ -1,7 +1,7 @@
 import asyncio
 import json
 from time import sleep
-from typing import List
+from typing import Dict, List
 
 import chromadb
 from chromadb.config import Settings
@@ -194,7 +194,7 @@ manager_prompt = ChatPromptTemplate.from_messages(
 
 embeddings_function = AzureOpenAIEmbeddings(azure_deployment="ada")
 
-loader = CSVLoader("/llm/USSupremeCourt.csv", encoding="iso-8859-1")
+loader = CSVLoader("/src/llm/USSupremeCourt.csv", encoding="iso-8859-1")
 docs = loader.load()
 documents = RecursiveCharacterTextSplitter(
     chunk_size=1000, chunk_overlap=200
@@ -296,68 +296,58 @@ manager_executor = RunnableWithMessageHistory(
 #     return out["output"]
 
 
-async def main():
-    # async for chunk in manager_executor.astream(
-    #     {
-    #         "input": "reserach important cases regarding divorce where the husband is rewarded alimony"
-    #     },
-    #     config={"configurable": {"session_id": "1"}},
-    # ):
-    #     # Agent Action
-    #     if "actions" in chunk:
-    #         for action in chunk["actions"]:
-    #             print(f"Calling Tool: `{action.tool}` with input `{action.tool_input}`")
-    #     # Observation
-    #     elif "steps" in chunk:
-    #         for step in chunk["steps"]:
-    #             print(f"Tool Result: `{step.observation}`")
-    #     # Final result
-    #     elif "output" in chunk:
-    #         print(f'Final Output: {chunk["output"]}')
-    #     else:
-    #         raise ValueError()
-    #     print("---")
+class LLMCaller:
+    @staticmethod
+    async def call_llm(input: Dict[str, str]):
+        """
+        Calls manager to perform task.
+        Returns AsyncIterator of events.
+        """
 
-    async for event in manager_executor.astream_events(
-        {"input": "Write a template employment contract for a restaurant server"},
-        config={"configurable": {"session_id": "1"}},
-        version="v1",
-    ):
-        kind = event["event"]
-        if kind == "on_chain_start":
-            if (
-                event["name"] == "Agent"
-            ):  # Was assigned when creating the agent with `.with_config({"run_name": "Agent"})`
-                print(
-                    f"Starting agent: {event['name']} with input: {event['data'].get('input')}"
-                )
-        elif kind == "on_chain_end":
-            if (
-                event["name"] == "Agent"
-            ):  # Was assigned when creating the agent with `.with_config({"run_name": "Agent"})`
-                print()
-                print("--")
-                print(
-                    f"Done agent: {event['name']} with output: {event['data'].get('output')['output']}"
-                )
-        if kind == "on_chat_model_stream":
-            content = event["data"]["chunk"].content
-            if content:
-                # Empty content in the context of OpenAI means
-                # that the model is asking for a tool to be invoked.
-                # So we only print non-empty content
-                print(content, end="|")
-        elif kind == "on_tool_start":
-            print("--")
-            print(
-                f"Starting tool: {event['name']} with inputs: {event['data'].get('input')}"
-            )
-        elif kind == "on_tool_end":
-            print(f"Done tool: {event['name']}")
-            print(f"Tool output was: {event['data'].get('output')}")
-            print("--")
+        # async for event in manager_executor.astream_events(
+        #     input,
+        #     config={"configurable": {"session_id": "1"}},
+        #     version="v1",
+        # ):
+        #     kind = event["event"]
+        #     if kind == "on_chain_start":
+        #         if (
+        #             event["name"] == "Agent"
+        #         ):  # Was assigned when creating the agent with `.with_config({"run_name": "Agent"})`
+        #             print(
+        #                 f"Starting agent: {event['name']} with input: {event['data'].get('input')}"
+        #             )
+        #     elif kind == "on_chain_end":
+        #         if (
+        #             event["name"] == "Agent"
+        #         ):  # Was assigned when creating the agent with `.with_config({"run_name": "Agent"})`
+        #             print()
+        #             print("--")
+        #             print(
+        #                 f"Done agent: {event['name']} with output: {event['data'].get('output')['output']}"
+        #             )
+        #     if kind == "on_chat_model_stream":
+        #         content = event["data"]["chunk"].content
+        #         if content:
+        #             # Empty content in the context of OpenAI means
+        #             # that the model is asking for a tool to be invoked.
+        #             # So we only print non-empty content
+        #             print(content, end="|")
+        #     elif kind == "on_tool_start":
+        #         print("--")
+        #         print(
+        #             f"Starting tool: {event['name']} with inputs: {event['data'].get('input')}"
+        #         )
+        #     elif kind == "on_tool_end":
+        #         print(f"Done tool: {event['name']}")
+        #         print(f"Tool output was: {event['data'].get('output')}")
+        #         print("--")
+        # return "fin"
+        return manager_executor.astream_events(
+            input, config={"configurable": {"session_id": "1"}}, version="v1"
+        )
 
 
 if __name__ == "__main__":
     print("Starting main")
-    asyncio.run(main())
+    asyncio.run(call_llm({"input": "Find me some cases invloving the 2nd amendment."}))

@@ -127,6 +127,31 @@
   top: 32vw;
   left: 60vh;
 }
+/* .finishedTask{
+    position:absolute;
+    left:70vw;
+    top: 52vh;
+}
+
+.alterTask{
+    position:absolute;
+    left:70vw;
+    top:57vh;
+}
+
+.notFinishedTask{
+    position:absolute;
+    left:70vw;
+    top:62vh;
+}
+
+.notConfirmedTask{
+    position:absolute;
+    left:70vw;
+    top:67vh;
+}
+
+*/
 
 .error {
   width: 25px;
