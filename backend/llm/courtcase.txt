@@ -1,0 +1,82 @@
+Press Summary
+6 March 2024
+Merticariu (Appellant) v Judecatoria Arad, Romania
+(Respondent)
+[2024] UKSC 10
+On appeal from [2022] EWHC 1507 (Admin)
+Justices: Lord Hodge (Deputy President), Lord Sales, Lord Burrows, Lord
+Stephens, Lord Burnett
+Background to the Appeal
+The appellant was arrested in England on 25 September 2019 pursuant to a European
+Arrest Warrant (“EAW”) issued by the respondent (“the requesting judicial
+authority”). The EAW was issued on the basis of a sentence imposed on the appellant
+by a Romanian court on 11 April 2019 for burglary. The question of whether to
+extradite the appellant pursuant to the EAW was determined by a district judge by
+reference to the questions set out in section 20 of the Extradition Act 2003 (the “Act”)
+read in conformity with the 2002 Council Framework Decision 2002/584/JHA of 13
+June 2002, as amended by Council Framework Decision 2009/299/JHA of 26
+February 2009 (the “Amended Framework Decision”). The district judge found that
+the appellant had not been present at trial and had not deliberately absented himself
+from trial.
+The district judge was therefore required by section 20(5) of the Act to ask whether
+the appellant “would be entitled to a retrial or (on appeal) to a review amounting to a
+retrial” on return to Romania. The district judge concluded that the appellant had a
+right to a retrial in Romania even though he was required to make an application for a
+retrial in Romania and the success of that application was contingent on the appellant
+demonstrating that he had not deliberately absented himself from trial. The district
+judge therefore ordered the appellant’s extradition.
+The High Court dismissed the appellant’s appeal but certified the following points as
+points of law of general public importance for the Supreme Court to determine: “In a
+case where the appropriate judge has decided the questions in section 20(1) and (3) of
+the Extradition Act 2003 in the negative, can the appropriate judge answer the
+question in section 20(5) in the affirmative if (a) the law of the requesting state confers
+a right to retrial which depends on a finding by a judicial authority of that state as to
+whether the requested person was deliberately absent from his trial; and (b) it is 
+not possible to say that a finding of deliberate absence is ‘theoretical’ or ‘so remote
+that it can be discounted’? If so, in what circumstances?” The Supreme Court granted
+permission for the appellant to appeal on these points of law.
+Judgment
+The Supreme Court unanimously allows the appeal. It holds that to establish that a
+requested person would be entitled to a retrial or (on appeal) to a review amounting to
+a retrial on return to the requesting state the entitlement must not be dependent on any
+contingency, except for purely procedural matters such as making an application in
+the manner and in the time prescribed in the requesting state. Lord Stephens and Lord
+Burnett give the lead judgment, with which Lord Hodge, Lord Sales and Lord
+Burrows agree.
+Reasons for the Judgment
+The short point in this appeal concerns the proper construction of section 20(5) of the
+Act.
+The Supreme Court holds that the natural and ordinary meaning of the words in
+section 20(5) of the Act are plain [51]. The judge must decide whether the requested
+person is “entitled” to a retrial or (on appeal) to a review amounting to a retrial.
+Section 20(5) does not require the judge to decide a different question, namely
+whether the requested person is “entitled to apply for a retrial” [51]. An entitlement to
+a retrial cannot be contingent on the court in the requesting state making a factual
+finding that the requested person was not present at or was not deliberately absent
+from their trial [51].
+The Supreme Court considers that a requested person may have the right to a retrial
+even if the domestic law of the requesting state requires him to take “procedural steps”
+to invoke the right [52]. But if the entitlement to a retrial is contingent on a finding
+that the requested person was not deliberately absent from his trial, the proceedings
+leading to that finding would not naturally be referred to as a “procedural step”.
+Rather, those proceedings in the requesting state should be regarded as involving a
+decision on a substantive issue [52]. The Supreme Court’s interpretation of section
+20(5) of the Act is supported by the wording in article 4a(1) of the Amended
+Framework Decision which replaced the phrase “an opportunity to apply for retrial” in
+the 2002 Council Framework with the phrase “right to a retrial” [53]. It is also
+consistent with the scope of the right to be present at trial under article 6 of the
+Convention as interpreted by the European Court of Human Rights [54].
+The Supreme Court holds that the appropriate judge cannot answer section 20(5) of
+the 2003 Act in the affirmative if the law of the requesting state confers a right to
+retrial which depends on a finding by a judicial authority in the requesting state as to
+whether the requested person was deliberately absent from his trial [63]. In this case,
+neither the EAW nor the further information provided by the requesting judicial
+authority confirmed that the appellant was entitled to a retrial [65]. The district judge
+in this case should therefore have answered section 20(5) in the negative.
+Accordingly, the Supreme Court quashes the district judge’s order and orders the
+appellant’s discharge [68].
+References in square brackets are to paragraphs in the judgment.
+NOTE:
+This summary is provided to assist in understanding the Court’s decision. It does not form part
+of the reasons for the decision. The full judgment of the Court is the only authoritative
+document. Judgments are public documents and are available at: Decided cases - The Supreme 

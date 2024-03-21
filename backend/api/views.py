@@ -1,5 +1,5 @@
 # Create your views here.
-
+import asyncio
 import io
 
 from django.conf import settings
@@ -51,21 +51,43 @@ def sign_up(request, format=None):
 @api_view(["POST"])
 @authentication_classes([SessionAuthentication, TokenAuthentication])
 @permission_classes([IsAuthenticated])
-async def new_chat(request, format=None):
+def new_chat(request, format=None):
     data = request.data
-    print("data>>>", data)
 
-    data["response"] = ask_gpt({"input", data["prompt"]})
+    llm_ans = ask_gpt({"input": data["prompt"]})
+
+    data["response"] = llm_ans["output"]
+    data["tasks"] = llm_ans["intermediate_steps"][0]
+
+    print("data1>>>", data)
+    print("data2>>>", data["tasks"])
+
+    try:
+        if data["tasks"][0].tool.strip() == "TaskListGenerator":
+            data["tasks"] = data["tasks"][1].split(",\n")
+        else:
+            data["tasks"] = None
+    except Exception as e:
+        print("error>>>", e)
+        data["tasks"] = None
+
+    print("data>>>", data)
 
     if not data["response"]:
         return Response(
-            {"detail": "gpt model not responding"}, status=status.HTTP_400_BAD_REQUEST
+            {"detail": "model not responding"}, status=status.HTTP_400_BAD_REQUEST
         )
+
     data["title"] = data["prompt"]
     serializer = ChatSerializer(data=data)
     if serializer.is_valid():
         serializer.save(author=request.user)
-        return Response({"chat": serializer.data}, status=status.HTTP_201_CREATED)
+        return Response(
+            {"chat": data["response"], "tasks": data["tasks"]},
+            status=status.HTTP_201_CREATED,
+            content_type="application/json",
+        )
+    print("serializer.errors>>>", serializer.errors)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 

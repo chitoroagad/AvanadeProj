@@ -36,7 +36,7 @@ class HttpClient {
 }
 
 const apiClient = new HttpClient({
-	baseUrl: "http://backend:8080/api",
+	baseUrl: "http://localhost:8080/api",
 	defaultOpts: {
 		headers: {
 			"Content-Type": "application/json",

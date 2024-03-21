@@ -1,3 +1,4 @@
+import asyncio
 import io
 import re
 
@@ -31,14 +32,27 @@ def preprocess_text(text):
     return text
 
 
-async def ask_gpt(prompt):
+def call_coroutine(coroutine):
+    """Esstial for async functions"""
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    result = loop.run_until_complete(coroutine)
+    loop.close()
+    return result
+
+
+def ask_gpt(prompt):
     try:
-        iterator = LLMCaller.call_llm(prompt)
-        async for event in iterator:
-            if event["event"] == "on_chain_end":
-                return (event["data"].get("output")["output"],)
+        return LLMCaller.call_llm(prompt)
     except:
-        return ""
+        raise exceptions.ValidationError(
+            "Failed to generate response. Please try again."
+        )
+
+
+def ask_gpt_(prompt):
+    """Uses OpenAI's model to generate a response to the given prompt."""
+    return call_coroutine(ask_gpt(prompt))
 
 
 def clean_and_extract_important_text(text):

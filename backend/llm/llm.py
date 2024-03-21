@@ -13,7 +13,7 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.tools import StructuredTool
 from langchain.tools.retriever import create_retriever_tool
 from langchain_community.chat_message_histories import ChatMessageHistory
-from langchain_community.document_loaders import CSVLoader
+from langchain_community.document_loaders import CSVLoader, TextLoader
 from langchain_community.vectorstores import Chroma
 from langchain_core.agents import AgentActionMessageLog, AgentFinish
 from langchain_core.callbacks import Callbacks
@@ -55,7 +55,7 @@ def parse_task_list(output):
 
 
 # llm tool to execute a task
-async def task_list_executor_fun(task: str, callbacks: Callbacks) -> str:
+def task_list_executor_fun(task: str, callbacks: Callbacks) -> str:
 
     solver_llm = llm.bind_functions(
         [main_database_retriever_tool, results_database_retriever_tool]
@@ -95,29 +95,34 @@ async def task_list_executor_fun(task: str, callbacks: Callbacks) -> str:
     solver_executor = AgentExecutor(
         agent=solver_agent,
         tools=[main_database_retriever_tool, results_database_retriever_tool],
-        verbose=True,
+        verbose=False,
         return_intermediate_steps=True,
     )
 
-    out = await solver_executor.ainvoke({"input": task})
+    # out = await solver_executor.ainvoke({"input": task})
+    out = solver_executor.invoke({"input": task})
     return out["output"]
 
 
 task_list_executor = StructuredTool.from_function(
-    coroutine=task_list_executor_fun,
+    # coroutine=task_list_executor_fun,
+    func=task_list_executor_fun,
     name="TaskExecutor",
-    description="ASYNC. Executes a single task using an agent.",
+    # description="ASYNC. Executes a single task using an agent.",
+    description="Executes a single task using an agent.",
 )
 
 
 # llm tool to generate a list of tasks
-async def task_list_generator_fun(objective: str):
-    out = await organiser_executor.ainvoke({"input": objective})
+def task_list_generator_fun(objective: str):
+    # out = await organiser_executor.ainvoke({"input": objective})
+    out = organiser_executor.invoke({"input": objective})
     return ",\n".join(out["tasks_list"])
 
 
 task_list_generator = StructuredTool.from_function(
-    coroutine=task_list_generator_fun,
+    # coroutine=task_list_generator_fun,
+    func=task_list_generator_fun,
     name="TaskListGenerator",
     description="AYSNC. Generates a list of tasks from an objective.",
 )
@@ -129,7 +134,7 @@ chroma_client = None
 for _ in range(15):
     try:
         chroma_client = chromadb.HttpClient(
-            host="chroma", port="8000", settings=Settings(allow_reset=True)
+            host="localhost", port="8000", settings=Settings(allow_reset=True)
         )
     except Exception:
         sleep(1)
@@ -194,7 +199,8 @@ manager_prompt = ChatPromptTemplate.from_messages(
 
 embeddings_function = AzureOpenAIEmbeddings(azure_deployment="ada")
 
-loader = CSVLoader("/src/llm/USSupremeCourt.csv", encoding="iso-8859-1")
+# loader = CSVLoader("llm/USSupremeCourt.csv", encoding="iso-8859-1")
+loader = TextLoader("llm/courtcase.txt")
 docs = loader.load()
 documents = RecursiveCharacterTextSplitter(
     chunk_size=1000, chunk_overlap=200
@@ -216,7 +222,7 @@ results_database_retriever_tool = create_retriever_tool(
 )
 
 
-llm = AzureChatOpenAI(azure_deployment="dep", temperature=0, streaming=True)
+llm = AzureChatOpenAI(azure_deployment="dep", temperature=0, streaming=False)
 organiser_llm = llm.bind_functions([main_database_retriever_tool, OutputTasks])
 solver_llm = llm.bind_functions(
     [main_database_retriever_tool, results_database_retriever_tool]
@@ -261,27 +267,27 @@ solver_agent = (
 
 organiser_executor = AgentExecutor(
     agent=organiser_agent, tools=[main_database_retriever_tool], verbose=False
-)
+).with_config({"run_name": "Organiser"})
 
 solver_executor = AgentExecutor(
     agent=solver_agent,
     tools=[main_database_retriever_tool, results_database_retriever_tool],
-    verbose=True,
+    verbose=False,
     return_intermediate_steps=True,
-)
+).with_config({"run_name": "Solver"})
 
 manager_executor = AgentExecutor(
     agent=manager_agent,
     tools=[task_list_executor, task_list_generator],
-    verbose=True,
+    verbose=False,
     return_intermediate_steps=True,
-).with_config({"run_name": "Agent"})
+).with_config({"run_name": "Manager"})
 
 message_history = ChatMessageHistory()
 
 manager_executor = RunnableWithMessageHistory(
-    manager_executor,
-    lambda session_id: message_history,
+    runnable=manager_executor,
+    get_session_history=lambda session_id: message_history,
     input_messages_key="input",
     history_messages_key="chat_history",
 )
@@ -343,11 +349,40 @@ class LLMCaller:
         #         print(f"Tool output was: {event['data'].get('output')}")
         #         print("--")
         # return "fin"
-        return manager_executor.astream_events(
-            input, config={"configurable": {"session_id": "1"}}, version="v1"
+        out = manager_executor.invoke(
+            input, config={"configurable": {"session_id": "1"}}
         )
+        return out
 
 
 if __name__ == "__main__":
     print("Starting main")
-    asyncio.run(call_llm({"input": "Find me some cases invloving the 2nd amendment."}))
+    out = LLMCaller.call_llm(
+        {
+            "input": "What are some of the reasons for judgement in the case of Merticariu (Appellant) v Judecatoria Arad, Romania(Respondent)"
+        }
+    )
+    print(out)
+
+# data = {
+#     "prompt": "Title: What are some of the reasons for judgement in the case of Merticariu (Appellant) v Judecatoria Arad, Romania(Respondent)",
+#     "response": 'The reasons for the judgement in the case of Merticariu (Appellant) v Judecatoria Arad, Romania (Respondent) are as follows:\nThe Supreme Court unanimously allowed the appeal based on the proper construction of section 20(5) of the Act. The judgment holds that the requested person must be "entitled" to a retrial or review amounting to a retrial without dependency on any contingency, except for purely procedural matters. The appropriate judge cannot answer section 20(5) in the affirmative if the law of the requesting state confers a right to retrial that depends on a finding by a judicial authority in the requesting state as to whether the requested person was deliberately absent from the trial. As a result, the district judge\'s order was quashed, and the appellant was discharged.',
+#     "tasks": AgentActionMessageLog(
+#         tool="TaskListGenerator",
+#         tool_input={
+#             "objective": "List the reasons for judgement in the case of Merticariu (Appellant) v Judecatoria Arad, Romania (Respondent)"
+#         },
+#         log="",
+#         message_log=[
+#             AIMessageChunk(
+#                 content="",
+#                 additional_kwargs={
+#                     "function_call": {
+#                         "arguments": '{"objective":"List the reasons for judgement in the case of Merticariu (Appellant) v Judecatoria Arad, Romania (Respondent)"}',
+#                         "name": "TaskListGenerator",
+#                     }
+#                 },
+#             )
+#         ],
+#     ),
+# }
