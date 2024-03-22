@@ -5,9 +5,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-<title>COMP0016 Team 5 -- JurisBud AI</title>
-<meta name="description" content="Transcrew | Courier & Delivery Service HTML Template" />
-<meta name="keywords" content="cargo, courier, delivery, freight, logistics, mover, moving company, packaging, responsive, shipment, shipping, transport, warehouse" />
+<title>COMP0016 Team 5 -- JurisBUD AI</title>
+
 <!-- Plugins CSS -->
 <link href="css/plugins.css" rel="stylesheet" >
 <!-- Custom CSS -->
@@ -32,7 +31,7 @@
       <div class="auto-container">
         <div class="inner-container clearfix">
           <div class="top-left">
-            <div class="text">COMP0016 Team 5 -- JurisBud AI </div>
+            <div class="text">COMP0016 Team 5 -- JurisBUD AI </div>
           </div>
           <div class="top-right">
             <ul class="social-icons">
@@ -99,7 +98,7 @@
                       <li><a href="hci.html#proto">Prototype</a></li>
                     </ul>
                   </li>
-                  <li class="dropdown"><a href="javascript:void(0)">System Design</a>
+                  <li class="dropdown"><a href="javascript:void(0)"onclick="window.open('system.html','_self')">System Design</a>
                     <ul>
                       <li><a href="blog.html">Blog</a></li>
                       <li><a href="blog-detail.html">Blog Detail</a></li>
@@ -108,10 +107,10 @@
                   <li class="dropdown"><a href="javascript:void(0)">Impl.</a>
 
                   </li>
-                  <li class="dropdown"><a href="javascript:void(0)">Testing</a>
+                  <li class="dropdown"><a href="javascript:void(0)"onclick="window.open('test.html','_self')">Testing</a>
 
                   </li>
-                  <li class="dropdown"><a href="javascript:void(0)">Evaluation</a>
+                  <li class="dropdown"><a href="javascript:void(0)"onclick="window.open('eval.html','_self')">Evaluation</a>
 
                   </li>
                   <li class="dropdown"><a href="javascript:void(0)"onclick="window.open('appendix.html','_self')">Appendix</a>
@@ -178,19 +177,49 @@
               <div class="tabs-custom tabs-horizontal tabs-line" id="tabs-1">
                 <!-- Nav tabs-->
                 <!-- Tab panes-->
-                <div class="tab-content">
-                  <h5>Tag</h5>
-                  <p>
-                    Text
+                <div>
+                  <p>In the researching stage for AI Agents system, we have searched a number of 
+                    open-sourced systems online. Based on them, we developed our own AI Agents system
+                    using LangChain. The following list of models are what we have researched online.
                   </p>
-                  <div class="list-content">
-                    <ul class="list-marked">
-                      <li>List</li>
-                    </ul>
-                  </div>
+                </div>
+                <div class="tab-content">
+                  <h5>HuggingGPT</h5>
+                  <p>
+                    HuggingGPT, a framework that leverages LLMs (e.g., ChatGPT) to connect various AI models in Hugging Face community to solve AI tasks.(1) 
+                    Specifically, ChatGPT is used to conduct task planning when receiving a user request, select models according to their function descriptions available in Hugging Face, 
+                    execute each subtask with the selected AI model, and summarize the response according to the execution results. This is an example of using
+                    large language models to build a chatbot system.
+                    <br><img src="images/HuggingGPT.png" width="100%" />
+
+                   
+
+                  </p>
+                </div>
+                <div class="tab-content">
+                  <h5>AutoGen</h5>
+                  <p>
+                    AutoGen is firstly introduced by our client Mr. Fergus Kidd. It is a multi-agent conversation framework
+                    made by Microsoft as a high-level abstraction. With AutoGen, users can build LLM workflows with customizable agents
+                    that could be solved different tasks based on their given responsibilities.(2)
+                    <br><img src="images/AutoGen.png" width="100%" />
+                    
+                  </p>
+                </div>
+                <div class="tab-content">
+                  <h5>BabyAGI</h5>
+                  <p>
+                    BabyAGI is also a AI Agents LLM but with simpler structure. The key concept it introduced is task generated.
+                    The process behind Baby AGI is that it will create a task using predefined objectives that are based on the outcome out a previous task.
+                    By default, it has Execution Agent, Task Creation Agent and Prioritization Agent that are worked for a basic LLM workflow.(3)
+                    This system is exploring and demonstrating to us the potential of large language models, such as GPT and how it can autonomously perform tasks.
+                    <br><img src="images/BabyAGI.png" width="100%" />
+                    
+                  </p>
                 </div>
               </div>
             </div>
+            <div>
           </div>
           <div class="container">
             <div class="row justify-content-center">
@@ -202,15 +231,19 @@
                   <!-- Nav tabs-->
                   <!-- Tab panes-->
                   <div class="tab-content">
-                    <h5>Tag</h5>
+                    <h5>What's Vector Database?</h5>
                     <p>
-                      Text
+                      A vector database is a type of database that stores data as high-dimensional vectors, which are mathematical representations of features or attributes.(4) It transfer everything in the database to a series of vectors generated by embedding function.
+                      
                     </p>
-                    <div class="list-content">
-                      <ul class="list-marked">
-                        <li>List</li>
-                      </ul>
-                    </div>
+                  </div>
+                  <div class="tab-content">
+                    <h5>ChromaDB</h5>
+                    <p>ChromaDB is an open-source vector database designed specifically for LLM applications. ChromaDB offers both a user-friendly API and impressive performance, making it a great choice for many embedding applications.
+                      One amazing feature of ChromaDB is that it can actually filter queries using metadata, it accelerates the process of document processing dramatically especially when users need to interact with documents in the database directly.
+                      (5)
+                      <br><img src="images/chroma.png" width="100%" />
+                    </p>
                   </div>
                 </div>
               </div>
@@ -238,49 +271,49 @@
                   </li>
                   <li class="nav-item" role="presentation">
                     <c class="nav-link" href="#tabs-2-3" data-toggle="tab"
+                      ><span>AI System</span></c
+                    >
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <c class="nav-link" href="#tabs-2-4" data-toggle="tab"
                       ><span>Languages</span></c
                     >
                   </li>
+                  <br>
                 </ul>
+                
                 <!-- Tab panes-->
                 <div class="tab-content">
                   <div class="tab-pane fade show active" id="tabs-2-1">
                     <div class="nextjs">
                       <h5>Next.js</h5>
                       <p>
-                        <img src="images/nextjs.png" align="right" width="15%" />
-                        Next.js is an open-source web development framework created by the private company Vercel providing React-based web applications with server-side rendering and static website generation, where React is a free and open-source front-end JavaScript library for building user interfaces based on components. However, in the usage of React, developers find some strategic issues. For example, when develop a website using React,  all components of the website need to be rendered locally. On the contrary, Next.js let most of components be rendered on server-side, which decrease local computers’ workload dramatically to improve the performance for users.
+                        <img src="images/nextjs.png" align="right" width="20%" />
+                        Next.js is an open-source web development framework created by the private company Vercel providing React-based web applications with server-side rendering and static website generation,(6) where React is a free and open-source front-end JavaScript library for building user interfaces based on components. However, in the usage of React, developers find some strategic issues.(7) For example, when develop a website using React,  all components of the website need to be rendered locally. On the contrary, Next.js let most of components be rendered on server-side, which decrease local computers’ workload dramatically to improve the performance for users.
                       </p>
-                      <div class="list-content">
-                        <ul class="list-marked">
-                          <li>
-                            List
-                          </li>
-                        </ul>
-                      </div>
                       <br>
                     </div>
                     <div class="tailwind">
                       <h5>Tailwind CSS</h5>
                       <p>
-                        <img src="images/tailwindcss_logo_icon_170649.png" align="right" width="15%" />
-                        Tailwind CSS is an open-source utility-first CSS framework enables rapid styling. It can simplify traditional CSS code and especially working well with Daisy UI. 
+                        <img src="images/tailwindcss_logo_icon_170649.png" align="right" width="20%" />
+                        Tailwind CSS is an open-source utility-first CSS framework enables rapid styling. It can simplify traditional CSS code and especially working well with Daisy UI.(8) 
                       </p>
                       <br>
                     </div>
                     <div class="cssmodules">
                       <h5>CSS Modules</h5>
                       <p>
-                        <img src="images/css-modules-logo.png" align="right" width="15%" />
-                        CSS Modules locally scope CSS by automatically creating a unique class name. This allows developers to use the same class name in different files without worrying about collisions. This behavior makes CSS Modules the ideal way to include component-level CSS. Next.js has built in support for it and it could make the code more well-strctured.
+                        <img src="images/css-modules-logo.png" align="right" width="20%" />
+                        CSS Modules locally scope CSS by automatically creating a unique class name.(9) This allows developers to use the same class name in different files without worrying about collisions. This behavior makes CSS Modules the ideal way to include component-level CSS. Next.js has built in support for it and it could make the code more well-strctured.
                       </p>
                       <br>
                     </div>
                     <div class="daisyui">
                       <h5>Daisy UI</h5>
                       <p>
-                        <img src="images/daisyui-logotype.svg" align="right" width="15%" />
-                        Daisy UI is Tailwind CSS plugin which add a number of component classes that could be used more directly. There are a bunch of built-in code to decorate website components It also introduces class names for Tailwind so a lot of duplication of same styling could be avoided.
+                        <img src="images/daisyui-logotype.svg" align="right" width="20%" />
+                        Daisy UI is Tailwind CSS plugin which add a number of component classes that could be used more directly. There are a bunch of built-in code to decorate website components It also introduces class names for Tailwind so a lot of duplication of same styling could be avoided.(10)
                       </p>
                       <br>
                       <b><a href="#othertech">Next→Backend</a></b>
@@ -290,35 +323,63 @@
                   <div class="tab-pane fade" id="tabs-2-2">
                     <div class="django">
                       <h5>django</h5>
-                      <p>To be written</p>
+                      
+                      <p>
+                        <img src="images/python-django.png" align="right" width="20%" />
+                        Django is a high-level Python web framework that encourages rapid development and clean, pragmatic design.(11)
+                        it typically groups the code that handles each of these steps into separate files. Django framework makes the built
+                        web app more complete, versatile, secure, scalable, maintainable and portable.
+
+                        
+                      </p>
                       <br>
                     </div>
                     <div class="pdftext">
                       <h5>PDF to Text</h5>
                       <p>
-                        To be written
+                        <img src="images/pdfminer.jpeg" align="right" width="20%" />
+                        To extract texts from PDF files, we are using a Python package called pdfminer. It is a powerful tool that can extract infomation from PDFs in any format including
+                        text, images, tables etc. It also works for different font types and multiple languages.(12)
+
+                        
+        
                       </p>
+                      <br>
+                      <b><a href="#othertech">Next→AI System</a></b>
+                    </div>
+                  </div>
+                  <div class="tab-pane fade" id="tabs-2-3">
+                    <div class="langchain">
+                      <h5>LangChain</h5>
+                      <p>
+                        <img src="images/langchain.png" align="right" width="20%" />
+                        LangChain is a framework for developing applications powered by language models. It enables applications that are context-aware and reasonable.(13)
+                        LangChain serves as a generic interface for nearly any LLM, providing a centralized development environment to build LLM applications and integrate them with external data sources and software workflows.(14)
+                        It can facilitate most use cases for LLMs and natural language processing (NLP), like chatbots, intelligent search, question-answering, summarization services or even virtual agents capable of robotic process automation.
+                      
+                        </p>
                       <br>
                       <b><a href="#othertech">Next→Languages</a></b>
                     </div>
                   </div>
-                  <div class="tab-pane fade" id="tabs-2-3">
+                  <div class="tab-pane fade" id="tabs-2-4">
                     <div class="python">
                       <h5>Python</h5>
                       <p>
-                        <img src="images/python.png" align="right" width="15%" />
-                        Python is a high-level general purpose programming language. It was created by Guido van Rossum, and released in 1991. it can be used to create a variety of different programs and isn’t specialized for any specific problems. This versatility, along with its beginner-friendliness, has made it one of the most-used programming languages today. For our project, we are using it for backend development for the web application, database developmen, and AI Model development.
+                        <img src="images/python.png" align="right" width="20%" />
+                        Python is a high-level general purpose programming language. It was created by Guido van Rossum, and released in 1991. it can be used to create a variety of different programs and isn’t specialized for any specific problems. This versatility, along with its beginner-friendliness, has made it one of the most-used programming languages today. For our project, we are using it for backend development for the web application, database developmen, and AI Model development.(15)
                       </p>
                       <br>
                     </div>
                     <div class="typescript">
                         <h5>TypeScript</h5>
                         <p>
-                            <img src="images/Typescript_logo_2020.png" align="right" width="15%" />
+                            <img src="images/Typescript_logo_2020.png" align="right" width="20%" />
                             TypeScript is a syntactic superset of JavaScript which adds static typing.
-This basically means that TypeScript adds syntax on top of JavaScript, allowing developers to add types. It is used for both server-side and client-side development. Since it is a superset of JavaScript, functions of JavaScript are working correctly as well with TypeScript.
+This basically means that TypeScript adds syntax on top of JavaScript, allowing developers to add types. It is used for both server-side and client-side development. Since it is a superset of JavaScript, functions of JavaScript are working correctly as well with TypeScript.(16)
 
                         </p>
+                        <br>
                     </div>
                   </div>
                   
@@ -336,7 +397,7 @@ This basically means that TypeScript adds syntax on top of JavaScript, allowing 
                 <!-- Tab panes-->
                 <div class="tab-content">
                   <p>
-                    After researching on different technologies that can be used for development, and also we learned something to enlighten us, we made decisions on the ones that we are gonna use to build JurisBud AI.
+                    After researching on different technologies that can be used for development, and also we learned something to enlighten us, we made decisions on the ones that we are gonna use to build JurisBUD AI.
                   </p>
                   <div class="col-xl-12 techtable">
                     <div class="card">
@@ -368,7 +429,7 @@ This basically means that TypeScript adds syntax on top of JavaScript, allowing 
                               </tr>
                               <tr>
                                 <th scope="row">PDF to Text</th>
-                                <td>SOMETHING</td>
+                                <td>pdfminer</td>
                               </tr>
                               <tr>
                                 <th scope="row">Database</th>
@@ -406,7 +467,22 @@ This basically means that TypeScript adds syntax on top of JavaScript, allowing 
                   
                   <p><i>References: </i>
                   
-<br><br>[1] The Best AI Chatbot: AI-powered vs. Rule-Based Chatbots Available at: <a href="https://tryswivl.com/blog/ai-powered-chatbot/which-is-the-best-option-ai-powered-or-a-rule-based-chatbot/" target="_blank">https://tryswivl.com/blog/ai-powered-chatbot/which-is-the-best-option-ai-powered-or-a-rule-based-chatbot/</a> [Accessed 6th March 2021]
+<br><br>1. Shen Y, Song K, Tan X, Li D, Lu W, Zhuang Y. HuggingGPT: Solving AI Tasks with ChatGPT and its Friends in Hugging Face [Internet]. www.microsoft.com. 2023 [cited 2024 Mar 22]. Available from: <a href="https://www.microsoft.com/en-us/research/publication/hugginggpt-solving-ai-tasks-with-chatgpt-and-its-friends-in-hugging-face/" target="_blank"> https://www.microsoft.com/en-us/research/publication/hugginggpt-solving-ai-tasks-with-chatgpt-and-its-friends-in-hugging-face/</a>
+<br><br>2. AutoGen [Internet]. Microsoft Research. [cited 2024 Mar 22]. Available from: <a href="https://www.microsoft.com/en-us/research/project/autogen/" target="_blank">https://www.microsoft.com/en-us/research/project/autogen/</a>
+<br><br>3. Baby AGI: The Birth of a Fully Autonomous AI [Internet]. KDnuggets. Available from: <a href="https://www.kdnuggets.com/2023/04/baby-agi-birth-fully-autonomous-ai.html" target="_blank">https://www.kdnuggets.com/2023/04/baby-agi-birth-fully-autonomous-ai.html</a>
+<br><br>4. What is a Vector Database? [Internet]. Cloudflare. Available from: <a href="https://www.cloudflare.com/learning/ai/what-is-vector-database/" target="_blank">https://www.cloudflare.com/learning/ai/what-is-vector-database/</a>
+‌<br><br>5. ChromaDB: A Vector Database for AI Applications [Internet]. Real Python. Available from: <a href="https://realpython.com/chromadb-vector-database/" target="_blank">https://realpython.com/chromadb-vector-database/</a>
+<br><br>6. Differences Between Static Generated Sites And Server-Side Rendered Apps [Internet]. Smashing Magazine. 2020. Available from: <a href="https://www.smashingmagazine.com/2020/07/differences-static-generated-sites-server-side-rendered-apps/" target="_blank">https://www.smashingmagazine.com/2020/07/differences-static-generated-sites-server-side-rendered-apps/</a>
+<br><br>7. What Is React? - What React Is and Why It Matters [Book] [Internet]. www.oreilly.com. Available from: <a href="https://www.oreilly.com/library/view/what-react-is/9781491996744/ch01.html" target="_blank">https://www.oreilly.com/library/view/what-react-is/9781491996744/ch01.html</a>
+<br><br>8. Introduction to Tailwind CSS [Internet]. GeeksforGeeks. 2020. Available from: <a href="https://www.geeksforgeeks.org/introduction-to-tailwind-css/" target="_blank">https://www.geeksforgeeks.org/introduction-to-tailwind-css/</a>
+<br><br>9. Styling: CSS Modules | Next.js [Internet]. nextjs.org. [cited 2024 Mar 22]. Available from:<a href="https://nextjs.org/docs/app/building-your-application/styling/css-modules" target="_blank">https://nextjs.org/docs/app/building-your-application/styling/css-modules</a>
+<br><br>10. Daisy UI [Internet]. Tailwind Awesome. 2020 [cited 2024 Mar 22]. Available from: <a href="https://www.tailwindawesome.com/resources/daisy-ui" target="_blank">https://www.tailwindawesome.com/resources/daisy-ui</a>
+<br><br>11. Django introduction [Internet]. MDN Web Docs. Available from: <a href="https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/Introduction" target="_blank">https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/Introduction</a>
+<br><br>12. Welcome to pdfminer.six’s documentation! — pdfminer.six __VERSION__ documentation [Internet]. pdfminersix.readthedocs.io. Available from: <a href="https://pdfminersix.readthedocs.io/en/latest/" target="_blank">https://pdfminersix.readthedocs.io/en/latest/</a>
+<br><br>13. What is LangChain? | IBM [Internet]. www.ibm.com. Available from: <a href="https://www.ibm.com/topics/langchain" target="_blank">https://www.ibm.com/topics/langchain</a>
+<br><br>14. Introduction | 🦜️🔗 Langchain [Internet]. python.langchain.com. Available from: <a href="https://python.langchain.com/docs/get_started/introduction" target="_blank">https://python.langchain.com/docs/get_started/introduction</a>
+<br><br>15. Coursera. What is Python used for? A beginner’s guide [Internet]. Coursera. 2021. Available from: <a href="https://www.coursera.org/articles/what-is-python-used-for-a-beginners-guide-to-using-python" target="_blank">https://www.coursera.org/articles/what-is-python-used-for-a-beginners-guide-to-using-python</a>
+<br><br>16. Staff A. Microsoft TypeScript: the JavaScript we need, or a solution looking for a problem? [Internet]. Ars Technica. 2012. Available from: <a href="https://arstechnica.com/information-technology/2012/10/microsoft-typescript-the-javascript-we-need-or-a-solution-looking-for-a-problem/" target="_blank">https://arstechnica.com/information-technology/2012/10/microsoft-typescript-the-javascript-we-need-or-a-solution-looking-for-a-problem/</a>
 
 
 
@@ -433,7 +509,7 @@ This basically means that TypeScript adds syntax on top of JavaScript, allowing 
                   <div class="widget">  
                     <h6 class="widget_title">Site Info</h6>
                     <p>
-                      This is the website for UCL Year2 2023-2024 COMP0016 Team5: JurisBud AI, which introduces the team project with Avanade about legal ai assistant. The website contains all the portfolios. 
+                      This is the website for UCL Year2 2023-2024 COMP0016 Team5: JurisBUD AI, which introduces the team project with Avanade about legal ai assistant. The website contains all the portfolios. 
                     </p>
                     <ul class="social_icons social_white">
                       <li>
@@ -470,9 +546,9 @@ This basically means that TypeScript adds syntax on top of JavaScript, allowing 
                   <div class="widget">
                     <h6 class="widget_title"><br></h6>
                     <ul class="widget_links">
-                      <li><a href="impl.html">implementation</a></li>
+                      <li><a href="impl.html">Implementation</a></li>
                       <li><a href="test.html">Testing</a></li>
-                      <li><a href="eval.html">evaluation</a></li>
+                      <li><a href="eval.html">Evaluation</a></li>
                       <li><a href="appendix.html">Appendix</a></li>
                     </ul>
                   </div>

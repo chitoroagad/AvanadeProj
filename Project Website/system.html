@@ -100,7 +100,7 @@
                   </li>
                   <li class="dropdown"><a href="javascript:void(0)"onclick="window.open('system.html','_self')">System Design</a>
                     <ul>
-                      <li><a href="blog.html">Blog</a></li>
+                      <li><a href="system.html#arch">System Architecture</a></li>
                       <li><a href="blog-detail.html">Blog Detail</a></li>
                     </ul>
                   </li>
@@ -156,78 +156,163 @@
       <div class="page-title-area">
         <div class="container">
           <div class="page-title-content">
-            <h2>APPENDIX</h2>
+            <h2>SYSTEM DESIGN</h2>
             <ul>
               <li><a href="index.html">Home</a></li>
               <li><i class="ti-angle-right"></i></li>
-              <li>Appendix</li>
+              <li>System design</li>
             </ul>
           </div>
         </div>
       </div>
       <!-- End Page Title -->
       <!-- Start About Section -->
-            <section class="tabs-sec inner-content-wrapper text-center">
+      <section class="tabs-sec inner-content-wrapper text-center">
         <div class="container">
           <div class="row justify-content-center">
             <div class="col-xl-10">
-              <h4 class="mb-4">Documents & Manuals</h4>
+            <div class='placeholder' id='arch'></div>
+              <h4 class="mb-4">System Architecture</h4>
               <!-- Bootstrap tabs-->
               <div class="tabs-custom tabs-horizontal tabs-line" id="tabs-1">
                 <!-- Nav tabs-->
                 <!-- Tab panes-->
-                <div class="tab-content">
-                  <div class="row">
-                    <div class="col-sm-6 col-lg-4">
-                      <div class="fun-fact gray-default">
-                        <i class="lnr lnr-pencil"></i>
-                        <span class="fun-fact-block-value"><a href="https://jurisbudaidevelopmentblog.wordpress.com" target="_blank">Development Blog</a></span>
-                        <span class="fun-fact-block-text"></span>
-                      </div>
-                    </div>
-                    <div class="col-sm-6 col-lg-4">
-                      <div class="fun-fact gray-default">
-                        <i class="lnr lnr-rocket"></i>
-                        <span class="fun-fact-block-value"><a href="docs/dply.html" target="_blank">Deployment Manual</a></span>
-                        <span class="fun-fact-block-text"></span>
-                      </div>
-                    </div>
+                <div class="tab-content system-diagram">
+                  <p>
 
-                    <div class="col-sm-6 col-lg-4">
-                      <div class="fun-fact gray-default">
-                        <i class="lnr lnr-user"></i>
-                        <span class="fun-fact-block-value"><a href="usermn.html" target="_blank">User Manual</a></span>
-                        <span class="fun-fact-block-text"></span>
+                    JurisBUD AI application system consists of several components.
+                    For pre-prosessing the default database, documents are transfered into 
+                    vectors using chromaDB and Open AI embedding function. It is also working when
+                    uploaded files are received after transfering into text. From the users' point of view,
+                    by interacting with the front end web app built by Next.js, they can start a query which will
+                    call the dispatcher agent to split the query into mulitple tasks. Then the worker agents will
+                    be called to finish their tasks and return the final result as the output to users.
+                  </p>
+                  <a href="images/system.png" class="image-popup">
+                    <div class="gallery-image">
+                      <img src="images/arch.png" />
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row justify-content-center">
+            <div class="col-xl-10">
+            <div class='placeholder' id='seq'></div>
+              <h4 class="mb-4">Activity Processing Sequence</h4>
+              <!-- Bootstrap tabs-->
+              <div class="tabs-custom tabs-horizontal tabs-line" id="tabs-1">
+                <!-- Nav tabs-->
+                <!-- Tab panes-->
+                <div class="tab-content system-diagram">
+                  <p>
+                    AvaBot communicates with users by using activity objects,
+                    the sequence diagram below shows how it works. Some concepts
+                    from the Bot Framework SDK could aid in the understanding
+                    the user-bot communication mechanism:
+                  </p>
+                  <div class="col-xl-12 techtable">
+                    <div class="card">
+                      <div class="card-body">
+                        <div class="table-responsive">
+                          <table class="table table-hover mb-0 text-md-nowrap">
+                            <thead>
+                              <tr>
+                                <th>term</th>
+                                <th>definition</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <th scope="row">Activity</th>
+                                <td>
+                                  an activity is every interaction between the
+                                  user (or a channel) and the bot.
+                                </td>
+                              </tr>
+                              <tr>
+                                <th scope="row">Turn</th>
+                                <td>
+                                  a turn consists of the user's incoming
+                                  activity to the bot and any activity the bot
+                                  sends back to the user as an immediate
+                                  response.
+                                </td>
+                              </tr>
+                              <tr>
+                                <th scope="row">Adapter</th>
+                                <td>
+                                  the adapter has a process activity method for
+                                  starting a turn, it also formats and sends
+                                  response activities.
+                                </td>
+                              </tr>
+                              <tr>
+                                <th scope="row">TurnContext</th>
+                                <td>
+                                  the turn context object provides information
+                                  about the activity needed to process the
+                                  activity.
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
                       </div>
                     </div>
-
-                    <div class="col-sm-6 col-lg-4">
-                      <div class="fun-fact gray-default">
-                        <i class="lnr lnr-mustache"></i>
-                        <span class="fun-fact-block-value"><a href="Project Legal Statement.pdf" target="_blank">Legal Statement</a></span>
-                        <span class="fun-fact-block-text"></span>
-                      </div>
-                    </div>
-
-                    <div class="col-sm-6 col-lg-4">
-                      <div class="fun-fact gray-default">
-                        <i class="lnr lnr-smile"></i>
-                        <span class="fun-fact-block-value"><a href="eula.html" target="_blank">EULA</a></span>
-                        <span class="fun-fact-block-text"></span>
-                      </div>
-                    </div>
-
-                    <div class="col-sm-6 col-lg-4">
-                      <div class="fun-fact gray-default">
-                        <i class="lnr lnr-license"></i>
-                        <span class="fun-fact-block-value"><a href="cc.html" target="_blank">CC License</a></span>
-                        <span class="fun-fact-block-text"></span>
-                      </div>
-                    </div>
-                  
-                  
-                  
                   </div>
+                  <p>
+                    <br />
+                    Activities arrive at the bot from the Bot Framework Service
+                    via an HTTP POST request. Activities sent from the bot to
+                    the channel are sent on a separate HTTP POST, both with a
+                    200 HTTP status code. In the diagram, the bot replied to the
+                    “hi” with another message activity containing “hi” as well.
+                    The activity is carried as JSON in the HTTP POST body. This
+                    JSON is deserialized to create the activity object that is
+                    then handed to the adapter through its process
+                    activity method. On receiving the activity, the adapter
+                    creates a turn context and calls the middleware. The turn
+                    context provides send, update, delete activity response
+                    methods for the bot to send outbound activities in response
+                    to an inbound activity. 
+                  </p>
+                  <a href="images/seq.png" class="image-popup">
+                    <div class="gallery-image">
+                      <img src="images/seq.png" />
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row justify-content-center">
+            <div class="col-xl-10">
+            <div class='placeholder' id='flow'></div>
+              <h4 class="mb-4">Dialogue Flow Diagram</h4>
+              <!-- Bootstrap tabs-->
+              <div class="tabs-custom tabs-horizontal tabs-line" id="tabs-1">
+                <!-- Nav tabs-->
+                <!-- Tab panes-->
+                <div class="tab-content system-diagram">
+                  <p>
+                    AvaBot is born with multiple features, it is thus necessary
+                    to organize a reasonable way how users can choose to utilize
+                    its different functionalities. AvaBot’s dialogue flow was
+                    deliberately designed to make its communications with people
+                    as effective, as intuitive, as little of resistance as
+                    possible.
+
+                    JurisBUD AI has mulitple features that users can interact with. In that case, it is a good idea
+                    to make a dialogue flow diagram to show how the user interactions works in a flow more specifically.
+                    <br>
+                  </p>
+                  <a href="images/Blank diagram (1).png" class="image-popup">
+                    <div class="gallery-image">
+                      <img src="images/Blank diagram (1).png" />
+                    </div>
+                  </a>
                 </div>
               </div>
             </div>
@@ -355,5 +440,20 @@
     <script src="js/venobox.min.js"></script>
     <!-- Custom JS -->
     <script src="js/custom.js"></script>
+     <script src="js/scrolltosmooth.min.js"></script>
+    <script>
+        var smoothScroll = new scrollToSmooth('a', {
+            easing: 'easeInOutSine',
+            //easing: 'linear',
+            duration: 600,
+            durationRelative: true,
+            updateURL: true,
+            onScrollStart: (data) => { console.log(data); },
+        onScrollUpdate: (data) => { console.log(data); },
+        onScrollEnd: (data) => { console.log(data) }
+        })
+        smoothScroll.init();
+        
+    </script>
   </body>
 </html>
