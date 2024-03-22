@@ -11,4 +11,5 @@ urlpatterns = [
     path("chat/delete/<int:pk>", views.delete_chat),
     path("check_token", views.check_token),
     path("chat/upload_prompt", views.get_prompt_from_file),
+    path("chat/reload", views.reload_chat),
 ]

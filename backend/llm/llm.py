@@ -354,6 +354,16 @@ class LLMCaller:
         )
         return out
 
+    @staticmethod
+    def reload_chat(tasks):
+        """
+        Calls manager with specifc tasks.
+        """
+        out = manager_executor.invoke(
+            {"input": ",\n".join(tasks)}, config={"configurable": {"session_id": "1"}}
+        )
+        return out
+
 
 if __name__ == "__main__":
     print("Starting main")
@@ -363,26 +373,3 @@ if __name__ == "__main__":
         }
     )
     print(out)
-
-# data = {
-#     "prompt": "Title: What are some of the reasons for judgement in the case of Merticariu (Appellant) v Judecatoria Arad, Romania(Respondent)",
-#     "response": 'The reasons for the judgement in the case of Merticariu (Appellant) v Judecatoria Arad, Romania (Respondent) are as follows:\nThe Supreme Court unanimously allowed the appeal based on the proper construction of section 20(5) of the Act. The judgment holds that the requested person must be "entitled" to a retrial or review amounting to a retrial without dependency on any contingency, except for purely procedural matters. The appropriate judge cannot answer section 20(5) in the affirmative if the law of the requesting state confers a right to retrial that depends on a finding by a judicial authority in the requesting state as to whether the requested person was deliberately absent from the trial. As a result, the district judge\'s order was quashed, and the appellant was discharged.',
-#     "tasks": AgentActionMessageLog(
-#         tool="TaskListGenerator",
-#         tool_input={
-#             "objective": "List the reasons for judgement in the case of Merticariu (Appellant) v Judecatoria Arad, Romania (Respondent)"
-#         },
-#         log="",
-#         message_log=[
-#             AIMessageChunk(
-#                 content="",
-#                 additional_kwargs={
-#                     "function_call": {
-#                         "arguments": '{"objective":"List the reasons for judgement in the case of Merticariu (Appellant) v Judecatoria Arad, Romania (Respondent)"}',
-#                         "name": "TaskListGenerator",
-#                     }
-#                 },
-#             )
-#         ],
-#     ),
-# }

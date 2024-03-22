@@ -10,8 +10,6 @@ from llm.llm import LLMCaller
 from pdfminer.high_level import extract_text
 from pdfminer.layout import LAParams
 
-# openai.api_key = settings.OPENAI_API_KEY
-
 
 def validate_file_type(
     content, content_type, allowed_types=["application/pdf", "text/plain"]
@@ -44,6 +42,15 @@ def call_coroutine(coroutine):
 def ask_gpt(prompt):
     try:
         return LLMCaller.call_llm(prompt)
+    except:
+        raise exceptions.ValidationError(
+            "Failed to generate response. Please try again."
+        )
+
+
+def reload_gpt(tasks):
+    try:
+        return LLMCaller.reload_chat(tasks)
     except:
         raise exceptions.ValidationError(
             "Failed to generate response. Please try again."

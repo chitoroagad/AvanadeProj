@@ -51,6 +51,31 @@ const Process = () => {
 			});
 	};
 
+	const sendReloadRequest = () => {
+		setLoading(true); // Start loading
+
+		apiClient
+			.post("/chat/reload", {
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: "Token " + localStorage.getItem("token"),
+				},
+				body: JSON.stringify({
+					tasks: document.getElementById("tasksEle").innerText.split("\n"),
+				}),
+			})
+			.then((response) => response.json())
+			.then((data) => {
+				console.log(data);
+				setResponse(data);
+				setLoading(false); // Stop loading after the data is received
+			})
+			.catch((error) => {
+				console.error("Error:", error);
+				setLoading(false); // Stop loading after the data is received
+			});
+	};
+
 	// UseEffect hook to handle the sending of the request 2 seconds after input value changes
 	useEffect(() => {
 		const timer = setTimeout(() => {
@@ -89,9 +114,19 @@ const Process = () => {
 
 			<div className={styles.tasks}>
 				<p className={styles.res}>{loading ? "Loading..." : response?.chat}</p>
-				<h1 className={styles.taskTag}>Requested Tasks</h1>
-
-				<p className={styles.taskDes}>{loading ? "" : response?.tasks}</p>
+				<div className={styles.taskTag}>Requested Tasks</div>
+				<div id="tasksEle" className={styles.taskDes}>
+					{loading
+						? ""
+						: response?.tasks.map((task) => (
+								<div className={styles.tasks} key={task[0]}>
+									{task}
+								</div>
+						  ))}
+				</div>
+				<button onClick={() => sendReloadRequest()} className={styles.GenBtn}>
+					Reload answer
+				</button>
 			</div>
 
 			<div className={styles.processBackground}>

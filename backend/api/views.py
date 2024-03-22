@@ -19,7 +19,7 @@ from rest_framework.response import Response
 
 from .models import Chat
 from .serializers import ChatSerializer, UserSerializer
-from .utils import ask_gpt, pdf_to_text, validate_file_type
+from .utils import ask_gpt, pdf_to_text, reload_gpt, validate_file_type
 
 User = get_user_model()
 
@@ -45,6 +45,33 @@ def sign_up(request, format=None):
         user = User.objects.get(email=request.data.get("email"))
         token = Token.objects.create(user=user)
         return Response({"token": token.key, "user": serializer.data})
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(["POST"])
+@authentication_classes([SessionAuthentication, TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def reload_chat(request, format=None):
+    data = request.data
+    tasks = data["tasks"]
+    llm_ans = reload_gpt(tasks)
+    data["response"] = llm_ans["output"]
+
+    if not data["response"]:
+        return Response(
+            {"detail": "model not responding"}, status=status.HTTP_400_BAD_REQUEST
+        )
+
+    data["title"] = data["prompt"] + " (Reloaded)"
+    serializer = ChatSerializer(data=data)
+    if serializer.is_valid():
+        serializer.save(author=request.user)
+        return Response(
+            {"chat": data["response"], "tasks": data["tasks"]},
+            status=status.HTTP_201_CREATED,
+            content_type="application/json",
+        )
+    print("serializer.errors>>>", serializer.errors)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
