@@ -25,11 +25,6 @@ environ.Env.read_env()
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = env('SECRET_KEY')
-
-# OPENAI_API_KEY = env("OPENAI_API_KEY")
-
 CONTENT_TYPES = ["pdf", "text"]
 # 2.5MB - 2621440
 # 5MB - 5242880

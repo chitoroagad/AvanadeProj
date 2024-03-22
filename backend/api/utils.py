@@ -10,7 +10,7 @@ from llm.llm import LLMCaller
 from pdfminer.high_level import extract_text
 from pdfminer.layout import LAParams
 
-openai.api_key = settings.OPENAI_API_KEY
+# openai.api_key = settings.OPENAI_API_KEY
 
 
 def validate_file_type(
