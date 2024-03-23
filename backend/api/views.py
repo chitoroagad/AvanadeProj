@@ -19,7 +19,8 @@ from rest_framework.response import Response
 
 from .models import Chat
 from .serializers import ChatSerializer, UserSerializer
-from .utils import ask_gpt, pdf_to_text, reload_gpt, validate_file_type
+from .utils import (add_pdf_to_gpt, ask_gpt, pdf_to_text, reload_gpt,
+                    validate_file_type)
 
 User = get_user_model()
 
@@ -66,11 +67,12 @@ def reload_chat(request, format=None):
     serializer = ChatSerializer(data=data)
     if serializer.is_valid():
         serializer.save(author=request.user)
-        return Response(
+        res = Response(
             {"chat": data["response"], "tasks": data["tasks"]},
             status=status.HTTP_201_CREATED,
             content_type="application/json",
         )
+        return res
     print("serializer.errors>>>", serializer.errors)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -109,13 +111,32 @@ def new_chat(request, format=None):
     serializer = ChatSerializer(data=data)
     if serializer.is_valid():
         serializer.save(author=request.user)
-        return Response(
+        res = Response(
             {"chat": data["response"], "tasks": data["tasks"]},
             status=status.HTTP_201_CREATED,
             content_type="application/json",
         )
+        return res
     print("serializer.errors>>>", serializer.errors)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(["POST"])
+@authentication_classes([SessionAuthentication, TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def upload_pdf(request, format=None):
+    if not request.FILES.get("file"):
+        return Response(
+            {"detail": "file is missing"}, status=status.HTTP_400_BAD_REQUEST
+        )
+    if request.FILES.get("file").content_type != "application/pdf":
+        return Response(
+            {"detail": "file type is not allowed"}, status=status.HTTP_400_BAD_REQUEST
+        )
+    add_pdf_to_gpt(request.FILES.get("file"))
+    return Response(
+        {"detail": "file uploaded successfully"},
+    )
 
 
 @api_view(["GET"])
@@ -124,7 +145,9 @@ def new_chat(request, format=None):
 def get_chat(request, pk, format=None):
     chat = get_object_or_404(Chat, id=pk, author=request.user)
     serializer = ChatSerializer(instance=chat)
-    return Response({"chat": serializer.data})
+    return Response(
+        {"chat": serializer.data},
+    )
 
 
 @api_view(["GET"])
@@ -133,7 +156,9 @@ def get_chat(request, pk, format=None):
 def list_chats(request, format=None):
     chats = Chat.objects.filter(author=request.user)
     serializer = ChatSerializer(instance=chats, many=True)
-    return Response({"chats": serializer.data})
+    return Response(
+        {"chats": serializer.data},
+    )
 
 
 @api_view(["DELETE"])
@@ -171,11 +196,15 @@ def get_prompt_from_file(request, format=None):
         text = pdf_to_text(content)
     else:
         text = content
-    return Response({"file": {"type": file_type, "content": text}})
+    return Response(
+        {"file": {"type": file_type, "content": text}},
+    )
 
 
 @api_view(["GET"])
 @authentication_classes([SessionAuthentication, TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def check_token(request, format=None):
-    return Response({"message": "success", "username": request.user.name})
+    return Response(
+        {"message": "success", "username": request.user.name},
+    )

@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 
 import environ
+from corsheaders.defaults import default_headers
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -39,11 +40,27 @@ MAX_UPLOAD_SIZE = "5242880"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-# ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'localhost:3000', 'localhost:8000']
+# ALLOWED_HOSTS = [
+#     "127.0.0.1",
+#     "localhost",
+#     "frontend:3000",
+#     "backend:8080",
+#     "nginx:80",
+#     "localhost:80",
+#     "localhost:3000",
+#     "localhost:8000",
+#     "chroma:8000",
+# ]
 
 # Application definition
 
-CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_ALL_ORIGINS = DEBUG
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_HEADERS = [
+    *default_headers,
+    "origin",
+]
+CORS_ALLOW_PRIVATE_NETWORK = True
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -62,9 +79,9 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
-    "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
