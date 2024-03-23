@@ -100,34 +100,49 @@
                   </li>
                   <li class="dropdown"><a href="javascript:void(0)"onclick="window.open('system.html','_self')">System Design</a>
                     <ul>
-                      <li><a href="system.html#arch">System Architecture</a></li>
-                      <li><a href="blog-detail.html">Blog Detail</a></li>
+                      <li><a href="system.html#arch">System Arch.</a></li>
+                      <li><a href="system.html#flow">Dialogue Flow</a></li>
                     </ul>
                   </li>
-                  <li class="dropdown"><a href="javascript:void(0)">Impl.</a>
+                  <li class="dropdown"><a href="javascript:void(0)"onclick="window.open('impl.html','_self')">Impl.</a>
+                    <ul>
+                      <li><a href="impl.html#over">Overview Impl.</a></li>
+                      <li><a href="impl.html#llm">LLM Impl.</a></li>
+                      <li><a href="impl.html#s/l">Signup/Login Impl.</a></li>
+                      <li><a href="impl.html#chatGen">Chat Generation Impl.</a></li>
+                      <li><a href="impl.html#space">Space Impl.</a></li>
+                      <li><a href="impl.html#chatLs">Chats Menu Impl.</a></li>
+                      <li><a href="impl.html#pdf">PDF to Text Impl.</a></li>
+                    </ul>
 
                   </li>
                   <li class="dropdown"><a href="javascript:void(0)"onclick="window.open('test.html','_self')">Testing</a>
+                    <ul>
+                      <li><a href="test.html#strate">Testing Strategy</a></li>
+                      <li><a href="test.html#automate">Automate Testing</a></li>
+                      <li><a href="test.html#acceptance">Acceptance Testing</a></li>
+                    </ul>
 
                   </li>
                   <li class="dropdown"><a href="javascript:void(0)"onclick="window.open('eval.html','_self')">Evaluation</a>
+                    <ul>
+                      <li><a href="eval.html#checkmoscow">MoSCoW Achievement</a></li>
+                      <li><a href="eval.html#individual">Individual Contribution</a></li>
+                      <li><a href="eval.html#critical">Critical Evaluation</a></li>
+                      <li><a href="eval.html#buglist">Bug List</a></li>
+                      <li><a href="eval.html#future">Future Work</a></li>
+                    </ul>
 
                   </li>
                   <li class="dropdown"><a href="javascript:void(0)"onclick="window.open('appendix.html','_self')">Appendix</a>
-
+                    <ul>
+                      <li><a href="appendix.html#docs">Documents & Manuals</a></li>
+                      <li><a href="appendix.html#vids">More Videos</a></li>
+                    </ul>
                   </li>
                 </ul>
               </div>
             </nav>
-            <!-- Main Menu End--> 
-            <!-- Main Menu End-->
-            <div class="outer-box clearfix"> 
-              
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
         <!--End Header Upper-->
         <!-- Mobile Menu  -->
         <div class="mobile-menu">
@@ -197,96 +212,7 @@
               </div>
             </div>
           </div>
-          <div class="row justify-content-center">
-            <div class="col-xl-10">
-            <div class='placeholder' id='seq'></div>
-              <h4 class="mb-4">Activity Processing Sequence</h4>
-              <!-- Bootstrap tabs-->
-              <div class="tabs-custom tabs-horizontal tabs-line" id="tabs-1">
-                <!-- Nav tabs-->
-                <!-- Tab panes-->
-                <div class="tab-content system-diagram">
-                  <p>
-                    AvaBot communicates with users by using activity objects,
-                    the sequence diagram below shows how it works. Some concepts
-                    from the Bot Framework SDK could aid in the understanding
-                    the user-bot communication mechanism:
-                  </p>
-                  <div class="col-xl-12 techtable">
-                    <div class="card">
-                      <div class="card-body">
-                        <div class="table-responsive">
-                          <table class="table table-hover mb-0 text-md-nowrap">
-                            <thead>
-                              <tr>
-                                <th>term</th>
-                                <th>definition</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr>
-                                <th scope="row">Activity</th>
-                                <td>
-                                  an activity is every interaction between the
-                                  user (or a channel) and the bot.
-                                </td>
-                              </tr>
-                              <tr>
-                                <th scope="row">Turn</th>
-                                <td>
-                                  a turn consists of the user's incoming
-                                  activity to the bot and any activity the bot
-                                  sends back to the user as an immediate
-                                  response.
-                                </td>
-                              </tr>
-                              <tr>
-                                <th scope="row">Adapter</th>
-                                <td>
-                                  the adapter has a process activity method for
-                                  starting a turn, it also formats and sends
-                                  response activities.
-                                </td>
-                              </tr>
-                              <tr>
-                                <th scope="row">TurnContext</th>
-                                <td>
-                                  the turn context object provides information
-                                  about the activity needed to process the
-                                  activity.
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <p>
-                    <br />
-                    Activities arrive at the bot from the Bot Framework Service
-                    via an HTTP POST request. Activities sent from the bot to
-                    the channel are sent on a separate HTTP POST, both with a
-                    200 HTTP status code. In the diagram, the bot replied to the
-                    “hi” with another message activity containing “hi” as well.
-                    The activity is carried as JSON in the HTTP POST body. This
-                    JSON is deserialized to create the activity object that is
-                    then handed to the adapter through its process
-                    activity method. On receiving the activity, the adapter
-                    creates a turn context and calls the middleware. The turn
-                    context provides send, update, delete activity response
-                    methods for the bot to send outbound activities in response
-                    to an inbound activity. 
-                  </p>
-                  <a href="images/seq.png" class="image-popup">
-                    <div class="gallery-image">
-                      <img src="images/seq.png" />
-                    </div>
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
+          
           <div class="row justify-content-center">
             <div class="col-xl-10">
             <div class='placeholder' id='flow'></div>

@@ -100,34 +100,49 @@
                   </li>
                   <li class="dropdown"><a href="javascript:void(0)"onclick="window.open('system.html','_self')">System Design</a>
                     <ul>
-                      <li><a href="blog.html">Blog</a></li>
-                      <li><a href="blog-detail.html">Blog Detail</a></li>
+                      <li><a href="system.html#arch">System Arch.</a></li>
+                      <li><a href="system.html#flow">Dialogue Flow</a></li>
                     </ul>
                   </li>
-                  <li class="dropdown"><a href="javascript:void(0)">Impl.</a>
+                  <li class="dropdown"><a href="javascript:void(0)"onclick="window.open('impl.html','_self')">Impl.</a>
+                    <ul>
+                      <li><a href="impl.html#over">Overview Impl.</a></li>
+                      <li><a href="impl.html#llm">LLM Impl.</a></li>
+                      <li><a href="impl.html#s/l">Signup/Login Impl.</a></li>
+                      <li><a href="impl.html#chatGen">Chat Generation Impl.</a></li>
+                      <li><a href="impl.html#space">Space Impl.</a></li>
+                      <li><a href="impl.html#chatLs">Chats Menu Impl.</a></li>
+                      <li><a href="impl.html#pdf">PDF to Text Impl.</a></li>
+                    </ul>
 
                   </li>
                   <li class="dropdown"><a href="javascript:void(0)"onclick="window.open('test.html','_self')">Testing</a>
+                    <ul>
+                      <li><a href="test.html#strate">Testing Strategy</a></li>
+                      <li><a href="test.html#automate">Automate Testing</a></li>
+                      <li><a href="test.html#acceptance">Acceptance Testing</a></li>
+                    </ul>
 
                   </li>
                   <li class="dropdown"><a href="javascript:void(0)"onclick="window.open('eval.html','_self')">Evaluation</a>
+                    <ul>
+                      <li><a href="eval.html#checkmoscow">MoSCoW Achievement</a></li>
+                      <li><a href="eval.html#individual">Individual Contribution</a></li>
+                      <li><a href="eval.html#critical">Critical Evaluation</a></li>
+                      <li><a href="eval.html#buglist">Bug List</a></li>
+                      <li><a href="eval.html#future">Future Work</a></li>
+                    </ul>
 
                   </li>
                   <li class="dropdown"><a href="javascript:void(0)"onclick="window.open('appendix.html','_self')">Appendix</a>
-
+                    <ul>
+                      <li><a href="appendix.html#docs">Documents & Manuals</a></li>
+                      <li><a href="appendix.html#vids">More Videos</a></li>
+                    </ul>
                   </li>
                 </ul>
               </div>
             </nav>
-            <!-- Main Menu End--> 
-            <!-- Main Menu End-->
-            <div class="outer-box clearfix"> 
-              
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
         <!--End Header Upper-->
         <!-- Mobile Menu  -->
         <div class="mobile-menu">
@@ -183,6 +198,7 @@
                   <p>1. It is real-world people who JurisBUD AI will be conversing with, therefore, we want to make sure that our AI can understand users' queries correctly which needs test based on actual cases.</p>
                   <p>2. JurisBUD AI has a variety of functionalities. Each of them should be tested to ensure they work properly and users can have access to and utilize every of them with no constraints and questions.</p>
                  
+                  <br>
                   
                   <h5>Test Methodology</h5>
                   <p>
@@ -201,15 +217,15 @@
             <div class='placeholder' id="automate"></div>
               <h4 class="mb-4">Automate Testing</h4>
               <!-- Bootstrap tabs-->
-              <div class="tabs-custom tabs-horizontal tabs-line" id="tabs-1">
+             <div class="tabs-custom tabs-horizontal tabs-line" id="tabs-1">
                 <!-- Nav tabs-->
                 <!-- Tab panes-->
                 <div class="tab-content">
                   <div class="row row-no-gutter">
-                    <div class="col-lg-4 test"><a href="images/tests.png" class="image-popup">
+                    <!-- <div class="col-lg-4 test"><a href="images/tests.png" class="image-popup">
                       <img src="images/tests.png" width="300"/></a>
-                    </div>
-                    <div class="col-lg-8 col-sm-12">
+                    </div> -->
+                    <!-- <div class="col-lg-8 col-sm-12">
                       <h5>Unit testing</h5>
                       <div class="row row-no-gutter">
                         <div class="col-8">
@@ -261,15 +277,17 @@ const client = new DialogTestClient('test', sut);
 let reply = await testClient.sendActivity('hi');
 assert.strictEqual(reply.text, ‘How is it?’)
                     </pre>
-                    </code> 
+                    </code>  
                     <p><br>These two testings together cover up to 95% coverage, as shown on the coverage report generated by NYC, which is a Node module for generating test coverage reports.</p>
                     <div class="col-12 onlycode"><a href="images/cover.png" class="image-popup">
                         <img src="images/cover.png" width="100%"/></a>
                     </div>          
                 </div>
-              </div>
+              </div> -->
             </div>
           </div>
+             </div>
+        <div class="container">
           <div class="row justify-content-center">
             <div class="col-xl-10">
             <div class='placeholder' id="acceptance"></div>
@@ -450,6 +468,7 @@ assert.strictEqual(reply.text, ‘How is it?’)
           </div>
           </div>
         </div>
+        </div>  
       </section>
       <!-- End About Section -->
       <!-- Start Footer Area -->
