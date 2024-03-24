@@ -6,6 +6,12 @@ from rest_framework import serializers
 
 # Create your models here.
 
+from django.contrib.auth.models import AbstractBaseUser
+from django.contrib.auth.models import PermissionsMixin
+from django.contrib.auth.models import BaseUserManager
+from django.core.validators import validate_email
+from rest_framework import serializers
+
 
 class UserProfileManager(BaseUserManager):
     """Manager for user profiles"""
@@ -66,6 +72,7 @@ class Chat(models.Model):
         "api.UserProfile", related_name="chats", on_delete=models.CASCADE
     )
     response = models.TextField()
+    created_at = models.DateField(auto_now=True)
 
     class Meta:
         ordering = ["created_at"]

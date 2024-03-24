@@ -1,74 +1,66 @@
-.chatsBackground {
-    width: 100vw;   
-    height: 100vh;  
-    object-fit: contain; 
-    position: fixed; 
-    top: 0;
-    left: 0;
-    z-index: -2;
-}
-
-.maintab{
-    position:absolute;
-    left:0;
-    z-index: 10;
-}
-
-.chatMenu{
-    position:relative;
-    right:10vw;
-    top: 5vh;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    background-color: #ffffff;
-    border-radius: 20px;
-    padding: 2rem;
-    width: 25%; 
-    margin: auto; 
-    display: flex; 
-    padding: 50px;
-    height: 90vh; 
-}
-
-.chatTitle{
-    font-size: 60px;
-    font-weight: 800;
-}
-
-.chatList{
-    position:absolute;
-    left:2vw;
-    top: 30vh;
-    overflow-y: auto;
-}
-
-.searchPic{
-    position:absolute;
-    top:22.5vh;
-    left:3.5vw;
-    z-index: 100;
-    width: 30px;
-}
-
-.searchInput{
-    margin-top: 10px;
-    border-radius: 10px;
-    border:2px solid black;
-    background-color: #EEEEEE,0.9;
+.container {
+    width: 80vw; /* Adjusted width to take up remaining space */
+    height: 100vh; /* Full viewport height */
+    margin-left: 20vw; /* Push container to the right to make room for the sidebar */
+    margin-top: 0;
     display: flex;
-    width: 300px;
-    height: 50px;
-    align-items: center;
-    gap: 16px;
-    flex-shrink: 0;
+    justify-content: center;
+    align-items: center; /* Center the table vertically */
+    padding: 20px;
+    box-sizing: border-box; /* Include padding in total dimensions */
+  }
+  
+  .table {
+    width: calc(100% - 40px); /* Adjust width for padding */
+    height: calc(100% - 40px); /* Adjust height for padding, if you have a header or footer, consider their heights here */
+    overflow-y: auto; /* Add vertical scroll if content is taller than container */
     display: flex;
-    line-height: 35px;
-    padding-left: 50px;
-    position:absolute;
-    left:3vw;
-    top:20vh;
-
-}
-
-
-
-
+    flex-direction: column;
+  }
+  
+  .tableHeader {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* Four equal columns */
+    background-color: #f4f4f4;
+    padding: 10px;
+    font-weight: bold;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .tableRow {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* Four equal columns */
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+    transition: background-color 0.3s;
+    text-decoration: none;
+    color: inherit;
+    overflow: hidden; /* Prevent content from spilling out */
+  }
+  
+  .headerItem,
+  .rowItem {
+    padding: 10px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  
+  /* If you have a fixed sidebar, you might need this */
+  @media (max-width: 1000px) {
+    .container {
+      width: 100vw;
+      margin-left: 0; /* Sidebar might be hidden or changed to overlay on smaller screens */
+    }
+  }
+  
+  /* Add styles for scrollbar visibility */
+  .table {
+    overflow-y: auto; /* Add vertical scrollbar if needed */
+  }
+  
+  /* Improve tableRow hover effect to cover the full row width */
+  .tableRow:hover {
+    background-color: #eaeaea;
+  }
+  

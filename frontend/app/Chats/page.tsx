@@ -1,18 +1,16 @@
 "use client";
 
-import NoHelloUser from "../components/NoHelloUser";
-import MainTab from "../components/MainTab";
-import styles from "./Chats.module.css";
-import Link from "next/link";
-import ChatList from "../components/ChatList";
-import Image from "next/image";
-import { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../utils/contexts";
 import { redirect } from "@/node_modules/next/navigation";
 import { apiClient } from "../utils/api";
 
-const Chats = () => {
+import Link from "next/link";
+import styles from "./Chats.module.css"; // Link to your CSS module
+
+const ChatsList = () => {
   const { isAuth, setIsAuth, username, setUsername } = useContext(AuthContext);
+
   const [chats, setChats] = useState([]);
 
   useEffect(() => {
@@ -43,43 +41,51 @@ const Chats = () => {
     };
     getChats();
   }, []);
+
+  // Function to format date
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
+  };
+
   return (
-    <main>
-      {/* <div className={styles.maintab}><MainTab/></div> */}
-      <div className={styles.chatMenu}>
-        <h1 className={styles.chatTitle}>Chats</h1>
-        <div className={styles.search}>
-          <input
-            type="text"
-            placeholder="Search"
-            className={styles.searchInput}
-          ></input>
-          <Image
-            src="/home/search.png"
-            width={0}
-            height={0}
-            sizes="100vw"
-            className={styles.searchPic}
-            alt="search"
-          />
-        </div>
-        <div className={styles.chatList}>
-          <ChatList items={chats} setItems={setChats} />
+    <>
+      <div className={styles.container}>
+        <div className={styles.table}>
+          <div className={styles.tableHeader}>
+            <div
+              style={{
+                alignContent: "right",
+                color: "greenyellow",
+                fontSize: "30px",
+              }}
+            >
+              <Link href={`/Process`} legacyBehavior>
+                +
+              </Link>
+            </div>
+          </div>
+          <div className={styles.tableHeader}>
+            <div className={styles.headerItem}>Ttile</div>
+            <div className={styles.headerItem}>Response</div>
+            <div className={styles.headerItem}>Created At</div>
+          </div>
+          {Array.isArray(chats) &&
+            chats.map((chat) => (
+              <Link href={`/chat/${chat.id}`} key={chat.id} passHref>
+                <div className={styles.tableRow}>
+                  <div className={styles.rowItem}>{chat.title}</div>
+                  <div className={styles.rowItem}>{chat.response}</div>
+                  <div className={styles.rowItem}>
+                    {formatDate(chat.created_at)}
+                  </div>
+                </div>
+              </Link>
+            ))}
         </div>
       </div>
-      <div id="modal-root"></div>
-      <div className={styles.chatsBackground}>
-        <Image
-          width={0}
-          height={0}
-          sizes="100vw"
-          src="/process/background2.png"
-          alt="process"
-        />
-      </div>
-      <NoHelloUser></NoHelloUser>
-    </main>
+    </>
   );
 };
 
-export default Chats;
+export default ChatsList;

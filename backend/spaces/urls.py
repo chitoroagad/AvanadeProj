@@ -4,7 +4,7 @@ from . import views
 urlpatterns = [
     # Space URLs
     path('/', views.space_list, name='space-list'),
-    path('spaces/<int:pk>/', views.space_detail, name='space-detail'),
+    path('/<int:pk>/', views.space_detail, name='space-detail'),
 
     # Folder URLs
     path('folders/', views.folder_list, name='folder-list'),

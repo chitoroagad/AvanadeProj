@@ -1,16 +1,17 @@
 from django.contrib.auth import get_user_model, password_validation
 from django.core import exceptions
 from rest_framework import serializers
-
+from django.contrib.auth import get_user_model
 from .models import Chat, Tag
+from django.contrib.auth import password_validation
+from django.core import exceptions
 
 User = get_user_model()
 
 
 class UserSerializer(serializers.ModelSerializer):
     chats = serializers.PrimaryKeyRelatedField(
-        many=True, queryset=Chat.objects.all(), required=False, write_only=True
-    )
+        many=True, queryset=Chat.objects.all(), required=False, write_only=True)
 
     class Meta(object):
         model = User
@@ -46,8 +47,9 @@ class ChatSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Chat
-        fields = ["id", "title", "tags", "prompt", "response", "author"]
-        read_only_fields = ["author"]
+        fields = ['id', 'title', 'tags', 'prompt',
+                  'response', 'author', 'created_at']
+        read_only_fields = ['author']
 
     def create(self, validated_data):
         tags_data = validated_data.pop("tags", [])

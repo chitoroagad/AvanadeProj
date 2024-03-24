@@ -21,7 +21,7 @@ interface Tag {
   color: string;
 }
 
-interface Space {
+export interface Space {
   id: number;
   group: Group;
   tags: Tag[];
