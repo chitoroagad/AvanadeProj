@@ -1,67 +1,205 @@
-# COMP0016 2023-2024 Team 5: JurisBud AI
+<!--
+Hey, thanks for using the awesome-readme-template template.  
+If you have any enhancements, then fork this project and create a pull request 
+or just open an issue with the label "enhancement".
 
-Add project abstract here
+Don't forget to give this project a star for additional support ;)
+Maybe you can mention me or this repo in the acknowledgements too
+-->
+<div align="center">
 
-## Quickstart(Locally)
+  <img src="/rmlogo.png" alt="logo" width="200" height="auto" />
+  <h1>COMP0016 2023-2024 Team 5: JurisBUD AI</h1>
+  
+  <p>
+    How to use MS 365 and AI to extract better insights in Legal Knowledge Management
+  </p>
+  
+  
+<!-- Badges -->
+<p>
+  <a href="https://github.com/Louis3797/awesome-readme-template/graphs/contributors">
+    <img src="https://img.shields.io/github/contributors/Louis3797/awesome-readme-template" alt="contributors" />
+  </a>
+  <a href="">
+    <img src="https://img.shields.io/github/last-commit/Louis3797/awesome-readme-template" alt="last update" />
+  </a>
+  <a href="https://github.com/Louis3797/awesome-readme-template/network/members">
+    <img src="https://img.shields.io/github/forks/Louis3797/awesome-readme-template" alt="forks" />
+  </a>
+  <a href="https://github.com/Louis3797/awesome-readme-template/stargazers">
+    <img src="https://img.shields.io/github/stars/Louis3797/awesome-readme-template" alt="stars" />
+  </a>
+  <a href="https://github.com/Louis3797/awesome-readme-template/issues/">
+    <img src="https://img.shields.io/github/issues/Louis3797/awesome-readme-template" alt="open issues" />
+  </a>
+  <a href="https://github.com/Louis3797/awesome-readme-template/blob/master/LICENSE">
+    <img src="https://img.shields.io/github/license/Louis3797/awesome-readme-template.svg" alt="license" />
+  </a>
+</p>
+   
+</div>
 
-### Run JurisBud AI Altogether
+<br />
 
-#### Prerequisites
+<!-- Table of Contents -->
+# :notebook_with_decorative_cover: Table of Contents
 
-- Have Docker Desktop installed.
-- Make sure Docker service is running
-- Enter frontend/src directory and run `npm ci`
-- Have a .env file in backend directory containing:
-  - `AZURE_OPENAI_API_KEY` or `OPENAI_API_KEY`
-  - `AZURE_OPENAI_ENDPOINT` or none if using openai
-  - `OPENAI_API_VERSION=2023-03-15-preview`
+- [About the Project](#star2-about-the-project)
+  * [Abstract](#book-bstract)
+  * [Screenshots](#camera-screenshots)
+  * [Tech Stack](#space_invader-tech-stack)
+  * [Features](#dart-features)
+  * [Environment Variables](#key-environment-variables)
+- [Getting Started](#toolbox-getting-started)
+  * [Prerequisites](#bangbang-prerequisites)
+  * [Installation](#gear-installation)
+  * [Running Tests](#test_tube-running-tests)
+  * [Deployment](#triangular_flag_on_post-deployment)
+- [Usage](#eyes-usage)
+- [Roadmap](#compass-roadmap)
+- [License](#warning-license)
+- [Contact](#handshake-contact)
+- [Documentations](#gem-documentations)
 
-#### Commands
+  
 
-```bash
-./run.sh
-```
+<!-- About the Project -->
+## :star2: About the Project
 
-<br>
+### :book: Abstract
+<div>
+<p>
+  With the rapid development of Artificial Intelligence, the trend leaded by OpenAI brings the public to be more willing to work with AI.
+  However, it is unusual to have an AI assistant that is specifically designed for the legal industry. <br><br>
+  <strong>This is where JurisBUD AI comes in.</strong>
+  By using the latest concept of AI agents, JuridsBUD AI can help legal professionals to solve problems that they might face in their Day-to-Day work.<br><br>
+  Instead of working alone till midnight, searching online and reading 1000 pages of documents, you can now just ask JurisBUD AI and a whole team 
+  of AI agents with split work into tasks, that can assure clarity, enhancement and quality.
+</p>
 
-### Run JurisBud AI Separately (Frontend, Backend, Large-Language Model(LLM))
+<!-- Screenshots -->
+### :camera: Screenshots
 
-#### Run Frontend
+<div align="center"> 
+  <img src="https://placehold.co/600x400?text=Your+Screenshot+here" alt="screenshot" />
+</div>
 
-##### Commands
 
-```bash
-cd frontend
-npm ci
-npm run dev
-```
+<!-- TechStack -->
+### :space_invader: Tech Stack
 
-#### Run Backend
+<details>
+  <summary>Client</summary>
+  <ul>
+    <li><a href="https://www.typescriptlang.org/">TypeScript</a></li>
+    <li><a href="https://www.javascript.com/">JavaScript</a></li>
+    <li><a href="https://nextjs.org/">Next.js</a></li>
+    <li><a href="https://daisyui.com/">Daisy UI</a></li>
+    <li><a href="https://tailwindcss.com/">TailwindCSS</a></li>
+  </ul>
+</details>
 
-##### Prerequisites
+<details>
+  <summary>Backend</summary>
+  <ul>
+    <li><a href="https://www.djangoproject.com/">Django</a></li>
+    <li><a href="https://www.langchain.com/">LangChain</a></li>
+    <li><a href="https://www.python.org/">Python</a></li>
+  </ul>
+</details>
 
-- Have Python 3.11 environment.
-- Install requirements.
-  - `pip install -r requirements.txt`
+<details>
+<summary>Database</summary>
+  <ul>
+    <li><a href="https://www.trychroma.com/">ChromaDB</a></li>
+  </ul>
+</details>
 
-##### Commands
+<details>
+<summary>DevOps</summary>
+  <ul>
+    <li><a href="https://www.docker.com/">Docker</a></li>
+  </ul>
+</details>
 
-```bash
-cd backend
-python manage.py runserver
-```
+<!-- Features -->
+### :dart: Features
 
-# DOESN'T WORK ANYMORE, NEEDS TO BE UPDATED below
+- Feature 1
+- Feature 2
+- Feature 3
 
-#### Run LLM
+<!-- Env Variables -->
+### :key: Environment Variables
 
-##### Prerequisites
+To run this project, you will need to add the following environment variables to your .env file
 
-- Have Docker Desktop installed.
-- Make sure Docker service is running
+`API_KEY`
 
-##### Commands
+`ANOTHER_API_KEY`
 
-```bash
-./run.sh
-```
+<!-- Getting Started -->
+## 	:toolbox: Getting Started
+
+<!-- Prerequisites -->
+### :bangbang: Prerequisites
+
+to write
+
+<!-- Installation -->
+### :gear: Installation
+
+to write
+   
+<!-- Running Tests -->
+### :test_tube: Running Tests
+
+to write
+
+
+<!-- Deployment -->
+### :triangular_flag_on_post: Deployment
+
+to write
+
+<!-- Usage -->
+## :eyes: Usage
+
+Use this space to tell a little more about your project and how it can be used. Show additional screenshots, code samples, demos or link to other resources.
+
+To write, useful diagrams are in Portfolio Folder
+
+<!-- Roadmap -->
+## :compass: Roadmap
+
+Gantt Chart can be attached here, also in Portfolio Folder
+
+<!-- License -->
+## :warning: License
+
+ GNU GENERAL PUBLIC LICENSE V3.0. See LICENSE for more information.
+
+
+<!-- Contact -->
+## :handshake: Contact
+
+Zhaoqi Chen -  zhaoqi.chen.22@ucl.ac.uk
+
+
+
+<!-- Acknowledgments -->
+## :gem: Documentations
+
+Use this section to mention useful resources and libraries that you have used in your projects.
+
+ - [Portfolio](https://students.cs.ucl.ac.uk/2023/group5/)
+ - [User Manual](https://students.cs.ucl.ac.uk/2023/group5/usermn.html)
+ - [Deployment Manual](https://students.cs.ucl.ac.uk/2023/group5/dply.html)
+ - [CC License](https://students.cs.ucl.ac.uk/2023/group5/cc.html)
+ - [EULA](https://students.cs.ucl.ac.uk/2023/group5/eula.html)
+ - [Legal Statement](https://students.cs.ucl.ac.uk/2023/group5/Project Legal Statement.pdf)
+ - [Summary Video] add 8 min pre vid link here
+ - [Blog](https://jurisbudaidevelopmentblog.wordpress.com/)
+
+
