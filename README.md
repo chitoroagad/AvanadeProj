@@ -175,7 +175,7 @@ Use this section to mention useful resources and libraries that you have used in
  - [Deployment Manual](https://students.cs.ucl.ac.uk/2023/group5/dply.html)
  - [CC License](https://students.cs.ucl.ac.uk/2023/group5/cc.html)
  - [EULA](https://students.cs.ucl.ac.uk/2023/group5/eula.html)
- - [Legal Statement](https://students.cs.ucl.ac.uk/2023/group5/Project Legal Statement.pdf)
+ - [Legal Statement] add link of legal statement here (copy from website)
  - [Summary Video] add 8 min pre vid link here
  - [Blog](https://jurisbudaidevelopmentblog.wordpress.com/)
 
