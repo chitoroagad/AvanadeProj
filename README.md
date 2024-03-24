@@ -13,8 +13,9 @@ Maybe you can mention me or this repo in the acknowledgements too
   
   <h3>
     How to use MS 365 and AI to extract better insights in Legal Knowledge Management
-  </3>
-  
+  </h3>
+  <br>
+  <br>  
    
 </div>
 
