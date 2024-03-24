@@ -48,6 +48,13 @@ def ask_gpt(prompt):
         )
 
 
+def add_pdf_to_gpt(pdf):
+    try:
+        return LLMCaller.add_pdf_document(pdf)
+    except:
+        raise exceptions.ValidationError("Failed to add PDF to vector store.")
+
+
 def reload_gpt(tasks):
     try:
         return LLMCaller.reload_chat(tasks)

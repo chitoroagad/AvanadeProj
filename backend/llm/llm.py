@@ -13,7 +13,8 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.tools import StructuredTool
 from langchain.tools.retriever import create_retriever_tool
 from langchain_community.chat_message_histories import ChatMessageHistory
-from langchain_community.document_loaders import CSVLoader, TextLoader
+from langchain_community.document_loaders import (CSVLoader, PyPDFLoader,
+                                                  TextLoader)
 from langchain_community.vectorstores import Chroma
 from langchain_core.agents import AgentActionMessageLog, AgentFinish
 from langchain_core.callbacks import Callbacks
@@ -58,7 +59,7 @@ def parse_task_list(output):
 def task_list_executor_fun(task: str, callbacks: Callbacks) -> str:
 
     solver_llm = llm.bind_functions(
-        [main_database_retriever_tool, results_database_retriever_tool]
+        [primary_database_retriever_tool, results_database_retriever_tool]
     )
 
     solver_prompt = ChatPromptTemplate.from_messages(
@@ -94,7 +95,11 @@ def task_list_executor_fun(task: str, callbacks: Callbacks) -> str:
 
     solver_executor = AgentExecutor(
         agent=solver_agent,
-        tools=[main_database_retriever_tool, results_database_retriever_tool],
+        tools=[
+            primary_database_retriever_tool,
+            secondary_database_retriever_tool,
+            results_database_retriever_tool,
+        ],
         verbose=False,
         return_intermediate_steps=True,
     )
@@ -200,32 +205,48 @@ manager_prompt = ChatPromptTemplate.from_messages(
 embeddings_function = AzureOpenAIEmbeddings(azure_deployment="ada")
 
 # loader = CSVLoader("llm/USSupremeCourt.csv", encoding="iso-8859-1")
-loader = TextLoader("llm/courtcase.txt")
-docs = loader.load()
-documents = RecursiveCharacterTextSplitter(
+primary_loader = TextLoader("llm/courtcase.txt")
+primary_docs = primary_loader.load()
+primary_documents = RecursiveCharacterTextSplitter(
     chunk_size=1000, chunk_overlap=200
-).split_documents(docs)
-vector = Chroma.from_documents(documents, embeddings_function, client=chroma_client)
-retriever = vector.as_retriever()
-main_database_retriever_tool = create_retriever_tool(
-    retriever,
+).split_documents(primary_docs)
+primary_vector = Chroma.from_documents(
+    primary_documents, embeddings_function, client=chroma_client
+)
+primary_retriever = primary_vector.as_retriever()
+primary_database_retriever_tool = create_retriever_tool(
+    primary_retriever,
     "US_Supreme_Court_Cases-search",
     "Search for US Supreme Court Cases between 2020 and 2022. For any questions about US Supreme Court Cases, use this tool!.",
+)
+
+secondary_vector = Chroma(embedding_function=embeddings_function, client=chroma_client)
+secondary_retriever = secondary_vector.as_retriever()
+secondary_database_retriever_tool = create_retriever_tool(
+    secondary_retriever,
+    "Client-Case-Storage-Search",
+    "Search for client case documents. For any questions about client case documents, use this tool!.",
 )
 
 results_vector = Chroma(embedding_function=embeddings_function, client=chroma_client)
 results_retriever = results_vector.as_retriever()
 results_database_retriever_tool = create_retriever_tool(
-    retriever,
+    primary_retriever,
     "Results-Storage-Search",
     "Search for results of previous tasks (id==task_number), from a vector store.",
 )
 
 
 llm = AzureChatOpenAI(azure_deployment="dep", temperature=0, streaming=False)
-organiser_llm = llm.bind_functions([main_database_retriever_tool, OutputTasks])
+organiser_llm = llm.bind_functions(
+    [primary_database_retriever_tool, secondary_database_retriever_tool, OutputTasks]
+)
 solver_llm = llm.bind_functions(
-    [main_database_retriever_tool, results_database_retriever_tool]
+    [
+        primary_database_retriever_tool,
+        secondary_database_retriever_tool,
+        results_database_retriever_tool,
+    ]
 )
 manager_llm = llm.bind_functions([task_list_executor, task_list_generator])
 
@@ -266,12 +287,18 @@ solver_agent = (
 )
 
 organiser_executor = AgentExecutor(
-    agent=organiser_agent, tools=[main_database_retriever_tool], verbose=False
+    agent=organiser_agent,
+    tools=[primary_database_retriever_tool, secondary_database_retriever_tool],
+    verbose=False,
 ).with_config({"run_name": "Organiser"})
 
 solver_executor = AgentExecutor(
     agent=solver_agent,
-    tools=[main_database_retriever_tool, results_database_retriever_tool],
+    tools=[
+        primary_database_retriever_tool,
+        secondary_database_retriever_tool,
+        results_database_retriever_tool,
+    ],
     verbose=False,
     return_intermediate_steps=True,
 ).with_config({"run_name": "Solver"})
@@ -363,6 +390,17 @@ class LLMCaller:
             {"input": ",\n".join(tasks)}, config={"configurable": {"session_id": "1"}}
         )
         return out
+
+    @staticmethod
+    def add_pdf_document(document):
+        """
+        Adds a document to the secondary database
+        """
+        loader = PyPDFLoader(document)
+        pages = loader.load_and_split()
+        for page in pages:
+            secondary_vector.add_document(page)
+        return "Document added"
 
 
 if __name__ == "__main__":

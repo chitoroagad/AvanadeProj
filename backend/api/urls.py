@@ -12,4 +12,5 @@ urlpatterns = [
     path("check_token", views.check_token),
     path("chat/upload_prompt", views.get_prompt_from_file),
     path("chat/reload", views.reload_chat),
+    path("file/upload", views.add_pdf_to_gpt),
 ]

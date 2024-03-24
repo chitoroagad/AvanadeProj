@@ -19,12 +19,12 @@ services:
       - "8080:8080"
     depends_on:
       - chroma
-    command: python /src/manage.py runserver 0.0.0.0:8080
+    command: python manage.py runserver backend:8080
 
   frontend:
     build:
       context: ./frontend
-      target: dev # dev for development build, production for production build
+      target: dev # 'dev' for development build, 'production' for production build
       dockerfile: Dockerfile
     volumes:
       - ./frontend:/app

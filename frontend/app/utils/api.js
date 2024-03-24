@@ -16,7 +16,11 @@ class HttpClient {
 		}
 		const url = this.baseUrl ? `${this.baseUrl}${resource}` : resource;
 		opts["method"] = "POST";
-		return fetch(url, { ...this.defaultOpts, ...opts });
+		let out = fetch(url, { ...this.defaultOpts, ...opts });
+		console.log("INC", url, { ...this.defaultOpts, ...opts });
+		console.log("HTTP", out);
+		console.log("def", this.defaultOpts);
+		return out;
 	}
 	delete(resource, opts) {
 		if (resource.slice(0, 1) !== "/") {
@@ -39,7 +43,7 @@ const apiClient = new HttpClient({
 	baseUrl: "http://localhost:8080/api",
 	defaultOpts: {
 		headers: {
-			"Content-Type": "application/json",
+			"content-type": "application/json",
 		},
 	},
 });
