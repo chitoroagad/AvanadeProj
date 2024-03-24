@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-
-import { apiClient } from "@/app/utils/api"; // Adjust the import path according to your project structure
+import { apiClient } from "@/app/utils/api";
 import {
   Container,
   Grid,
@@ -36,13 +35,13 @@ import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import FolderIcon from "@mui/icons-material/Folder";
 import TagIcon from "@mui/icons-material/Label";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
-import GroupIcon from "@mui/icons-material/Group"; // Import if using GroupIcon
-import EventNoteIcon from "@mui/icons-material/EventNote"; // Import if using EventNoteIcon
+import GroupIcon from "@mui/icons-material/Group";
+import EventNoteIcon from "@mui/icons-material/EventNote";
 import ApartmentIcon from "@mui/icons-material/Apartment";
 import Link from "next/link";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-const Space = ({ params }) => {
+export const Space = ({ params }) => {
   const [space, setSpace] = useState(null);
   const [selectedFolderId, setSelectedFolderId] = useState(null);
   const [folders, setFolders] = useState([]);
@@ -234,16 +233,7 @@ const Space = ({ params }) => {
         </IconButton>
         <Dialog
           open={open}
-          onClose={(event, reason) => {
-            if (
-              reason !== "backdropClick" &&
-              reason !== "escapeKeyDown" &&
-              !isDeleted
-            ) {
-              handleClose(); // Only executes handleClose if the dialog wasn't closed by clicking outside or pressing escape
-            }
-          }}
-          disableEscapeKeyDown // Prevents closing the dialog by pressing the Escape key
+          onClose={handleClose}
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
@@ -258,17 +248,15 @@ const Space = ({ params }) => {
             </DialogContentText>
           </DialogContent>
           <DialogActions>
+            <Button onClick={handleClose}>Cancel</Button>
             {isDeleted ? (
-              <Link color="primary" href={"/Spaces"} legacyBehavior>
-                <Button className="btn btn-primary">Okay</Button>
+              <Link color="primary" legacyBehavior>
+                Okay
               </Link>
             ) : (
-              <>
-                <Button onClick={handleClose}>Cancel</Button>
-                <Button onClick={handleDeleteSpace} color="error">
-                  Delete
-                </Button>
-              </>
+              <Button onClick={handleDeleteSpace} color="error">
+                Delete
+              </Button>
             )}
           </DialogActions>
         </Dialog>
@@ -516,5 +504,3 @@ const Space = ({ params }) => {
     </Container>
   );
 };
-
-export default Space;

@@ -10,14 +10,30 @@ import NotFinishedTask from "../components/NotFinishedTask";
 import NotConfirmedTask from "../components/NotConfirmedTask";
 import Link from "next/link";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import {
+	JSXElementConstructor,
+	Key,
+	PromiseLikeOfReactNode,
+	ReactElement,
+	ReactNode,
+	useEffect,
+	useState,
+} from "react";
 import { apiClient } from "../utils/api";
 
 const Process = () => {
 	const [inputValue, setInputValue] = useState("");
+	const [name, setName] = useState("Chat Name");
+
 	// State to store the response from the API (if needed)
+	const queryParams = new URLSearchParams(window.location.search);
+	const promptParam = queryParams.get("prompt");
 	const [response, setResponse] = useState(null);
 	const [loading, setLoading] = useState(false); // State to track loading
+
+	useEffect(() => {
+		setInputValue(promptParam);
+	}, [promptParam]);
 
 	// Function to handle input changes
 	const handleInputChange = (e) => {
@@ -28,20 +44,11 @@ const Process = () => {
 	const sendRequest = () => {
 		setLoading(true); // Start loading
 
-		// Here you would replace 'your-api-endpoint' with your actual API endpoint
-		// and adjust headers and body according to your API requirements
-
 		apiClient
 			.post("/chat/create", {
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: "Token " + localStorage.getItem("token"),
-				},
-				body: JSON.stringify({ prompt: inputValue }),
+				body: JSON.stringify({ prompt: inputValue, name: name }),
 			})
-			.then((response) => response.json())
 			.then((data) => {
-				console.log(data);
 				setResponse(data);
 				setLoading(false); // Stop loading after the data is received
 			})
@@ -56,15 +63,10 @@ const Process = () => {
 
 		apiClient
 			.post("/chat/reload", {
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: "Token " + localStorage.getItem("token"),
-				},
 				body: JSON.stringify({
 					tasks: document.getElementById("tasksEle").innerText.split("\n"),
 				}),
 			})
-			.then((response) => response.json())
 			.then((data) => {
 				console.log(data);
 				setResponse(data);
@@ -91,7 +93,12 @@ const Process = () => {
 	return (
 		<div>
 			<div className={styles.chatName}>
-				<h1>Chat name</h1>
+				<input
+					onChange={(e) => {
+						setName(e.target.value);
+					}}
+					value={name}
+				/>{" "}
 			</div>
 			<div className={styles.prompt}>
 				<Image
@@ -112,17 +119,26 @@ const Process = () => {
 				></input>
 			</div>
 
-			<div className={styles.tasks}>
-				<p className={styles.res}>{loading ? "Loading..." : response?.chat}</p>
-				<div className={styles.taskTag}>Requested Tasks</div>
-				<div id="tasksEle" className={styles.taskDes}>
+			<div className={styles.tasks} style={{ marginRight: "20%" }}>
+				<div
+					className={styles.res}
+					style={{
+						marginLeft: "20%",
+						marginRight: "25%",
+						padding: "40px",
+						backgroundColor: "whitesmoke",
+						borderRadius: "5px",
+					}}
+				>
 					{loading
-						? ""
-						: response?.tasks.map((task) => (
-								<div className={styles.tasks} key={task[0]}>
-									{task}
-								</div>
-						  ))}
+						? "Loading..."
+						: !response || !response.chat
+						  ? ""
+						  : !response.tasks || response.tasks.length === 0
+							  ? response.chat
+							  : response.tasks.map((task: string) => task + "\n") +
+								  "\n\n" +
+								  response.chat}
 				</div>
 				<button onClick={() => sendReloadRequest()} className={styles.GenBtn}>
 					Reload answer

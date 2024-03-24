@@ -24,18 +24,17 @@ class GroupSerializer(serializers.ModelSerializer):
 
 
 class SpaceSerializer(serializers.ModelSerializer):
-    # Add nested serializers for related models
     group = GroupSerializer(read_only=True)
-    # Assuming a many-to-many relationship
     tags = TagSerializer(many=True, read_only=True)
+    owner = serializers.PrimaryKeyRelatedField(read_only=True)  # Add this line
 
     class Meta:
         model = Space
-        fields = '__all__'  # This will now include the complete objects for 'group' and 'tags'
+        fields = '__all__'  # This will now include 'owner' as read-only
 
 
 class FolderSerializer(serializers.ModelSerializer):
-    space = SpaceSerializer(read_only=True)
+    # space = SpaceSerializer(read_only=True)
 
     class Meta:
         model = Folder

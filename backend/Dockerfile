@@ -17,5 +17,6 @@ ENV PATH=/venv/bin:$PATH
 
 WORKDIR /src
 
-COPY requirements.txt .
+COPY backend/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
+CMD python manage.py runserver localhost:8080

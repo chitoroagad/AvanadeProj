@@ -3,14 +3,9 @@ from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager,
 from django.core.validators import validate_email
 from django.db import models
 from rest_framework import serializers
+from spaces.models import Folder
 
 # Create your models here.
-
-from django.contrib.auth.models import AbstractBaseUser
-from django.contrib.auth.models import PermissionsMixin
-from django.contrib.auth.models import BaseUserManager
-from django.core.validators import validate_email
-from rest_framework import serializers
 
 
 class UserProfileManager(BaseUserManager):
@@ -65,12 +60,16 @@ class Tag(models.Model):
 
 class Chat(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
-    title = models.CharField(max_length=2000, blank=True, default="")
+    title = models.CharField(max_length=1000, blank=True, default="")
     tags = models.ManyToManyField(Tag, related_name="chats", blank=True)
-    prompt = models.CharField(max_length=400)
+    prompt = models.CharField(max_length=4000)
     author = models.ForeignKey(
         "api.UserProfile", related_name="chats", on_delete=models.CASCADE
     )
+    folder = models.ForeignKey(
+        Folder, related_name="chats", on_delete=models.SET_NULL, null=True, blank=True
+    )
+
     response = models.TextField()
     created_at = models.DateField(auto_now=True)
 

@@ -1,65 +1,68 @@
 .container {
-  width: 80vw; /* Adjusted width to take up remaining space */
-  height: 100vh; /* Full viewport height */
-  margin-left: 20vw; /* Push container to the right to make room for the sidebar */
-  margin-top: 0;
+  width: calc(100% - 20vw); /* Adjusted to create space for a sidebar */
+  min-height: 100vh; /* Ensure it at least fills the viewport height */
+  margin-left: 20vw; /* Space for sidebar */
   display: flex;
-  justify-content: center;
-  align-items: center; /* Center the table vertically */
+  flex-direction: column; /* Stack children vertically */
   padding: 20px;
-  box-sizing: border-box; /* Include padding in total dimensions */
+  box-sizing: border-box; /* Include padding in the width calculation */
+  background: #F8F9FD; /* Background color similar to the screenshot */
 }
 
 .table {
-  width: calc(100% - 40px); /* Adjust width for padding */
-  height: calc(100% - 40px); /* Adjust height for padding, if you have a header or footer, consider their heights here */
-  overflow-y: auto; /* Add vertical scroll if content is taller than container */
+  width: 100%; /* Use full width of the container */
+  max-height: calc(100vh - 40px); /* Adjust based on header/footer height */
+  overflow-y: auto; /* Scroll vertically if content exceeds height */
   display: flex;
   flex-direction: column;
+  background: #FFFFFF; /* Background color for the table */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  border-radius: 8px; /* Rounded corners for the table */
+}
+
+.tableHeader, .tableRow {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* Four equal columns */
+  align-items: center; /* Center items vertically */
 }
 
 .tableHeader {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr); /* Four equal columns */
-  background-color: #f4f4f4;
-  padding: 10px;
+  background-color: #EFF2F7; /* Light background for header */
+  padding: 15px 20px; /* Spacing inside header */
   font-weight: bold;
-  border-bottom: 1px solid #ccc;
+  border-top-left-radius: 8px; /* Round top corners */
+  border-top-right-radius: 8px; /* Round top corners */
+  border-bottom: 2px solid #DDE2EB; /* Separator */
 }
 
 .tableRow {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr); /* Four equal columns */
-  padding: 10px;
-  border-bottom: 1px solid #ccc;
-  transition: background-color 0.3s;
-  text-decoration: none;
-  color: inherit;
-  overflow: hidden; /* Prevent content from spilling out */
+  padding: 10px 20px; /* Spacing inside rows */
+  transition: background-color 0.3s; /* Smooth transition on hover */
 }
 
-.headerItem,
-.rowItem {
-  padding: 10px;
+.headerItem, .rowItem {
   overflow: hidden;
   white-space: nowrap;
-  text-overflow: ellipsis;
+  text-overflow: ellipsis; /* Ensure content does not overflow */
 }
 
-/* If you have a fixed sidebar, you might need this */
+.tableRow:hover {
+  background-color: #F4F6FA; /* Hover state background */
+}
+
+/* Responsive adjustments */
 @media (max-width: 1000px) {
   .container {
-    width: 100vw;
-    margin-left: 0; /* Sidebar might be hidden or changed to overlay on smaller screens */
+    width: 100%;
+    margin-left: 0; /* Adjust for smaller screens */
   }
 }
 
-/* Add styles for scrollbar visibility */
-.table {
-  overflow-y: auto; /* Add vertical scrollbar if needed */
-}
-
-/* Improve tableRow hover effect to cover the full row width */
-.tableRow:hover {
-  background-color: #eaeaea;
+/* Style adjustments for better readability and spacing */
+.rowItem span {
+  display: inline-block;
+  margin: 0 5px 5px 0; /* Space between tags */
+  padding: 2px 8px; /* Padding inside tags */
+  border-radius: 15px; /* Rounded tags for a modern look */
+  font-size: 0.8rem; /* Smaller font size for tags */
 }

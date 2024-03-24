@@ -31,7 +31,21 @@
 
 .SecRec {
   position: absolute;
-  top: 55vh;
+  top: 100vh;
+  left: 30vw;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+  border-radius: 20px;
+  padding: 2rem;
+  width: 60vw;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.thirdRec {
+  position: absolute;
+  top: 125vh;
   left: 30vw;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   background-color: #ffffff;
@@ -86,17 +100,13 @@
 }
 
 .description {
-  margin-top: 20px;
+  margin-top: 70px;
   position: relative;
   left: 50%;
   top: -14vh;
 }
 
-.chatwithTag {
-  border: 1px solid #000000;
-  padding: 1rem;
-  margin: 10px;
-}
+ 
 
 .title {
   position: absolute;
@@ -104,4 +114,114 @@
   left: 30vw;
   font-size: 3rem;
   font-weight: bold;
+}
+/* General Background and Layout Settings */
+.spaceBackground {
+  width: 100vw;
+  height: 100vh;
+  object-fit: contain;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -2;
+}
+
+/* General reusable section styling */
+.sectionRec, .FirRec, .SecRec, .thirdRec {
+  position: absolute;
+  left: 30vw;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+  border-radius: 20px;
+  padding: 2rem;
+  width: 60vw;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+}
+ 
+.gradientBackground {
+  background-image: linear-gradient(to bottom right, #ACE0F9, #FFFFFF);
+  /* Adjust the start and end colors as needed to match the image more closely */
+}
+
+/* Component Specific Styles */
+.pic { width: 3%; }
+
+.tagsFlex, .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.tag, .tagItem {
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    box-sizing: border-box;
+    flex-grow: 1;
+    width: 20%;
+    max-width: calc(20% - 10px);
+}
+
+.createdAt { display: flex; margin-top: 20px; }
+.time { margin-left: 20px; }
+
+.description {
+  position: relative;
+  left: 50%;
+  transform: translateY(-50%);
+}
+
+ 
+
+.title {
+  position: absolute;
+  top: 5vh;
+  left: 30vw;
+  font-size: 3rem;
+  font-weight: bold;
+}
+
+.mainContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+}
+
+.section {
+  width: 80%;
+  max-width: 1200px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.itemsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.card {
+  background-color: #f9f9f9;
+  border-radius: 15px;
+  padding: 15px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Adjust tag styling for different contexts */
+.tag {
+  background-color: #eef2f7;
+  border-radius: 15px;
+  padding: 5px 10px;
+  font-size: 0.9rem;
 }

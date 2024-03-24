@@ -7,11 +7,12 @@ urlpatterns = [
     path('/<int:pk>/', views.space_detail, name='space-detail'),
 
     # Folder URLs
-    path('folders/', views.folder_list, name='folder-list'),
+    path('/<int:space_id>/folders/',
+         views.folder_list, name='folder_list'),
     path('folders/<int:pk>/', views.folder_detail, name='folder-detail'),
 
     # Group URLs
-    path('groups/', views.group_list, name='group-list'),
+    path('/groups', views.group_list, name='group-list'),
     path('groups/<int:pk>/', views.group_detail, name='group-detail'),
     path('groups/<int:pk>/add_member/', views.add_member, name='add-member'),
 

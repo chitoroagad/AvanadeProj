@@ -1,87 +1,143 @@
 "use client";
-
-import { apiClient } from "@/app/utils/api";
 import { useEffect, useState } from "react";
-// import { useRouter } from "next/router";
+import { apiClient } from "@/app/utils/api";
+import {
+  Card,
+  CardContent,
+  Typography,
+  Box,
+  CircularProgress,
+  Paper,
+  Grid,
+} from "@mui/material";
 
 const ChatPage = ({ params }) => {
-  // const router = useRouter();
-  // const { id } = router.query; // Get the chatId from the URL
-
-  const [chat, setChat] = useState(null); // State to hold your fetched chat data
+  const [chat, setChat] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Make sure id is not undefined
     if (params.id) {
-      // Function to fetch chat data
       const fetchChatData = async () => {
-        apiClient
-          .get(`/chat/${params.id}`, {
+        try {
+          const response = await apiClient.get(`/chat/${params.id}`, {
             headers: {
               "Content-Type": "application/json",
               Authorization: "Token " + localStorage.getItem("token"),
             },
-          })
-          .then((response) => response.json())
-          .then((data) => {
-            setLoading(false);
-            setChat(data.chat);
-          })
-          .catch((error) => {
-            console.error("Error:", error);
-            setLoading(false);
-
-            // setLoading(false); // Stop loading after the data is received
           });
+          const data = await response.json();
+          setChat(data.chat);
+          setLoading(false);
+        } catch (error) {
+          console.error("Error:", error);
+          setLoading(false);
+        }
       };
-
-      fetchChatData(); // Call the function to fetch chat data
+      fetchChatData();
     }
-  }, [params.id]); // Dependency array to ensure useEffect runs when id changes
+  }, [params.id]);
 
-  // Render your chat content here based on chatId
   return (
-    <div
-      style={{
+    <Box
+      sx={{
+        p: 2,
         display: "flex",
         flexDirection: "column",
-        justifyContent: "center",
         alignItems: "center",
-        minHeight: "100vh", // Make sure the container takes at least the full height of the viewport
-        // backgroundColor: "#f0f0f0", // Light grey background
-        color: "#333", // Dark grey text for better readability
-        fontFamily: "Arial, sans-serif", // Set a more specific font
-        padding: "20px", // Add some padding around the content
-        textAlign: "center", // Center text
-        borderRadius: "10px", // Rounded corners for the container
-        // boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", // Soft shadow for depth
-        maxWidth: "600px", // Max width for the content area
-        margin: "auto", // Margin auto for horizontal centering if the view width exceeds max-width
+        minHeight: "100vh",
       }}
     >
-      {/* <h1 style={{ color: "#007bff" }}>Chat Content for ID: {params.id}</h1>{" "} */}
-      {/* Blue title */}
-      {!loading ? (
-        <div
-          style={{ background: "white", padding: "40px", borderRadius: "10px" }}
-        >
-          {/* Adding background, padding, and border-radius for the chat details */}
-          <h2 style={{ borderBottom: "2px solid #eee", paddingBottom: "40px" }}>
-            Title: {chat?.title}
-          </h2>
-          <p style={{ fontSize: "16px", paddingBottom: "40px" }}>
-            Prompt: {chat?.prompt}
-          </p>
-          <p style={{ fontSize: "16px", paddingBottom: "40px" }}>
-            Response: {chat?.response}
-          </p>
-          {/* Render additional chat content as needed */}
-        </div>
+      {loading ? (
+        <CircularProgress />
       ) : (
-        <p>Loading...</p> // Display a loading text or spinner while data is being fetched
+        <Paper elevation={3} sx={{ maxWidth: 600, width: "100%", p: 2 }}>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <Typography variant="h6" color="text.primary" gutterBottom>
+                Chat Details
+              </Typography>
+            </Grid>
+            <Grid item xs={4}>
+              <Typography variant="subtitle2" color="text.secondary">
+                Chat ID:
+              </Typography>
+            </Grid>
+            <Grid
+              item
+              xs={8}
+              style={{
+                padding: "10px",
+                backgroundColor: "whitesmoke",
+                borderRadius: "10px",
+                marginBottom: "10px",
+              }}
+            >
+              <Typography variant="body1" color="text.primary">
+                {params.id}
+              </Typography>
+            </Grid>
+
+            <Grid item xs={4}>
+              <Typography variant="subtitle2" color="text.secondary">
+                Title:
+              </Typography>
+            </Grid>
+            <Grid
+              item
+              xs={8}
+              style={{
+                padding: "10px",
+                backgroundColor: "whitesmoke",
+                borderRadius: "10px",
+                marginBottom: "10px",
+              }}
+            >
+              <Typography variant="body1" color="text.primary">
+                {chat?.title}
+              </Typography>
+            </Grid>
+            <Grid item xs={4}>
+              <Typography variant="subtitle2" color="text.secondary">
+                Prompt:
+              </Typography>
+            </Grid>
+            <Grid
+              item
+              xs={8}
+              style={{
+                padding: "10px",
+                backgroundColor: "whitesmoke",
+                borderRadius: "10px",
+                marginBottom: "10px",
+              }}
+            >
+              <Typography variant="body1" color="text.primary">
+                {chat?.prompt}
+              </Typography>
+            </Grid>
+            <Grid item xs={4}>
+              <Typography variant="subtitle2" color="text.secondary">
+                Response:
+              </Typography>
+            </Grid>
+            <Grid
+              item
+              xs={8}
+              style={{
+                padding: "10px",
+                backgroundColor: "whitesmoke",
+                borderRadius: "10px",
+                marginBottom: "10px",
+              }}
+            >
+              <Typography variant="body1" color="text.primary">
+                {chat?.response}
+              </Typography>
+            </Grid>
+          </Grid>
+        </Paper>
       )}
-    </div>
+    </Box>
   );
 };
 

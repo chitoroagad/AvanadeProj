@@ -6,7 +6,7 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
 from .models import Space, Folder, Group, Tag, Project
 from .serializers import SpaceSerializer, FolderSerializer, GroupSerializer, TagSerializer, ProjectSerializer
-
+from api.serializers import ChatSerializer
 User = get_user_model()
 
 
@@ -16,22 +16,54 @@ User = get_user_model()
 @permission_classes([permissions.IsAuthenticated])
 def space_list(request):
     """
-    List all spaces, or create a new space.
+    Create a new space and optionally create folders within it.
     """
     if request.method == 'GET':
         spaces = Space.objects.all()
         serializer = SpaceSerializer(spaces, many=True)
         return Response(serializer.data)
-
-    elif request.method == 'POST':
+    if request.method == 'POST':
         serializer = SpaceSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save(owner=request.user)
+            group = Group.objects.get(id=request.data["group"])
+            serializer.save(owner=request.user, group=group)
+
+            # Example: Create predefined folders for a new space
+
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(['GET'])
+@api_view(['POST'])
+@authentication_classes([SessionAuthentication, TokenAuthentication])
+@permission_classes([permissions.IsAuthenticated])
+def create_chat(request):
+    """
+    Create a new chat within a specified folder.
+    """
+    folder_id = request.data.get('folder_id')
+    try:
+        # Ensure user owns the space
+        folder = Folder.objects.get(id=folder_id, space__owner=request.user)
+    except:
+        return Response({'error': 'Folder not found or access denied'}, status=status.HTTP_404_NOT_FOUND)
+
+    chat_data = {
+        'title': request.data.get('title', ''),
+        'prompt': request.data.get('prompt'),
+        'response': request.data.get('response'),
+        'author': request.user.id,  # Assuming author needs to be the logged-in user
+        'folder': folder.id,
+    }
+    # Ensure you have a ChatSerializer
+    serializer = ChatSerializer(data=chat_data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET', 'DELETE', 'PUT', 'PATCH'])
 @authentication_classes([SessionAuthentication, TokenAuthentication])
 @permission_classes([permissions.IsAuthenticated])
 def space_detail(request, pk):
@@ -60,19 +92,23 @@ def space_detail(request, pk):
 @api_view(['GET', 'POST'])
 @authentication_classes([SessionAuthentication, TokenAuthentication])
 @permission_classes([permissions.IsAuthenticated])
-def folder_list(request):
+def folder_list(request, space_id):
     """
-    List all folders, or create a new folder.
+    List all folders for a specific space, or create a new folder in a space.
     """
+
+    space = get_object_or_404(Space, id=space_id)
+
     if request.method == 'GET':
-        folders = Folder.objects.all()
+        folders = Folder.objects.filter(space=space)
         serializer = FolderSerializer(folders, many=True)
         return Response(serializer.data)
 
     elif request.method == 'POST':
         serializer = FolderSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()  # Add owner if your Folder model has an owner field
+            # Linking the folder to the specified Space
+            serializer.save(space=space)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

@@ -2,7 +2,7 @@ FROM node:18-alpine AS base
 
 RUN apk add --no-cache g++ make py3-pip libc6-compat
 WORKDIR /app
-COPY package*.json ./
+COPY frontend/package*.json ./
 EXPOSE 3000
 
 
@@ -33,5 +33,5 @@ ENV NODE_ENV=development
 RUN npm install
 RUN npm ci
 RUN rm -fr /app/.next
-COPY . .
+COPY frontend/. .
 CMD ["npm", "run", "dev"]

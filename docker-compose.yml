@@ -12,7 +12,9 @@ services:
       - ALLOW_RESET=TRUE
 
   backend:
-    build: ./backend
+    build:
+      context: .
+      dockerfile: ./backend/Dockerfile
     volumes:
       - ./backend/:/src
     ports:
@@ -23,9 +25,9 @@ services:
 
   frontend:
     build:
-      context: ./frontend
+      context: .
       target: dev # 'dev' for development build, 'production' for production build
-      dockerfile: Dockerfile
+      dockerfile: ./frontend/Dockerfile
     volumes:
       - ./frontend:/app
       - /app/node_modules

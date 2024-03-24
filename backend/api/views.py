@@ -1,6 +1,7 @@
 # Create your views here.
 import asyncio
 import io
+import json
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -16,6 +17,7 @@ from rest_framework.decorators import (api_view, authentication_classes,
 from rest_framework.parsers import MultiPartParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from spaces.models import Folder
 
 from .models import Chat
 from .serializers import ChatSerializer, UserSerializer
@@ -27,9 +29,13 @@ User = get_user_model()
 
 @api_view(["POST"])
 def login(request, format=None):
+    print("called")
     data = request.data
-    # if not data.get('email') or not data.get('password'):
-    #   return Response({"detail": "Email and password are required"}, status=status.HTTP_400_BAD_REQUEST)
+    if not data.get("email") or not data.get("password"):
+        return Response(
+            {"detail": "Email and password are required"},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
     user = get_object_or_404(User, email=data.get("email"))
     if not user.check_password(data.get("password")):
         raise Http404
@@ -40,6 +46,7 @@ def login(request, format=None):
 
 @api_view(["POST"])
 def sign_up(request, format=None):
+    print("called2")
     serializer = UserSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
@@ -53,7 +60,7 @@ def sign_up(request, format=None):
 @authentication_classes([SessionAuthentication, TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def reload_chat(request, format=None):
-    data = request.data
+    data = request.data["body"]
     tasks = data["tasks"]
     llm_ans = reload_gpt(tasks)
     data["response"] = llm_ans["output"]
@@ -81,12 +88,16 @@ def reload_chat(request, format=None):
 @authentication_classes([SessionAuthentication, TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def new_chat(request, format=None):
-    data = request.data
+    data = json.loads(request.data["body"])
 
     llm_ans = ask_gpt({"input": data["prompt"]})
 
     data["response"] = llm_ans["output"]
-    data["tasks"] = llm_ans["intermediate_steps"][0]
+    print("llm_ans>>>", llm_ans)
+    if len(llm_ans["intermediate_steps"]) > 0:
+        data["tasks"] = llm_ans["intermediate_steps"][0]
+    else:
+        data["tasks"] = None
 
     print("data1>>>", data)
     print("data2>>>", data["tasks"])
@@ -161,6 +172,18 @@ def list_chats(request, format=None):
     )
 
 
+@api_view(["GET"])
+@authentication_classes([SessionAuthentication, TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def list_chats_folder(request, id, format=None):
+    folder = Folder.objects.get(id=id)
+    print("Folder>>", folder)
+    chats = Chat.objects.filter(author=request.user, folder=id)
+    print("Chatsss>>", chats)
+    serializer = ChatSerializer(instance=chats, many=True)
+    return Response({"chats": serializer.data})
+
+
 @api_view(["DELETE"])
 @authentication_classes([SessionAuthentication, TokenAuthentication])
 @permission_classes([IsAuthenticated])
@@ -208,3 +231,21 @@ def check_token(request, format=None):
     return Response(
         {"message": "success", "username": request.user.name},
     )
+
+
+@api_view(["POST"])
+@authentication_classes([SessionAuthentication, TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def assign_chats_to_folder(request):
+    folder_id = request.data.get("folder_id")
+    chat_ids = request.data.get("chats", [])
+
+    try:
+        folder = Folder.objects.get(id=folder_id)
+        print(folder, "Folder")
+        print(chat_ids)  # Check the chat_ids received from the request
+        chats_to_update = Chat.objects.filter(id__in=chat_ids).update(folder=folder)
+        print(chats_to_update)
+        return Response({"message": "Chats successfully assigned to folder."})
+    except Folder.DoesNotExist:
+        return Response({"error": "Folder not found"}, status=status.HTTP_404_NOT_FOUND)

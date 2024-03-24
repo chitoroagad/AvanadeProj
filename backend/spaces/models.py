@@ -1,5 +1,4 @@
 from django.db import models
-from api.models import UserProfile
 
 
 class Tag(models.Model):
@@ -16,14 +15,26 @@ class Space(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    tags = models.ManyToManyField(Tag, related_name='spaces')
+    tags = models.ManyToManyField(Tag, related_name='spaces', blank=True)
     group = models.ForeignKey(
-        Group, on_delete=models.CASCADE, related_name='spaces')
-    owner = models.ForeignKey(
-        'api.UserProfile', on_delete=models.CASCADE, related_name='owned_spaces')
+        Group, on_delete=models.CASCADE, related_name='spaces', null=True, blank=True)
+    owner = models.ForeignKey('api.UserProfile', on_delete=models.CASCADE,
+                              related_name='owned_spaces', null=True, blank=True)
 
-    def add_member(self, user):
-        self.group.members.add(user)
+    def __str__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
+        # Save the Space instance first
+        is_new = self._state.adding
+        super(Space, self).save(*args, **kwargs)
+
+        # If this is a new Space instance, create the folders
+        if is_new:
+            predefined_folders = ['Team Projects',
+                                  'Collaborations', 'Personal Projects']
+            for folder_name in predefined_folders:
+                Folder.objects.create(name=folder_name, space=self)
 
 
 class Folder(models.Model):
@@ -32,9 +43,10 @@ class Folder(models.Model):
         Space, on_delete=models.CASCADE, related_name='folders')
     created_at = models.DateTimeField(auto_now_add=True)
 
-    class Meta:
-        # Ensure unique folder names within a space
-        unique_together = ('name', 'space')
+   
+
+    def __str__(self):
+        return self.name
 
 
 class Project(models.Model):

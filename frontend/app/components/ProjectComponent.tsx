@@ -1,12 +1,12 @@
 // FolderDisplay.js or FolderDisplay.tsx if you're using TypeScript
 import React from "react";
 
-const FolderDisplay = ({ text, date, color = "#f4b400" }) => {
+const ProjectDisplay = ({ text, date, color = "#f4b400" }) => {
   const containerStyle = {
     position: "relative",
     display: "flex",
     alignItems: "center",
-    backgroundColor: "#fff",
+    backgroundColor: "whitesmoke",
     padding: "10px 15px",
     borderRadius: "5px", // Slightly round the corners for a softer look
     border: "2px solid #d3d3d3", // Gray border
@@ -51,7 +51,7 @@ const FolderDisplay = ({ text, date, color = "#f4b400" }) => {
   return (
     <div style={containerStyle}>
       <i style={folderIconStyle} className="material-icons">
-        folder
+        project
       </i>
       <span style={textStyle}>{text}</span>
       <span style={dateStyle}>{date}</span>
@@ -59,4 +59,4 @@ const FolderDisplay = ({ text, date, color = "#f4b400" }) => {
   );
 };
 
-export default FolderDisplay;
+export default ProjectDisplay;

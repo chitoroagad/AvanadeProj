@@ -21,24 +21,17 @@ export default function Start() {
     const formData = new FormData(form);
     console.log("formdata:", formData);
     try {
-      const response = await apiClient.post("/login", {
-        body: JSON.stringify(Object.fromEntries(formData)),
-      });
-      const data = await response.json();
-      setIsLoading(false);
-      if (!response.ok) {
-        console.log("Login failed:", response);
-        // if (response.status == 404)
-        //   setError('Invalid credentials.');
-        // else
-        //   setError(data?.detail || "Something went wrong.");
-        setError("Invalid credentials.");
-      } else {
-        localStorage.setItem("token", data.token);
-        setUsername(data?.user?.name || "test");
-        setError("");
-        setIsAuth(true);
-      }
+      setIsLoading(true); // Start loading before the API call
+
+      // Directly pass the form data object, apiClient will handle JSON conversion
+      const data = await apiClient.post("/login", Object.fromEntries(formData));
+
+      // No need to parse response as JSON again, it's already done
+      setIsLoading(false); // Stop loading after receiving the response
+      localStorage.setItem("token", data.token); // Set token received from the response
+      setUsername(data?.user?.name || "test"); // Set username received from the response or default to 'test'
+      setError(""); // Clear any previous errors
+      setIsAuth(true); // Set authentication flag to true
     } catch (err) {
       console.log(err);
       setError("Login request failed.");
@@ -80,7 +73,7 @@ export default function Start() {
               ></input>
               <p>Password:</p>
               <input
-                type="text"
+                type="password"
                 name="password"
                 className={styles.Input}
                 style={{ color: "black" }}

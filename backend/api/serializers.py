@@ -1,17 +1,17 @@
 from django.contrib.auth import get_user_model, password_validation
 from django.core import exceptions
 from rest_framework import serializers
-from django.contrib.auth import get_user_model
+from spaces.models import Folder
+
 from .models import Chat, Tag
-from django.contrib.auth import password_validation
-from django.core import exceptions
 
 User = get_user_model()
 
 
 class UserSerializer(serializers.ModelSerializer):
     chats = serializers.PrimaryKeyRelatedField(
-        many=True, queryset=Chat.objects.all(), required=False, write_only=True)
+        many=True, queryset=Chat.objects.all(), required=False, write_only=True
+    )
 
     class Meta(object):
         model = User
@@ -44,25 +44,36 @@ class TagSerializer(serializers.ModelSerializer):
 
 class ChatSerializer(serializers.ModelSerializer):
     tags = TagSerializer(many=True, required=False)
+    folder = serializers.PrimaryKeyRelatedField(
+        queryset=Folder.objects.all(), required=False, allow_null=True
+    )
 
     class Meta:
         model = Chat
-        fields = ['id', 'title', 'tags', 'prompt',
-                  'response', 'author', 'created_at']
-        read_only_fields = ['author']
+        fields = [
+            "id",
+            "title",
+            "tags",
+            "prompt",
+            "response",
+            "author",
+            "created_at",
+            "folder",
+        ]
+        read_only_fields = ["author"]
 
     def create(self, validated_data):
         tags_data = validated_data.pop("tags", [])
-        chat = Chat.objects.create(**validated_data)
+        folder = validated_data.pop("folder", None)
+        chat = Chat.objects.create(**validated_data, folder=folder)
         for tag_data in tags_data:
             tag, created = Tag.objects.get_or_create(**tag_data)
             chat.tags.add(tag)
         return chat
 
     def update(self, instance, validated_data):
-        instance.title = validated_data.get("title", instance.title)
-        instance.prompt = validated_data.get("prompt", instance.prompt)
-        instance.response = validated_data.get("response", instance.response)
-        # Handle tags update if necessary
+        # Your existing update logic
+        folder = validated_data.get("folder", instance.folder)
+        instance.folder = folder
         instance.save()
         return instance

@@ -138,6 +138,7 @@ chroma_client = None
 
 for _ in range(15):
     try:
+        print("Trying to connect to chroma client")
         chroma_client = chromadb.HttpClient(
             host="localhost", port="8000", settings=Settings(allow_reset=True)
         )

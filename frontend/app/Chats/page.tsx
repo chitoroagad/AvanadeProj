@@ -55,18 +55,45 @@ const ChatsList = () => {
           <div className={styles.tableHeader}>
             <div
               style={{
-                alignContent: "right",
-                color: "greenyellow",
-                fontSize: "30px",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                padding: "10px",
               }}
             >
-              <Link href={`/Process`} legacyBehavior>
-                +
-              </Link>
+              <div
+                style={{
+                  display: "flex",
+                  flexGrow: 1,
+                  justifyContent: "flex-start",
+                }}
+              >
+                <Link href={`/Process`} legacyBehavior>
+                  <a
+                    style={{
+                      fontSize: "30px",
+                      color: "white",
+                      textDecoration: "none",
+                    }}
+                    className="btn btn-primary"
+                  >
+                    +
+                  </a>
+                </Link>
+              </div>
+              <div
+                className="text-center"
+                style={{ flexGrow: 2, textAlign: "center", fontSize: "24px" }}
+              >
+                Chats
+              </div>
+              <div style={{ flexGrow: 1 }}></div>{" "}
+              {/* This empty div helps maintain the space and alignment */}
             </div>
           </div>
           <div className={styles.tableHeader}>
-            <div className={styles.headerItem}>Ttile</div>
+            <div className={styles.headerItem}>Name</div>
+            <div className={styles.headerItem}>Prompt</div>
             <div className={styles.headerItem}>Response</div>
             <div className={styles.headerItem}>Created At</div>
           </div>
@@ -75,8 +102,13 @@ const ChatsList = () => {
               <Link href={`/chat/${chat.id}`} key={chat.id} passHref>
                 <div className={styles.tableRow}>
                   <div className={styles.rowItem}>{chat.title}</div>
+                  <div className={styles.rowItem}>{chat.prompt}</div>
+
                   <div className={styles.rowItem}>{chat.response}</div>
-                  <div className={styles.rowItem}>
+                  <div
+                    className={styles.rowItem}
+                    style={{ marginLeft: "15px" }}
+                  >
                     {formatDate(chat.created_at)}
                   </div>
                 </div>

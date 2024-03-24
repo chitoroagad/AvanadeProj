@@ -25,7 +25,7 @@ def validate_file_type(
 def preprocess_text(text):
     """Preprocess the text to remove unnecessary parts for more efficient summarization."""
     # Example: Remove excessive whitespace
-    text = re.sub(r"\s+", " ", text)
+    text = re.sub(r'\s+', ' ', text)
     # Add more preprocessing steps here as needed
     return text
 

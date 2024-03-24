@@ -55,7 +55,7 @@ const Home = () => {
       />
       {/* <div className={styles.logo}><Logo></Logo></div> */}
       <div className={styles.GenBtn}>
-        <Link href="/Process">
+        <Link href={`/Process?prompt=${prompt}`}>
           <button className="btn btn-wide btn-primary">Generate</button>
         </Link>
       </div>
