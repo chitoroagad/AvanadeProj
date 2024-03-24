@@ -366,21 +366,24 @@ code {
           : 'default'
     });
   </script>
-<h1 id="comp0016202021team8---avabot">COMP0016_2023_24_Team5 - JuridsBUD AI</h1>
+<h1 >COMP0016_2023_24_Team5 - JuridsBUD AI</h1>
 <h2 id="overview">Overview</h2>
 <p>Project Title: How to use MS 365 and AI to extract better insights in Legal Knowledge Management 
 </br>
 Team Member: Zhaoqi Chen, Darius Chitoroaga, Faisal Hassan</p>
 <h2 id="project-intro"><br>Project Intro</h2>
-<p>With the rapid development of Artificial Intelligence, the trend leaded by OpenAI brings the public to be more willing to work with AI.<br>
-    However, it is unusual to have an AI assistant that is specifically designed for the legal industry. This is where JurisBUD AI comes in.<br>
-    By using the latest concept of AI agents, JuridsBUD AI can help legal professionals to solve problems that they might face in their carrer.<br>
-    Instead of working alone till midnight, searching online and reading 1000 pages of documents, you can now just aske JurisBUD AI and a whole team<br> 
-    of AI agents will be at your service.</p>
+<p>
+	With the rapid development of Artificial Intelligence, the trend leaded by OpenAI brings the public to be more willing to work with AI.<br>
+	However, it is unusual to have an AI assistant that is specifically designed for the legal industry.
+	This is where JurisBUD AI comes in.<br>
+	By using the latest concept of AI agents, JuridsBUD AI can help legal professionals to solve problems that they might face in their <br>Day-to-Day work.
+	Instead of working alone till midnight, searching online and reading 1000 pages of documents, you can now just ask JurisBUD AI<br> and a whole team 
+	of AI agents with split work into tasks, that can assure clarity, enhancement and quality.
+  </p>
 <h2 id="system-architecture"><br>System Architecture</h2>
 <p>JurisBUD AI application system consists of several components. <br>
 Users can interact with JuridsBUD AI on the localhost:3000 after getting the application from docker container.<br>
-The source code can be found in ..
+The source code can be found in <a href="https://github.com/DariusChit/AvanadeProj">our github repo</a>
 <br>
 
 <img src="images/arch.png" alt="System Architecture Diagram" width="60%">
@@ -435,13 +438,6 @@ The source code can be found in ..
     <li>Make sure Docker service is running </li>
 </ul>
 <h3 id="build-and-run">Build and Run</h3>
-<h4 id="configure-bot-framework-emulator">Build up frontend</h4>
-
-    
-    <pre class="hljs"><code><div>cd frontend
-    </div><div>npm ci</div></code></pre>
-
-
 <h4>Set environment variables</h4>
 <ul>
     <li>Have a .env file in backend directory containing:
@@ -454,57 +450,46 @@ The source code can be found in ..
 <ul>
 <li>
 <p>Clone the repository</p>
-<pre class="hljs"><code><div>git clone https://github.com/DariusChit/AvanadeProj
+<pre ><code><div>git clone https://github.com/DariusChit/AvanadeProj
 </div></code></pre>
 </li>
 <li>
 <p>In a terminal, navigate to <code>AvanadeProj</code></p>
-<pre class="hljs"><code><div>cd AvanadeProj
+<pre ><code><div>cd AvanadeProj
 </div></code></pre>
 </li>
 <li>
-<p>Run JurisBUD AI</p>
-<pre class="hljs"><code><div>./run.sh
+<p>Run JurisBUD AI altogether</p>
+<pre ><code><div>./run.sh
 </div></code></pre>
 </li>
 <li>
-
-<h3 id="test">Test</h3>
-<p>The testing of the project uses <a href="https://github.com/mochajs/mocha">mocha</a>, <a href="https://github.com/chaijs/chai">chai</a>, and MS <a href="https://www.npmjs.com/package/botbuilder-testing">botbuilder-testing</a> package. Make sure you have installed them by <code>npm install</code>.</p>
-<ul>
-<li>In a terminal, navigate to <code>AvabotTeam8-src</code></li>
-<li>Run test by<pre class="hljs"><code><div>npm run test
-</div></code></pre>
+	<p>Run JurisBUD AI separately(Run them together to run the whole system if ./run.sh is not working)</p>
+<pre ><code>docker run -p 8000:8000 -e ALLOW_RESET=TRUE chromadb/chroma &
+	<br>
+cd frontend
+npm ci
+npm run dev
+<br>
+cd backend
+python manage.py runserver localhost:8080
+</code></pre>
 </li>
-<li>Run test with coverage by<pre class="hljs"><code><div>npm run cover
-</div></code></pre>
-</li>
-<li>Run test and generate a coverage report by<pre class="hljs"><code><div>npm run coverage
-</div></code></pre>
-</li>
-</ul>
-<p>Note: for passing all the tests, make sure the APIs used by the bot are working properly.</p>
-<h3 id="further-development">Further Development</h3>
-<p>To develop your own bot application, see <a href="https://azure.microsoft.com/en-gb/services/bot-services/">Azure Bot Service</a> for creating Web App Bot resource and configure the <code>AvabotTeam8-src/.env</code> file with your AppId and AppPassword. </br>
-To learn more about deploying a bot to Azure, see <a href="https://aka.ms/azuredeployment">Deploy your bot to Azure</a> for a complete list of deployment instructions.</p>
-<h2 id="usage"><br>Usage</h2>
-<p>AvaBot is hosted on the Azure Bot Service. The service defines a REST API and an activity protocol for how bots and channels or users can interact. AvaBot's messaging endpoint is at <code>https://avabotteam8.azurewebsites.net/api/messages</code>.<br>
-Demo for using the bot on a web browser can be found in <a href="./WebBrowserBot">./WebBrowserBot/</a>.</p>
 
 
 
 <h2 id="showcase"><br>ShowCase</h2>
-<h3 id="1-avabot-greets-the-userbrbr">1. AvaBot greets the user:<br><br></h3>
-<p><img src="../images/sample1.png" alt="Sample one" width="60%"><br></p>
-<h3 id="brbr2-avabot-summarizes-a-documentbrbr"><br><br>2. AvaBot summarizes a document:<br><br></h3>
-<p><img src="../images/sample4.png" alt="Sample two" width="60%"><br></p>
-<h3 id="brbr3-avabot-recognizes-an-imagebrbr"><br><br>3. AvaBot recognizes an image:<br><br></h3>
-<p><img src="../images/sample5.png" alt="Sample three" width="60%"></p>
+<h3 id=>1. JuridsBUD AI Homepage:<br><br></h3>
+<p><img src="images/Demo Screenshots/Home.png" alt="Sample one" width="60%"><br></p>
+<h3 ><br><br>2. JurisBUD AI generating a chat:<br><br></h3>
+<p><img src="images/Demo Screenshots/Chat Process.png" alt="Sample two" width="60%"><br></p>
+<h3 ><br><br>3. JurisBUD AI Space:<br><br></h3>
+<p><img src="images/Demo Screenshots/Space.png" alt="Sample three" width="60%"></p>
 <h2 id="appendix"><br>Appendix</h2>
 <ul>
-<li><a href="https://chaozyhaha.wordpress.com/blog/">Development Blog</a></li>
-<li><a href="http://students.cs.ucl.ac.uk/2020/group8/index.html">Project Website</a></li>
-<li><a href="http://students.cs.ucl.ac.uk/2020/group8/usermn.html">User Manual</a></li>
+<li><a href="https://jurisbudaidevelopmentblog.wordpress.com/">Development Blog</a></li>
+<li><a href="http://students.cs.ucl.ac.uk/2023/group5/index.html">Project Website</a></li>
+<li><a href="http://students.cs.ucl.ac.uk/2023/group5/usermn.html">User Manual</a></li>
 </ul>
 
 </body>

@@ -202,9 +202,9 @@
                   
                   <h5>Test Methodology</h5>
                   <p>
-                    The built-in features were tested by unit testing. <br>
-                    The overall performance and the resilience of dialogs were tested by integration testing. <br>
-                    The design and UI were tested by user acceptance testing.<br><br>
+                    1. The built-in features were tested by unit testing. <br>
+                    2. The overall performance and the resilience of dialogs were tested by integration testing. <br>
+                    3. The design and UI were tested by user acceptance testing.<br><br>
                   </p>
 
                   
@@ -222,68 +222,58 @@
                 <!-- Tab panes-->
                 <div class="tab-content">
                   <div class="row row-no-gutter">
-                    <!-- <div class="col-lg-4 test"><a href="images/tests.png" class="image-popup">
+                    <div class="col-lg-4 test"><a href="images/tests.png" class="image-popup">
                       <img src="images/tests.png" width="300"/></a>
-                    </div> -->
-                    <!-- <div class="col-lg-8 col-sm-12">
-                      <h5>Unit testing</h5>
+                    </div>
+                    <div class="col-lg-8 col-sm-12">
                       <div class="row row-no-gutter">
                         <div class="col-8">
-                          <p>The tools we used for unit testing are Mocha, a feature-rich JavaScript test framework, and Chai, an assertion library for Node.js.
+                          <p>The tools we used for automate testing is Django.test package, which is suitable for both unit tests and integration tests.
                           </p>   
                         </div>
+                        
                         <div class="col-2">
-                          <img src="images/mocha.png" width="150"/>   
+                          <img src="images/djangotest.png" width="150"/>   
                         </div>
                       </div> 
-                      <p>Unit tests were introduced towards Bot class and dialog classes, where all step methods, along with <code>sendReq()</code>, <code>handleAttachment()</code>, <code>promptValidator()</code> methods and etc. were covered. <br>Contrary to common sense, dialogs can be standalone from the bot, and thus can get their exclusive methods tested by instantiating the sole dialog objects.</p>                 
+                      <br>
+                      <h5>Unit testing</h5>
+                      
+                      
+                      <p>Unit tests were introduced to the key functionalities of JurisBUD AI, such as Signup/Login, Chat generation, File upload and Chats menu operation. </p>                 
                       <pre>
-                    <code class="lang-javascript">
-it('tests promptValidatorImage', async () => {
-  const sut = new MainDialog();
-  let a = await sut.promptValidator({ 
-              let a = await sut.promptValidator({ 
-  let a = await sut.promptValidator({ 
-    recognized: { 
-                recognized: { 
-    recognized: { 
-      succeeded: true, 
-                  succeeded: true, 
-      succeeded: true, 
-      value: [{ contentType: 'image/png' }] 
-                  value: [{ contentType: 'image/png' }] 
-      value: [{ contentType: 'image/png' }] 
-    }, 
-    options: { prompt: 'Please attach an image.' } 
-                options: { prompt: 'Please attach an image.' } 
-    options: { prompt: 'Please attach an image.' } 
-  });
-  assert.strictEqual(a, true);
-});
+                    <code class="lang-python">
+                      def test_upload_pdf(self):
+                        url = "/file/upload"
+                        # Create a sample PDF file
+                        pdf = open("test/test.pdf", "rb")
+                        data = {"file": pdf}
+                        response = self.client.post(url, data, format="multipart")
+                        self.assertEqual(response.status_code, 200)
+                        ...
                     </code>
                     </pre>
-                    <p>By instantiating all dialogs on their own can we feed them custom data for unit testing, hence obtaining higher coverage rate.</p>      
+                    <p>A satisfiable overage rate is obtained with sample information.</p>      
                     </div>
                   </div>
                   <h5><br>Integration testing</h5>
-                    <p>The bot framework SDK provides a test suit for testing the bot, which runs by mocking a client who can interact with the bot under the context of one dialog.</p>      
-                    <pre><code class="lang-javascript"> 
-const sut = new MainDialog();
-const client = new DialogTestClient('test', sut); 
-                    </pre>
-                    </code>
-                    <p>Then the client can send mock messages to the bot by calling sendActivity(), the response from the bot can be obtained as reply.text and asserted whether it is equal to the expected response or not.</p>  
-                    <pre><code class="lang-javascript"> 
-let reply = await testClient.sendActivity('hi');
-assert.strictEqual(reply.text, ‘How is it?’)
-                    </pre>
+                    <p>We also have a file to test the whole workflow with an exact uploading operation with a sample file, also the login/signup is done with sample information.</p>      
+                    <pre><code class="lang-python">
+                      url = '/upload_pdf/'
+                      # Create a sample PDF file
+                      pdf_content = b'%PDF-1.4\n%âãÏÓ\n1 0 obj\n<</Type/Catalog/Pages 2 0 R>>\nendobj\n2 0 obj\n<</Type/Pages/Kids[3 0 R]/Count 1>>\nendobj\n3 0 obj\n<</Type/Page/Parent 2 0 R/Resources<</Font<</F1 4 0 R>>/ProcSet[/PDF/Text]/ExtGState<</GS1 6 0 R>>>>/Contents 5 0 R/Group<</Type/Group/S/Transparency/CS/DeviceRGB>>/Tabs/S/StructParents 0>>\nendobj\n4 0 obj\n<</Type/Font/Subtype/Type1/BaseFont/Helvetica/Encoding/WinAnsiEncoding>>\nendobj\n5 0 obj\n<</Filter/FlateDecode/Length 71>>stream\nxœc```b``c``P``````‹``````Jœ%†H†Wïÿ§°\x0c\x11#°³bŸ\nendstream\nendobj\n6 0 obj\n<</Type/ExtGState/ca 1>>\nendobj\nxref\n0 7\n0000000000 65535 f \n0000000015 00000 n \n0000000074 00000 n \n0000000122 00000 n \n0000000175 00000 n \n0000000314 00000 n \n0000000365 00000 n \ntrailer\n<</Size 7/Root 1 0 R>>\nstartxref\n453\n%%EOF\n'
+                      pdf_file = SimpleUploadedFile('test.pdf', pdf_content, content_type='application/pdf')
+                      data = {'file': pdf_file}
+                      response = self.client.post(url, data, format='multipart') 
+                      ...
                     </code>  
-                    <p><br>These two testings together cover up to 95% coverage, as shown on the coverage report generated by NYC, which is a Node module for generating test coverage reports.</p>
+                    </pre>
+                    <p><br>These two testings together cover up to 95% coverage, as shown on the coverage report generated by the python package 'coverage'.</p>
                     <div class="col-12 onlycode"><a href="images/cover.png" class="image-popup">
                         <img src="images/cover.png" width="100%"/></a>
                     </div>          
                 </div>
-              </div> -->
+              </div>
             </div>
           </div>
              </div>
@@ -393,7 +383,7 @@ assert.strictEqual(reply.text, ‘How is it?’)
                           <td>0</td>
                           <td>0</td>   
                           <td>4</td>
-                          <td>+Everyone agree AvaBot run till end of job</td>
+                          <td>+Everyone agree JurisBUD AI run till end of job</td>
                         </tr>
                         
                         <tr>
@@ -494,11 +484,7 @@ assert.strictEqual(reply.text, ‘How is it?’)
                           ><i class="fa fa-github" aria-hidden="true"></i
                         ></a>
                       </li>
-                      <li>
-                        <a href="https://youtu.be/RtaOL-G6mAM" target='_blank'
-                          ><i class="fa fa-youtube" aria-hidden="true"></i
-                        ></a>
-                      </li>
+                      
                       <li>
                         <a href="https://jurisbudaidevelopmentblog.wordpress.com/" target="_blank"
                           ><i class="fa fa-wordpress" aria-hidden="true"></i
