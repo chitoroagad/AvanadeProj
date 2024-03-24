@@ -11,9 +11,9 @@ Maybe you can mention me or this repo in the acknowledgements too
   <img src="/rmlogo.png" alt="logo" width="200" height="auto" />
   <h1>COMP0016 2023-2024 Team 5: JurisBUD AI</h1>
   
-  <p style="font-style: italic;">
+  <h3>
     How to use MS 365 and AI to extract better insights in Legal Knowledge Management
-  </p>
+  </3>
   
    
 </div>
