@@ -160,7 +160,7 @@ organiser_prompt = ChatPromptTemplate.from_messages(
             """
             You are to use the input to create a list of tasks for AI to complete. The AI will have the ability
             to search a database of Supreme Court legal cases and a database of the client's legal case documents. 
-            Calling a tools is a single task. Explicitly mention if a previous task is a prerequisite for the current 
+            Calling a tools such as searching database is a single task. Explicitly mention if a previous task is a prerequisite for the current 
             task, you must end the tasks with a final task to output an answer to the user. Your answer must be using 
             the output format OutputTasks.
             """,
@@ -178,7 +178,7 @@ manager_prompt = ChatPromptTemplate.from_messages(
             You are a helpful legal assistant. You are to use the user input to solve problems, answer questions,
             and complete tasks. You do this by using the tools available to you to create a list of tasks, then solve,
             also using the tools available to you. you must not answer questions directly, only relay the information
-            from your tools. Calling a tools is a single task. If the executor returns a question, you must ask the 
+            from your tools. Calling a tool is a single task. If the executor returns a question, you must ask the 
             user for the answer and then continue. Always complete the tasks before telling the user anything.
             """,
         ),
@@ -376,3 +376,53 @@ if __name__ == "__main__":
         }
     )
     print(out)
+
+thing = {
+    "input": "What are some of the reasons for judgement in the case of Merticariu (Appellant) v Judecatoria Arad, Romania(Respondent)",
+    "chat_history": [],
+    "output": "The reasons for judgment in the case of Merticariu (Appellant) v Judecatoria Arad, Romania (Respondent) include the following:\n- The natural and ordinary meaning of the words in section 20(5) of the Act are plain.\n- The judge must decide whether the requested person is \"entitled\" to a retrial or (on appeal) to a review amounting to a retrial.\n- The appropriate judge cannot answer section 20(5) of the 2003 Act in the affirmative if the law of the requesting state confers a right to retrial which depends on a finding by a judicial authority in the requesting state as to whether the requested person was deliberately absent from his trial.\n- In this case, neither the EAW nor the further information provided by the requesting judicial authority confirmed that the appellant was entitled to a retrial.\n- The district judge in this case should therefore have answered section 20(5) in the negative.\n- Accordingly, the Supreme Court quashes the district judge's order and orders the appellant's discharge.",
+    "intermediate_steps": [
+        (
+            AgentActionMessageLog(
+                tool="TaskListGenerator",
+                tool_input={
+                    "objective": "List the reasons for judgement in the case of Merticariu (Appellant) v Judecatoria Arad, Romania(Respondent)"
+                },
+                log="",
+                message_log=[
+                    AIMessageChunk(
+                        content="",
+                        additional_kwargs={
+                            "function_call": {
+                                "arguments": '{"objective":"List the reasons for judgement in the case of Merticariu (Appellant) v Judecatoria Arad, Romania(Respondent)"}',
+                                "name": "TaskListGenerator",
+                            }
+                        },
+                    )
+                ],
+            ),
+            "1. Review the full judgment of the Court to extract the reasons for judgement.,\n2. Provide the reasons for judgement to the user.",
+        ),
+        (
+            AgentActionMessageLog(
+                tool="TaskExecutor",
+                tool_input={
+                    "task": "Review the full judgment of the Court to extract the reasons for judgement."
+                },
+                log="",
+                message_log=[
+                    AIMessageChunk(
+                        content="",
+                        additional_kwargs={
+                            "function_call": {
+                                "arguments": '{"task":"Review the full judgment of the Court to extract the reasons for judgement."}',
+                                "name": "TaskExecutor",
+                            }
+                        },
+                    )
+                ],
+            ),
+            "The reasons for the judgment are as follows:\n- The Supreme Court holds that the natural and ordinary meaning of the words in section 20(5) of the Act are plain.\n- The judge must decide whether the requested person is \"entitled\" to a retrial or (on appeal) to a review amounting to a retrial.\n- The appropriate judge cannot answer section 20(5) of the 2003 Act in the affirmative if the law of the requesting state confers a right to retrial which depends on a finding by a judicial authority in the requesting state as to whether the requested person was deliberately absent from his trial.\n- In this case, neither the EAW nor the further information provided by the requesting judicial authority confirmed that the appellant was entitled to a retrial.\n- The district judge in this case should therefore have answered section 20(5) in the negative.\n- Accordingly, the Supreme Court quashes the district judge's order and orders the appellant's discharge.",
+        ),
+    ],
+}
