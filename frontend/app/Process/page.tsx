@@ -135,13 +135,17 @@ const Process = () => {
 						  ? ""
 						  : !response.tasks || response.tasks.length === 0
 							  ? response.chat
-							  : response.tasks.map((task: string) => task + "\n") +
+							  : response.tasks.map(
+										(task: string) => task.replace(",", "") + "\n",
+								  ) +
 								  "\n\n" +
 								  response.chat}
 				</div>
+				{/*
 				<button onClick={() => sendReloadRequest()} className={styles.GenBtn}>
 					Reload answer
 				</button>
+                */}
 			</div>
 
 			<div className={styles.processBackground}>

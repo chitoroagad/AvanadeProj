@@ -1,14 +1,11 @@
-import asyncio
 import io
 import re
 
 import magic
 import openai
-from django.conf import settings
 from django.core import exceptions
 from llm.llm import LLMCaller
 from pdfminer.high_level import extract_text
-from pdfminer.layout import LAParams
 
 
 def validate_file_type(
@@ -25,18 +22,9 @@ def validate_file_type(
 def preprocess_text(text):
     """Preprocess the text to remove unnecessary parts for more efficient summarization."""
     # Example: Remove excessive whitespace
-    text = re.sub(r'\s+', ' ', text)
+    text = re.sub(r"\s+", " ", text)
     # Add more preprocessing steps here as needed
     return text
-
-
-def call_coroutine(coroutine):
-    """Esstial for async functions"""
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-    result = loop.run_until_complete(coroutine)
-    loop.close()
-    return result
 
 
 def ask_gpt(prompt):
@@ -62,11 +50,6 @@ def reload_gpt(tasks):
         raise exceptions.ValidationError(
             "Failed to generate response. Please try again."
         )
-
-
-def ask_gpt_(prompt):
-    """Uses OpenAI's model to generate a response to the given prompt."""
-    return call_coroutine(ask_gpt(prompt))
 
 
 def clean_and_extract_important_text(text):

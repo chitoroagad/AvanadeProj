@@ -1,5 +1,5 @@
-import asyncio
 import json
+from pathlib import Path
 from time import sleep
 from typing import Dict, List
 
@@ -13,8 +13,7 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.tools import StructuredTool
 from langchain.tools.retriever import create_retriever_tool
 from langchain_community.chat_message_histories import ChatMessageHistory
-from langchain_community.document_loaders import (CSVLoader, PyPDFLoader,
-                                                  TextLoader)
+from langchain_community.document_loaders import PyPDFLoader, TextLoader
 from langchain_community.vectorstores import Chroma
 from langchain_core.agents import AgentActionMessageLog, AgentFinish
 from langchain_core.callbacks import Callbacks
@@ -59,7 +58,11 @@ def parse_task_list(output):
 def task_list_executor_fun(task: str, callbacks: Callbacks) -> str:
 
     solver_llm = llm.bind_functions(
-        [primary_database_retriever_tool, results_database_retriever_tool]
+        [
+            primary_database_retriever_tool,
+            secondary_database_retriever_tool,
+            results_database_retriever_tool,
+        ]
     )
 
     solver_prompt = ChatPromptTemplate.from_messages(
@@ -129,7 +132,7 @@ task_list_generator = StructuredTool.from_function(
     # coroutine=task_list_generator_fun,
     func=task_list_generator_fun,
     name="TaskListGenerator",
-    description="AYSNC. Generates a list of tasks from an objective.",
+    description="Generates a list of tasks from an objective.",
 )
 
 
@@ -150,35 +153,16 @@ if not chroma_client:
 print("Chroma client found")
 chroma_client.reset()
 
-solver_prompt = ChatPromptTemplate.from_messages(
-    [
-        (
-            "system",
-            """
-            You are given a task to complete by a manager. You are to use the available tools to complete the tasks.
-            If you are unable to complete a task, you may ask the user for more
-            information. If a task references something you do not know, check the results of previous tasks. If you
-            have an answer, return only the answer. Do not aplogize under any circumstances.
-            """,
-        ),
-        (
-            "user",
-            "{input}",
-        ),
-        MessagesPlaceholder(variable_name="agent_scratchpad"),
-    ]
-)
-
-
 organiser_prompt = ChatPromptTemplate.from_messages(
     [
         (
             "system",
             """
             You are to use the input to create a list of tasks for AI to complete. The AI will have the ability
-            to search a database of Supreme Court legal cases and a database of the client's legal case documents. Explicitly mention if
-            a previous task is a prerequisite for the current task, you must end the tasks with a final task to output an answer to the user.
-            Your answer must be using the output format OutputTasks.
+            to search a database of Supreme Court legal cases and a database of the client's legal case documents. 
+            Calling a tools is a single task. Explicitly mention if a previous task is a prerequisite for the current 
+            task, you must end the tasks with a final task to output an answer to the user. Your answer must be using 
+            the output format OutputTasks.
             """,
         ),
         ("user", "{input}"),
@@ -194,8 +178,8 @@ manager_prompt = ChatPromptTemplate.from_messages(
             You are a helpful legal assistant. You are to use the user input to solve problems, answer questions,
             and complete tasks. You do this by using the tools available to you to create a list of tasks, then solve,
             also using the tools available to you. you must not answer questions directly, only relay the information
-            from your tools. If the executor returns a question, you must ask the user for the answer and then continue.
-            Always complete the tasks before telling the user anything.
+            from your tools. Calling a tools is a single task. If the executor returns a question, you must ask the 
+            user for the answer and then continue. Always complete the tasks before telling the user anything.
             """,
         ),
         ("user", "{input}"),
@@ -205,7 +189,6 @@ manager_prompt = ChatPromptTemplate.from_messages(
 
 embeddings_function = AzureOpenAIEmbeddings(azure_deployment="ada")
 
-# loader = CSVLoader("llm/USSupremeCourt.csv", encoding="iso-8859-1")
 primary_loader = TextLoader("llm/courtcase.txt")
 primary_docs = primary_loader.load()
 primary_documents = RecursiveCharacterTextSplitter(
@@ -218,8 +201,16 @@ primary_retriever = primary_vector.as_retriever()
 primary_database_retriever_tool = create_retriever_tool(
     primary_retriever,
     "US_Supreme_Court_Cases-search",
-    "Search for US Supreme Court Cases between 2020 and 2022. For any questions about US Supreme Court Cases, use this tool!.",
+    "Search for US Supreme Court Cases in 2024. For any questions about US Supreme Court Cases, use this tool!.",
 )
+
+# load pdfs
+pdfs = Path("llm/").glob("*.pdf")
+for pdf in pdfs:
+    loader = PyPDFLoader(str(pdf))
+    pages = loader.load_and_split()
+    primary_vector.add_documents(pages)
+
 
 secondary_vector = Chroma(embedding_function=embeddings_function, client=chroma_client)
 secondary_retriever = secondary_vector.as_retriever()
@@ -241,13 +232,6 @@ results_database_retriever_tool = create_retriever_tool(
 llm = AzureChatOpenAI(azure_deployment="dep", temperature=0, streaming=False)
 organiser_llm = llm.bind_functions(
     [primary_database_retriever_tool, secondary_database_retriever_tool, OutputTasks]
-)
-solver_llm = llm.bind_functions(
-    [
-        primary_database_retriever_tool,
-        secondary_database_retriever_tool,
-        results_database_retriever_tool,
-    ]
 )
 manager_llm = llm.bind_functions([task_list_executor, task_list_generator])
 
@@ -275,34 +259,15 @@ organiser_agent = (
     | parse_task_list
 )
 
-solver_agent = (
-    {
-        "input": lambda x: x["input"],
-        "agent_scratchpad": lambda x: format_to_openai_function_messages(
-            x["intermediate_steps"]
-        ),
-    }
-    | solver_prompt
-    | solver_llm
-    | parse_task_list
-)
-
 organiser_executor = AgentExecutor(
     agent=organiser_agent,
-    tools=[primary_database_retriever_tool, secondary_database_retriever_tool],
-    verbose=False,
-).with_config({"run_name": "Organiser"})
-
-solver_executor = AgentExecutor(
-    agent=solver_agent,
     tools=[
         primary_database_retriever_tool,
         secondary_database_retriever_tool,
         results_database_retriever_tool,
     ],
     verbose=False,
-    return_intermediate_steps=True,
-).with_config({"run_name": "Solver"})
+).with_config({"run_name": "Organiser"})
 
 manager_executor = AgentExecutor(
     agent=manager_agent,
@@ -335,7 +300,6 @@ class LLMCaller:
     def call_llm(input: Dict[str, str]):
         """
         Calls manager to perform task.
-        Returns AsyncIterator of events.
         """
 
         # async for event in manager_executor.astream_events(
@@ -400,8 +364,7 @@ class LLMCaller:
         print(document)
         loader = PyPDFLoader(document)
         pages = loader.load_and_split()
-        for page in pages:
-            secondary_vector.add_document(page)
+        secondary_vector.add_documents(pages)
         return "Document added"
 
 

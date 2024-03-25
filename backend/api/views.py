@@ -96,6 +96,9 @@ def new_chat(request, format=None):
     try:
         if data["tasks"][0].tool.strip() == "TaskListGenerator":
             data["tasks"] = data["tasks"][1].split(",\n")
+            for task in data["tasks"]:
+                task = task.strip()
+
         else:
             data["tasks"] = None
     except Exception as e:
