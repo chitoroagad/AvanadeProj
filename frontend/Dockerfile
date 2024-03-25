@@ -8,7 +8,7 @@ EXPOSE 3000
 
 FROM base as builder
 WORKDIR /app
-COPY . .
+COPY ./frontend .
 RUN npm run build
 
 FROM base as production

@@ -29,7 +29,6 @@ User = get_user_model()
 
 @api_view(["POST"])
 def login(request, format=None):
-    print("called")
     data = request.data
     if not data.get("email") or not data.get("password"):
         return Response(
@@ -46,7 +45,6 @@ def login(request, format=None):
 
 @api_view(["POST"])
 def sign_up(request, format=None):
-    print("called2")
     serializer = UserSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()

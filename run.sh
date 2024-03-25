@@ -1,4 +1,6 @@
 #!/bin/sh
+# To build for dev, when building frontend, use --target dev and when running frontend use npm run dev
+# To build for prod, when building frontend, use --target production and when running frontend use npm run start
 
 # Build necessary docker images
 pwd
@@ -25,9 +27,6 @@ echo "Starting backend container and attach"
 docker run -p 8080:8080 --network host \
 	-v ./backend/:/src -it backend python manage.py runserver localhost:8080
 
-# Print out running containers
-echo "Running containers:"
-docker ps
-
 # kill all containers
-docker stop '$(docker ps -q)'
+echo "Stopping all containers"
+docker stop $(docker ps -q)

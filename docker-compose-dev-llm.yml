@@ -39,7 +39,7 @@ services:
       - ./backend/llm/:/src/llm
     depends_on:
       - chroma
-    command: ["pwd", "&&", "ls", "-l"]
+    command: python /src/llm/llm.py
 
 volumes:
   data:
