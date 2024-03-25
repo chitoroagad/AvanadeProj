@@ -110,6 +110,7 @@
   font-weight: 700;
   font-family: "Raleway", sans-serif;
   color: #35383e91;
+  white-space: pre-wrap;
 }
 
 .tasksList {

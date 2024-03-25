@@ -1,9 +1,6 @@
 # Create your views here.
-import asyncio
-import io
 import json
 
-from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core import exceptions
 from django.http import Http404
@@ -91,14 +88,10 @@ def new_chat(request, format=None):
     llm_ans = ask_gpt({"input": data["prompt"]})
 
     data["response"] = llm_ans["output"]
-    print("llm_ans>>>", llm_ans)
     if len(llm_ans["intermediate_steps"]) > 0:
         data["tasks"] = llm_ans["intermediate_steps"][0]
     else:
         data["tasks"] = None
-
-    print("data1>>>", data)
-    print("data2>>>", data["tasks"])
 
     try:
         if data["tasks"][0].tool.strip() == "TaskListGenerator":
@@ -142,7 +135,9 @@ def upload_pdf(request, format=None):
         return Response(
             {"detail": "file type is not allowed"}, status=status.HTTP_400_BAD_REQUEST
         )
-    add_pdf_to_gpt(request.FILES.get("file"))
+    file = request.FILES.get("file")
+    open("tmp/file.pdf", "wb").write(file)
+    add_pdf_to_gpt(request.FILES.get("tmp/file.pdf"))
     return Response(
         {"detail": "file uploaded successfully"},
     )

@@ -1,5 +1,3 @@
-import io
-
 from api.models import UserProfile
 from api.views import *
 from django.contrib.auth import login
@@ -14,7 +12,6 @@ from rest_framework.test import APIClient, APIRequestFactory, APITestCase
 class TestViews(APITestCase):
     def setUp(self):
         self.client = APIClient()
-        self.factory = APIRequestFactory()
         self.user = UserProfile.objects.create_user(
             name="testuser", email="test@example.com", password="password123"
         )
@@ -52,7 +49,7 @@ class TestViews(APITestCase):
 
     def test_new_chat(self):
         url = reverse("new_chat")
-        data = {"prompt": "Test prompt"}
+        data = {"body": json.dumps({"prompt": "Test prompt"})}
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 201)
         self.assertTrue("chat" in response.data)
@@ -62,8 +59,11 @@ class TestViews(APITestCase):
         url = reverse("add_pdf_to_gpt")
         # Create a sample PDF file
         pdf = open("tests/test.pdf", "rb")
+        pdf = pdf.read()
         data = {"file": pdf}
-        response = self.client.post(url, data, format="multipart")
+        response = self.client.post(
+            url, format="multipart", content_type="application/pdf"
+        )
         self.assertEqual(response.status_code, 200)
 
     def test_get_chat(self):
@@ -118,7 +118,6 @@ class TestViews(APITestCase):
         )
 
         response = self.client.get(url, data, format="json")
-        print(response)
         self.assertEqual(response.status_code, 200)
         self.assertIn("username", response.data)
         self.assertEqual(response.data["username"], "testuser")

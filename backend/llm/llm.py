@@ -397,6 +397,7 @@ class LLMCaller:
         """
         Adds a document to the secondary database
         """
+        print(document)
         loader = PyPDFLoader(document)
         pages = loader.load_and_split()
         for page in pages:

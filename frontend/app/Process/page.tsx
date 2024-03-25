@@ -111,7 +111,6 @@ const Process = () => {
 				/>
 				<input
 					type="text"
-					placeholder="Prompt: typed"
 					className={styles.promptText}
 					value={inputValue}
 					onChange={handleInputChange}
