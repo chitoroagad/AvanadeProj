@@ -62,9 +62,41 @@ Maybe you can mention me or this repo in the acknowledgements too
 
 ### :camera: Screenshots
 
-<div align="center"> 
-  <img src="https://placehold.co/600x400?text=Your+Screenshot+here" alt="screenshot" />
-</div>
+<details>
+        <summary>Click to view</summary>
+#### Home
+
+![Home](<./COMP0016\ Team\ 5\ Portfolio/images/Demo\ Screenshots/Home.png>)
+
+#### Sign In
+
+![Sign In](<./COMP0016\ Team\ 5\ Portfolio/images/Demo\ Screenshots/Sign\ in.png>)
+
+#### Sign Up
+
+![Sign Up](<./COMP0016\ Team\ 5\ Portfolio/images/Demo\ Screenshots/Sign\ UP.png>)
+
+#### Dashboard
+
+![Chats](<./COMP0016\ Team\ 5\ Portfolio/images/Demo\ Screenshots/Chats.png>)
+
+#### Chat Details
+
+![Chat Details](<./COMP0016\ Team\ 5\ Portfolio/images/Demo\ Screenshots/Chat\ Details.png>)
+
+#### Chat Process
+
+![Chat Process](<./COMP0016\ Team\ 5\ Portfolio/images/Demo\ Screenshots/Chat\ Process.png>)
+
+#### Create Space
+
+![Create Space](<./COMP0016\ Team\ 5\ Portfolio/images/Demo\ Screenshots/screencapture-localhost-3000-create-space-2024-03-24-05_02_19.png>)
+
+#### Space
+
+![Space](<./COMP0016\ Team\ 5\ Portfolio/images/Demo\ Screenshots/screencapture-localhost-3000-Space-18-2024-03-24-05_02_43.png>)
+
+</details>
 
 <!-- TechStack -->
 
@@ -243,10 +275,6 @@ GNU GENERAL PUBLIC LICENSE V3.0. See LICENSE for more information.
 - [Deployment Manual](https://students.cs.ucl.ac.uk/2023/group5/dply.html)
 - [CC License](https://students.cs.ucl.ac.uk/2023/group5/cc.html)
 - [EULA](https://students.cs.ucl.ac.uk/2023/group5/eula.html)
-- [Legal Statement] add link of legal statement here (copy from website)
-- [Summary Video] add 8 min pre vid link here
+- [Legal Statement](https://students.cs.ucl.ac.uk/2023/group5/Project%20Legal%20Statement.pdf)
+- [Summary Video](https://youtu.be/HTEUgppOQUs)
 - [Blog](https://jurisbudaidevelopmentblog.wordpress.com/)
-
-```
-
-```

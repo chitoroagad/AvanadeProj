@@ -103,7 +103,7 @@ def task_list_executor_fun(task: str, callbacks: Callbacks) -> str:
             secondary_database_retriever_tool,
             results_database_retriever_tool,
         ],
-        verbose=False,
+        verbose=True,
         return_intermediate_steps=True,
     )
 
@@ -266,13 +266,14 @@ organiser_executor = AgentExecutor(
         secondary_database_retriever_tool,
         results_database_retriever_tool,
     ],
-    verbose=False,
+    verbose=True,
+    return_intermediate_steps=True,
 ).with_config({"run_name": "Organiser"})
 
 manager_executor = AgentExecutor(
     agent=manager_agent,
     tools=[task_list_executor, task_list_generator],
-    verbose=False,
+    verbose=True,
     return_intermediate_steps=True,
 ).with_config({"run_name": "Manager"})
 
